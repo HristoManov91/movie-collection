@@ -1,0 +1,89 @@
+@import url("./reset.css");
+
+header img {
+    width: 100%;
+    height: 400px;
+}
+
+header nav {
+    background-color: #0d1015;
+    height: 3rem;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+header nav li {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    font-size: 1.2rem;
+    color: white;
+    display: inline-block;
+    margin-left: 25px;
+}
+
+header nav li:hover {
+    cursor: pointer;
+    color: orange;
+}
+
+main {
+    display: grid;
+    grid-template-columns: 150px 1fr;
+    gap: 20px;
+    grid-template-areas:
+    "aside section";
+}
+aside.filter {
+    height: 600px;
+    background-color: red;
+    display: inline-block;
+}
+
+section.catalogue {
+    height: 600px;
+    background-color: yellow;
+    display: inline-block;
+}
+
+/* Movie card */
+.movie-card{
+    width:220px;
+    height:355px;
+    background-color:white;
+    margin : 10px;
+    box-shadow:5px 5px 115px -14px black;
+    border-radius: 4px;
+    display: inline-block;
+}
+
+.movie-img {
+    width:100%;
+    height:240px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    z-index:111 !important;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    position:relative;
+
+}
+
+.text-movie-cont {
+    margin: 5px;
+}
+
+.watch-btn h3{
+    display:block;
+    border:1px solid red;
+    border-radius:5px;
+    padding:4px;
+    width:140px;
+}
+.watch-btn h3 i{
+    font-size:14px;
+    margin-right:2px;
+    position: relative;
+    float: left;
+    line-height: 1;
+}
