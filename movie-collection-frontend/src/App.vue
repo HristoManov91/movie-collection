@@ -4,7 +4,7 @@
       <nav>
         <ul>
           <li ref="#">HOME</li>
-          <li ref="#">MOVIE</li>
+          <li ref="#">MOVIES</li>
           <li ref="#">SERIALS</li>
         </ul>
       </nav>
@@ -23,50 +23,54 @@
         <label for="drama">DRAMA</label><br>
       </aside>
       <section class="catalogue">
-        <div class="movie-card">
-          <img
-              src="https://i.ibb.co/FDGqCmM/papers-co-ag74-interstellar-wide-space-film-movie-art-33-iphone6-wallpaper.jpg"
-              class="movie-img"/>
-          <ul class="text-movie-cont">
-            <li>Interstellar</li>
-            <li>Duration: 180 min.</li>
-            <li>IMBD: 7.3</li>
-            <li ref="#">WATCH TRAILER</li>
-          </ul>
-        </div>
-        <div class="movie-card">
-          <img
-              src="https://i.ibb.co/FDGqCmM/papers-co-ag74-interstellar-wide-space-film-movie-art-33-iphone6-wallpaper.jpg"
-              class="movie-img"/>
-          <ul class="text-movie-cont">
-            <li>Interstellar</li>
-            <li>Duration: 180 min.</li>
-            <li>IMBD: 7.3</li>
-            <li ref="#">WATCH TRAILER</li>
-          </ul>
-        </div>
-        <div class="movie-card">
-          <img
-              src="https://i.ibb.co/FDGqCmM/papers-co-ag74-interstellar-wide-space-film-movie-art-33-iphone6-wallpaper.jpg"
-              class="movie-img"/>
-          <ul class="text-movie-cont">
-            <li>Interstellar</li>
-            <li>Duration: 180 min.</li>
-            <li>IMBD: 7.3</li>
-            <li ref="#">WATCH TRAILER</li>
-          </ul>
-        </div>
-        <div class="movie-card">
-          <img
-              src="https://i.ibb.co/FDGqCmM/papers-co-ag74-interstellar-wide-space-film-movie-art-33-iphone6-wallpaper.jpg"
-              class="movie-img"/>
-          <div class="text-movie-cont">
-            <p>Interstellar</p>
-            <p>Duration: 180 min.</p>
-            <p>IMBD: 7.3</p>
-            <button ref="#">WATCH TRAILER</button>
-          </div>
-        </div>
+        <h2>Movies</h2>
+        <ul class="movies">
+          <li class="movie-card">
+            <img
+                src="https://i.ibb.co/FDGqCmM/papers-co-ag74-interstellar-wide-space-film-movie-art-33-iphone6-wallpaper.jpg"
+                class="movie-poster"/>
+            <div class="movie-info">
+              <h3 class="name">Interstellar</h3>
+              <p class="duration">Duration: 180 min.</p>
+              <p class="rating">IMDb: 7.3</p>
+              <button class="button-trailer" ref="#">
+                <font-awesome-icon icon="fa-solid fa-circle-play"/>
+                WATCH TRAILER
+              </button>
+            </div>
+          </li>
+          <li class="movie-card">
+            <img
+                src="https://i.ibb.co/FDGqCmM/papers-co-ag74-interstellar-wide-space-film-movie-art-33-iphone6-wallpaper.jpg"
+                class="movie-poster"/>
+            <div class="movie-info">
+              <h3 class="name">The Lord of The Rings: The return of the King</h3>
+                <p class="duration">
+                  <font-awesome-icon icon="fa-clock"/>
+                  180 min.
+                </p>
+                <p class="rating">IMDb: 7.3</p>
+              <button class="button-trailer" ref="#">
+                <font-awesome-icon icon="fa-solid fa-circle-play"/>
+                WATCH TRAILER
+              </button>
+            </div>
+          </li>
+          <li class="movie-card">
+            <img
+                src="https://i.ibb.co/FDGqCmM/papers-co-ag74-interstellar-wide-space-film-movie-art-33-iphone6-wallpaper.jpg"
+                class="movie-poster"/>
+            <div class="movie-info">
+              <h3 class="name">Interstellar</h3>
+              <p class="duration">Duration: 180 min.</p>
+              <p class="rating">IMDb: 7.3</p>
+              <button class="button-trailer" ref="#">
+                <font-awesome-icon icon="fa-solid fa-circle-play"/>
+                WATCH TRAILER
+              </button>
+            </div>
+          </li>
+        </ul>
       </section>
     </main>
   </div>
