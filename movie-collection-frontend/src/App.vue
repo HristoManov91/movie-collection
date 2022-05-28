@@ -1,13 +1,13 @@
 <template>
   <div id="app">
     <header>
-      <nav>
-        <ul>
-          <li ref="#">HOME</li>
-          <li ref="#">MOVIES</li>
-          <li ref="#">SERIALS</li>
-        </ul>
-      </nav>
+      <!--      <nav>-->
+      <!--        <ul>-->
+      <!--          <li ref="#">MOVIES</li>-->
+      <!--          <li ref="#">SERIALS</li>-->
+      <!--        </ul>-->
+      <!--      </nav>-->
+      <p>My favorite movies</p>
       <img src="./assets/image/welcome-image.jpg" alt="home-cinema-image">
     </header>
     <main class="container">
@@ -23,19 +23,26 @@
         <label for="drama">DRAMA</label><br>
       </aside>
       <section class="catalogue">
-        <h2>Movies</h2>
+        <p class="movies-title">Collection</p>
         <ul class="movies">
           <li class="movie-card">
             <img
                 src="https://i.ibb.co/FDGqCmM/papers-co-ag74-interstellar-wide-space-film-movie-art-33-iphone6-wallpaper.jpg"
                 class="movie-poster"/>
             <div class="movie-info">
-              <h3 class="name">Interstellar</h3>
-              <p class="duration">Duration: 180 min.</p>
+              <h3 class="title1">Avengers</h3>
+              <h5 class="title2">Infinity War</h5>
+              <p class="duration">
+                <font-awesome-icon icon="fa-clock"/>
+                180 min.
+              </p>
               <p class="rating">IMDb: 7.3</p>
               <button class="button-trailer" ref="#">
                 <font-awesome-icon icon="fa-solid fa-circle-play"/>
-                WATCH TRAILER
+                TRAILER
+              </button>
+              <button class="button-details" @click="showModal = true">
+                DETAILS
               </button>
             </div>
           </li>
@@ -44,15 +51,19 @@
                 src="https://i.ibb.co/FDGqCmM/papers-co-ag74-interstellar-wide-space-film-movie-art-33-iphone6-wallpaper.jpg"
                 class="movie-poster"/>
             <div class="movie-info">
-              <h3 class="name">The Lord of The Rings: The return of the King</h3>
-                <p class="duration">
-                  <font-awesome-icon icon="fa-clock"/>
-                  180 min.
-                </p>
-                <p class="rating">IMDb: 7.3</p>
+              <h3 class="title1">The Lord of The Rings</h3>
+              <h5 class="title2">The Return of The King</h5>
+              <p class="duration">
+                <font-awesome-icon icon="fa-clock"/>
+                180 min.
+              </p>
+              <p class="rating">IMDb: 7.3</p>
               <button class="button-trailer" ref="#">
                 <font-awesome-icon icon="fa-solid fa-circle-play"/>
-                WATCH TRAILER
+                TRAILER
+              </button>
+              <button class="button-details" ref="#">
+                DETAILS
               </button>
             </div>
           </li>
@@ -61,26 +72,183 @@
                 src="https://i.ibb.co/FDGqCmM/papers-co-ag74-interstellar-wide-space-film-movie-art-33-iphone6-wallpaper.jpg"
                 class="movie-poster"/>
             <div class="movie-info">
-              <h3 class="name">Interstellar</h3>
-              <p class="duration">Duration: 180 min.</p>
+              <h3 class="title1">The Lord of The Rings</h3>
+<!--              <h5 class="title2">The Return of The King</h5>-->
+              <p class="duration">
+                <font-awesome-icon icon="fa-clock"/>
+                180 min.
+              </p>
               <p class="rating">IMDb: 7.3</p>
               <button class="button-trailer" ref="#">
                 <font-awesome-icon icon="fa-solid fa-circle-play"/>
-                WATCH TRAILER
+                TRAILER
+              </button>
+              <button class="button-details" ref="#">
+                DETAILS
+              </button>
+            </div>
+          </li>
+          <li class="movie-card">
+            <img
+                src="https://i.ibb.co/FDGqCmM/papers-co-ag74-interstellar-wide-space-film-movie-art-33-iphone6-wallpaper.jpg"
+                class="movie-poster"/>
+            <div class="movie-info">
+              <h3 class="title1">The Lord of The Rings</h3>
+              <h5 class="title2">The Return of The King</h5>
+              <p class="duration">
+                <font-awesome-icon icon="fa-clock"/>
+                180 min.
+              </p>
+              <p class="rating">IMDb: 7.3</p>
+              <button class="button-trailer" ref="#">
+                <font-awesome-icon icon="fa-solid fa-circle-play"/>
+                TRAILER
+              </button>
+              <button class="button-details" ref="#">
+                DETAILS
+              </button>
+            </div>
+          </li>
+          <li class="movie-card">
+            <img
+                src="https://i.ibb.co/FDGqCmM/papers-co-ag74-interstellar-wide-space-film-movie-art-33-iphone6-wallpaper.jpg"
+                class="movie-poster"/>
+            <div class="movie-info">
+              <h3 class="title1">The Lord of The Rings</h3>
+              <h5 class="title2">The Return of The King</h5>
+              <p class="duration">
+                <font-awesome-icon icon="fa-clock"/>
+                180 min.
+              </p>
+              <p class="rating">IMDb: 7.3</p>
+              <button class="button-trailer" ref="#">
+                <font-awesome-icon icon="fa-solid fa-circle-play"/>
+                TRAILER
+              </button>
+              <button class="button-details" ref="#">
+                DETAILS
+              </button>
+            </div>
+          </li>
+          <li class="movie-card">
+            <img
+                src="https://i.ibb.co/FDGqCmM/papers-co-ag74-interstellar-wide-space-film-movie-art-33-iphone6-wallpaper.jpg"
+                class="movie-poster"/>
+            <div class="movie-info">
+              <h3 class="title1">The Lord of The Rings</h3>
+              <h5 class="title2">The Return of The King</h5>
+              <p class="duration">
+                <font-awesome-icon icon="fa-clock"/>
+                180 min.
+              </p>
+              <p class="rating">IMDb: 7.3</p>
+              <button class="button-trailer" ref="#">
+                <font-awesome-icon icon="fa-solid fa-circle-play"/>
+                TRAILER
+              </button>
+              <button class="button-details" ref="#">
+                DETAILS
+              </button>
+            </div>
+          </li>
+          <li class="movie-card">
+            <img
+                src="https://i.ibb.co/FDGqCmM/papers-co-ag74-interstellar-wide-space-film-movie-art-33-iphone6-wallpaper.jpg"
+                class="movie-poster"/>
+            <div class="movie-info">
+              <h3 class="title1">The Lord of The Rings</h3>
+              <h5 class="title2">The Return of The King</h5>
+              <p class="duration">
+                <font-awesome-icon icon="fa-clock"/>
+                180 min.
+              </p>
+              <p class="rating">IMDb: 7.3</p>
+              <button class="button-trailer" ref="#">
+                <font-awesome-icon icon="fa-solid fa-circle-play"/>
+                TRAILER
+              </button>
+              <button class="button-details" ref="#">
+                DETAILS
+              </button>
+            </div>
+          </li>
+          <li class="movie-card">
+            <img
+                src="https://i.ibb.co/FDGqCmM/papers-co-ag74-interstellar-wide-space-film-movie-art-33-iphone6-wallpaper.jpg"
+                class="movie-poster"/>
+            <div class="movie-info">
+              <h3 class="title1">The Lord of The Rings</h3>
+              <h5 class="title2">The Return of The King</h5>
+              <p class="duration">
+                <font-awesome-icon icon="fa-clock"/>
+                180 min.
+              </p>
+              <p class="rating">IMDb: 7.3</p>
+              <button class="button-trailer" ref="#">
+                <font-awesome-icon icon="fa-solid fa-circle-play"/>
+                TRAILER
+              </button>
+              <button class="button-details" ref="#">
+                DETAILS
+              </button>
+            </div>
+          </li>
+          <li class="movie-card">
+            <img
+                src="https://i.ibb.co/FDGqCmM/papers-co-ag74-interstellar-wide-space-film-movie-art-33-iphone6-wallpaper.jpg"
+                class="movie-poster"/>
+            <div class="movie-info">
+              <h3 class="title1">The Lord of The Rings</h3>
+              <h5 class="title2">The Return of The King</h5>
+              <p class="duration">
+                <font-awesome-icon icon="fa-clock"/>
+                180 min.
+              </p>
+              <p class="rating">IMDb: 7.3</p>
+              <button class="button-trailer" ref="#">
+                <font-awesome-icon icon="fa-solid fa-circle-play"/>
+                TRAILER
+              </button>
+              <button class="button-details" ref="#">
+                DETAILS
               </button>
             </div>
           </li>
         </ul>
       </section>
     </main>
+    <button @click="show()">Show modal</button>
+    <modal class="modalElement" name="my-first-modal" :resizable="false" :reset="true" width="800px" height="550px">
+      <DetailsView/>
+    </modal>
+
   </div>
 </template>
-
 <script>
+
+import DetailsView from "@/components/DetailsView";
 
 export default {
   name: 'App',
+  components: {
+    DetailsView
+  },
+  data() {
+    return {
 
+    }
+  },
+  methods: {
+    show () {
+      this.$modal.show('my-first-modal');
+    },
+    hide () {
+      this.$modal.hide('my-first-modal');
+    }
+  },
+  mount () {
+    this.show()
+  }
 }
 </script>
 

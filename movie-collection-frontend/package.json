@@ -11,8 +11,12 @@
     "@fortawesome/fontawesome-svg-core": "^6.1.1",
     "@fortawesome/free-solid-svg-icons": "^6.1.1",
     "@fortawesome/vue-fontawesome": "^2.0.6",
+    "@melmacaluso/vue-modal": "^2.1.0",
+    "@ocrv/vue-tailwind-pagination": "^0.0.4",
     "core-js": "^3.8.3",
-    "vue": "^2.6.14"
+    "vue": "^2.6.14",
+    "vue-js-modal": "^2.0.1",
+    "vuejs-paginate": "^2.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",

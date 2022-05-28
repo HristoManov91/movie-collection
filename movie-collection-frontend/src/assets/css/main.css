@@ -1,11 +1,27 @@
 @import url("./reset.css");
 
-header img {
-    width: 100%;
-    height: 400px;
+header {
+    background-color: #0d1015;
+    position: relative;
 }
 
-header nav {
+header p {
+    color: orange;
+    font-size: 2rem;
+    text-transform: uppercase;
+    padding-left: 40%;
+    position: absolute;
+    bottom: 25rem;
+    z-index: 50;
+}
+
+header img {
+    width: 100%;
+    height: 450px;
+    opacity: 0.7;
+}
+
+/*header nav {
     background-color: #0d1015;
     height: 3rem;
     padding-top: 5px;
@@ -24,7 +40,7 @@ header nav li {
 header nav li:hover {
     cursor: pointer;
     color: orange;
-}
+}*/
 
 main {
     display: grid;
@@ -32,24 +48,94 @@ main {
     gap: 20px;
     grid-template-areas:
     "aside section";
+    background-color: orange;
 }
+
+/* Filters */
 aside.filter {
-    background-color: red;
+    background-color: #121514;
     display: inline-block;
 }
 
-/* Movie card */
+aside.filter p {
+    text-align: center;
+    font-size: 1.5rem;
+    background-color: orange;
+    margin: 0.5rem;
+    padding: 0.5rem;
+    border-radius: 10px;
+}
+aside.filter label {
+    color: #b6b8b6;
+}
+
+aside.filter input[type="checkbox"] {
+    display: none;
+}
+
+aside.filter input[type="checkbox"] + *::before {
+    content: "";
+    display: inline-block;
+    vertical-align: bottom;
+    width: 1rem;
+    height: 1rem;
+    margin-right: 0.5rem;
+    border-radius: 10%;
+    border-style: solid;
+    border-width: 0.1rem;
+    border-color: #b6b8b6;
+    flex-shrink: 0;
+}
+
+aside.filter input[type="checkbox"]:checked + * {
+    color: orange;
+}
+
+aside.filter input[type="checkbox"]:checked + *::before {
+    content: "✓";
+    color: orange;
+    text-align: center;
+    /*background: black;*/
+    border-color: orange;
+}
+
+aside.filter input[type="checkbox"] + * {
+    display: inline-flex;
+    padding: 0.3rem 1rem;
+}
+
+/* Collection */
 
 .movies {
     margin: 10px auto;
-    width: 90%;
+    width: 95%;
     display: grid;
     grid-template-columns: repeat(5 , 1fr);
     gap: 2rem;
 }
+
+.movies-title {
+    font-size: 1.5rem;
+    background-color: black;
+    margin: 0.5rem 42.75%;
+    padding: 0.5rem 3rem;
+    border-radius: 10px;
+    display: inline-block;
+    color: orange;
+
+}
+
 .movie-card {
     position: relative;
     overflow: hidden;
+    border-radius: 10px;
+    min-height: 330px;
+    min-width: 210px;
+}
+
+.movie-card:hover {
+    box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
+    cursor: grab;
 }
 
 .movie-card::after {
@@ -70,11 +156,11 @@ aside.filter {
 .movie-info {
     width: 100%;
     position: absolute;
-    bottom: -70px;
+    bottom: -68px;
     left: 0;
     z-index: 10;
     color: orange;
-    padding: 0.5rem 1rem;
+    padding: 0.5rem 0.8rem;
     transition: bottom 300ms ease-in-out;
     background: rgba(32, 32, 32, 0.9);
 }
@@ -83,28 +169,45 @@ aside.filter {
     bottom: 0;
 }
 
-.movie-info h3 {
-    /*text-transform: uppercase;*/
+.movie-info h3.title1{
+    text-transform: uppercase;
     letter-spacing: 1px;
     font-weight: bold;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.3em;
+    font-size: 1.3rem;
+}
+.movie-info h5.title2{
+    text-transform: uppercase;
+    margin-bottom: 0.3em;
+    font-size: 0.9rem;
 }
 
-.movie-info .duration {
-    font-size: 1rem;
-    display: inline-block;
-    margin: 1rem 0.5rem;
-}
-
+.movie-info .duration,
 .movie-info .rating {
     font-size: 1rem;
     display: inline-block;
+    margin: 0.5rem 0.5rem;
 }
 
-.button-trailer {
+.button-trailer ,
+.button-details {
+    margin: 0.3rem 0.5rem;
     text-transform: uppercase;
     color: orange;
     border:1px solid orange;
     background: rgba(32, 32, 32, 0.9);
     border-radius: 4px;
+    display: inline-block;
 }
+
+.button-trailer:hover ,
+.button-details:hover {
+    cursor: pointer;
+    color: rgba(32, 32, 32, 0.9);
+    background: orange;
+}
+
+.modalElement {
+    background: rgb(1, 3, 64 , 0.4);
+}
+
