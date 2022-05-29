@@ -41,7 +41,7 @@
                 <font-awesome-icon icon="fa-solid fa-circle-play"/>
                 TRAILER
               </button>
-              <button class="button-details" @click="showModal = true">
+              <button class="button-details" @click="show()">
                 DETAILS
               </button>
             </div>
@@ -62,7 +62,7 @@
                 <font-awesome-icon icon="fa-solid fa-circle-play"/>
                 TRAILER
               </button>
-              <button class="button-details" ref="#">
+              <button class="button-details" @click="show()">
                 DETAILS
               </button>
             </div>
@@ -83,7 +83,7 @@
                 <font-awesome-icon icon="fa-solid fa-circle-play"/>
                 TRAILER
               </button>
-              <button class="button-details" ref="#">
+              <button class="button-details" @click="show()">
                 DETAILS
               </button>
             </div>
@@ -104,7 +104,7 @@
                 <font-awesome-icon icon="fa-solid fa-circle-play"/>
                 TRAILER
               </button>
-              <button class="button-details" ref="#">
+              <button class="button-details" @click="show()">
                 DETAILS
               </button>
             </div>
@@ -125,7 +125,7 @@
                 <font-awesome-icon icon="fa-solid fa-circle-play"/>
                 TRAILER
               </button>
-              <button class="button-details" ref="#">
+              <button class="button-details" @click="show()">
                 DETAILS
               </button>
             </div>
@@ -146,7 +146,7 @@
                 <font-awesome-icon icon="fa-solid fa-circle-play"/>
                 TRAILER
               </button>
-              <button class="button-details" ref="#">
+              <button class="button-details" @click="show()">
                 DETAILS
               </button>
             </div>
@@ -167,7 +167,7 @@
                 <font-awesome-icon icon="fa-solid fa-circle-play"/>
                 TRAILER
               </button>
-              <button class="button-details" ref="#">
+              <button class="button-details" @click="show()">
                 DETAILS
               </button>
             </div>
@@ -188,7 +188,7 @@
                 <font-awesome-icon icon="fa-solid fa-circle-play"/>
                 TRAILER
               </button>
-              <button class="button-details" ref="#">
+              <button class="button-details" @click="show()">
                 DETAILS
               </button>
             </div>
@@ -209,7 +209,7 @@
                 <font-awesome-icon icon="fa-solid fa-circle-play"/>
                 TRAILER
               </button>
-              <button class="button-details" ref="#">
+              <button class="button-details" @click="show()">
                 DETAILS
               </button>
             </div>
@@ -217,9 +217,8 @@
         </ul>
       </section>
     </main>
-    <button @click="show()">Show modal</button>
-    <modal class="modalElement" name="my-first-modal" :resizable="false" :reset="true" width="800px" height="550px">
-      <DetailsView/>
+    <modal class="modalElement" name="movieDetailsModal" :resizable="false" :reset="true" width="800px" height="550px">
+      <DetailsView @showEdit="hide()"/>
     </modal>
 
   </div>
@@ -240,15 +239,12 @@ export default {
   },
   methods: {
     show () {
-      this.$modal.show('my-first-modal');
+      this.$modal.show('movieDetailsModal');
     },
     hide () {
-      this.$modal.hide('my-first-modal');
+      this.$modal.hide('movieDetailsModal');
     }
   },
-  mount () {
-    this.show()
-  }
 }
 </script>
 

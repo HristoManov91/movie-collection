@@ -32,23 +32,39 @@
       </ul>
       <div class="detailsViewButtons">
         <ul>
-          <li class="editButton">
+          <li class="editButton" @click="show()">
             <font-awesome-icon icon="fa-solid fa-pen-to-square"/>
             EDIT
           </li>
-          <li class="deleteButton">
+          <li class="deleteButton" >
             <font-awesome-icon icon="fa-solid fa-trash-can"/>
             DELETE
           </li>
         </ul>
       </div>
     </div>
+    <modal class="movieEditModal" name="movieEditModal" :resizable="false" :reset="true" width="850px" height="600px">
+      <EditMovie/>
+    </modal>
   </div>
 </template>
 
 <script>
+import EditMovie from "@/components/EditMovie";
+
 export default {
-  name: "DetailsView"
+  name: "DetailsView",
+  components: {
+    EditMovie
+  },
+  methods: {
+    show () {
+      this.$modal.show('movieEditModal');
+    },
+    hide () {
+      this.$modal.hide('movieEditModal');
+    },
+  },
 }
 </script>
 
@@ -65,7 +81,7 @@ export default {
   background-color: #010229;
 }
 
-.detailsView :first-child {
+/*.detailsView :first-child {
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;
 }
@@ -73,7 +89,7 @@ export default {
 .detailsView :last-child {
   border-top-right-radius: 10px;
   border-bottom-right-radius: 10px;
-}
+}*/
 
 .detailsView img.detailsPosterImage {
   width: 100%;
@@ -200,6 +216,10 @@ div.detailsViewButtons ul li.editButton:hover {
   text-align: center;
   text-transform: uppercase;
   font-weight: bold;
+}
+
+.movieEditModal {
+  background: rgb(252, 186, 3 , 0.4);
 }
 
 </style>
