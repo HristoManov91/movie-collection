@@ -15,7 +15,7 @@
         lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
         magna aliqua. Ut enim adipiscing
       </p>
-      <button class="detailsViewButtonTrailer" ref="#">
+      <button class="detailsViewButtonTrailer" @click="watchTrailer()">
         <font-awesome-icon icon="fa-solid fa-circle-play"/>
         WATCH TRAILER
       </button>
@@ -30,20 +30,19 @@
         <li>DISNEY</li>
         <li>My PC</li>
       </ul>
-<!--      <div class="detailsViewButtons">-->
-        <ul class="detailsViewButtons">
-          <li class="editButton" @click="show()">
-            <font-awesome-icon icon="fa-solid fa-pen-to-square"/>
-            EDIT
-          </li>
-          <li class="deleteButton" >
-            <font-awesome-icon icon="fa-solid fa-trash-can"/>
-            DELETE
-          </li>
-        </ul>
-<!--      </div>-->
+      <ul class="detailsViewButtons">
+        <li class="editButton" @click="show()">
+          <font-awesome-icon icon="fa-solid fa-pen-to-square"/>
+          EDIT
+        </li>
+        <li class="deleteButton">
+          <font-awesome-icon icon="fa-solid fa-trash-can"/>
+          DELETE
+        </li>
+      </ul>
     </div>
-    <modal class="movieEditModal" name="movieEditModal" :resizable="false" :reset="true" width="850px" height="auto" :scrollable="true">
+    <modal class="movieEditModal" name="movieEditModal" :resizable="false" :reset="true" width="850px" height="auto"
+           :scrollable="true">
       <EditMovie/>
     </modal>
   </div>
@@ -58,12 +57,15 @@ export default {
     EditMovie
   },
   methods: {
-    show () {
+    show() {
       this.$modal.show('movieEditModal');
     },
-    hide () {
+    hide() {
       this.$modal.hide('movieEditModal');
     },
+    watchTrailer() {
+      window.open("https://www.youtube.com/watch?v=pLvovWcmJ-k");
+    }
   },
 }
 </script>
@@ -81,16 +83,6 @@ export default {
   background-color: #010229;
 }
 
-/*.detailsView :first-child {
-  border-top-left-radius: 10px;
-  border-bottom-left-radius: 10px;
-}
-
-.detailsView :last-child {
-  border-top-right-radius: 10px;
-  border-bottom-right-radius: 10px;
-}*/
-
 .detailsView img.detailsPosterImage {
   width: 100%;
   height: 100%;
@@ -107,12 +99,14 @@ export default {
   font-size: 2.5rem;
   font-weight: bold;
   text-transform: uppercase;
+  text-align: center;
 }
 
 .detailsViewInfo p.detailsViewTitle2 {
   margin: 1rem;
   font-size: 1.7rem;
   text-transform: uppercase;
+  text-align: center;
 }
 
 .detailsViewInfo ul.detailsViewGenres,
@@ -142,13 +136,13 @@ export default {
 }
 
 .detailsViewInfo button.detailsViewButtonTrailer {
-  margin: 1rem 2rem;
+  margin: 0.5rem 3rem;
   font-size: 1rem;
   text-transform: uppercase;
   color: orange;
   border: 1px solid orange;
   background: rgba(32, 32, 32, 0.9);
-  border-radius: 4px;
+  border-radius: 5px;
   display: inline-block;
 }
 
@@ -159,7 +153,7 @@ export default {
 }
 
 .detailsViewInfo .detailsViewIMDb {
-  margin: 1rem 2rem;
+  margin: 0.5rem 3rem;
   display: inline-block;
   font-size: 1.5rem;
 }
@@ -167,7 +161,7 @@ export default {
 ul.detailsViewButtons li {
   display: inline-block;
   font-size: 1rem;
-  margin: 1.5rem 2rem;
+  margin: 2.5rem 2rem;
   padding: 0.6rem 1.5rem;
   border-radius: 10px;
   text-align: center;
@@ -219,7 +213,7 @@ ul.detailsViewButtons li.editButton:hover {
 }
 
 .movieEditModal {
-  background: rgb(252, 186, 3 , 0.4);
+  background: rgb(252, 186, 3, 0.4);
 }
 
 </style>

@@ -215,13 +215,13 @@ form.editForm div.urlsEdit input {
 form.editForm span {
   color: orange;
   display: inline-block;
-  margin: 1% 2.5%;
+  margin: 0.5rem 2.5%;
   text-transform: uppercase;
   width: 100%;
 }
 
 form.editForm .editMovieTextarea {
-  margin: 1rem;
+  margin: 0 1rem 1rem 1rem;
   border-radius: 6px;
   font-size: 1.2rem;
   width: 96%;

@@ -209,5 +209,6 @@ aside.filter input[type="checkbox"] + * {
 
 .modalElement {
     background: rgb(1, 3, 64 , 0.4);
+    transition-duration: 2s;
 }
 

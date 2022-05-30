@@ -37,7 +37,91 @@
                 180 min.
               </p>
               <p class="rating">IMDb: 7.3</p>
-              <button class="button-trailer" ref="#">
+              <button class="button-trailer" @click="watchTrailer">
+                <font-awesome-icon icon="fa-solid fa-circle-play"/>
+                TRAILER
+              </button>
+              <button class="button-details" @click="show()">
+                DETAILS
+              </button>
+            </div>
+          </li>
+          <li class="movie-card">
+            <img
+                src="https://i.ibb.co/FDGqCmM/papers-co-ag74-interstellar-wide-space-film-movie-art-33-iphone6-wallpaper.jpg"
+                class="movie-poster"/>
+            <div class="movie-info">
+              <h3 class="title1">Avengers</h3>
+              <h5 class="title2">Infinity War</h5>
+              <p class="duration">
+                <font-awesome-icon icon="fa-clock"/>
+                180 min.
+              </p>
+              <p class="rating">IMDb: 7.3</p>
+              <button class="button-trailer" @click="watchTrailer">
+                <font-awesome-icon icon="fa-solid fa-circle-play"/>
+                TRAILER
+              </button>
+              <button class="button-details" @click="show()">
+                DETAILS
+              </button>
+            </div>
+          </li>
+          <li class="movie-card">
+            <img
+                src="https://i.ibb.co/FDGqCmM/papers-co-ag74-interstellar-wide-space-film-movie-art-33-iphone6-wallpaper.jpg"
+                class="movie-poster"/>
+            <div class="movie-info">
+              <h3 class="title1">Avengers</h3>
+              <h5 class="title2">Infinity War</h5>
+              <p class="duration">
+                <font-awesome-icon icon="fa-clock"/>
+                180 min.
+              </p>
+              <p class="rating">IMDb: 7.3</p>
+              <button class="button-trailer" @click="watchTrailer">
+                <font-awesome-icon icon="fa-solid fa-circle-play"/>
+                TRAILER
+              </button>
+              <button class="button-details" @click="show()">
+                DETAILS
+              </button>
+            </div>
+          </li>
+          <li class="movie-card">
+            <img
+                src="https://i.ibb.co/FDGqCmM/papers-co-ag74-interstellar-wide-space-film-movie-art-33-iphone6-wallpaper.jpg"
+                class="movie-poster"/>
+            <div class="movie-info">
+              <h3 class="title1">Avengers</h3>
+              <h5 class="title2">Infinity War</h5>
+              <p class="duration">
+                <font-awesome-icon icon="fa-clock"/>
+                180 min.
+              </p>
+              <p class="rating">IMDb: 7.3</p>
+              <button class="button-trailer" @click="watchTrailer">
+                <font-awesome-icon icon="fa-solid fa-circle-play"/>
+                TRAILER
+              </button>
+              <button class="button-details" @click="show()">
+                DETAILS
+              </button>
+            </div>
+          </li>
+          <li class="movie-card">
+            <img
+                src="https://i.ibb.co/FDGqCmM/papers-co-ag74-interstellar-wide-space-film-movie-art-33-iphone6-wallpaper.jpg"
+                class="movie-poster"/>
+            <div class="movie-info">
+              <h3 class="title1">Avengers</h3>
+              <h5 class="title2">Infinity War</h5>
+              <p class="duration">
+                <font-awesome-icon icon="fa-clock"/>
+                180 min.
+              </p>
+              <p class="rating">IMDb: 7.3</p>
+              <button class="button-trailer" @click="watchTrailer">
                 <font-awesome-icon icon="fa-solid fa-circle-play"/>
                 TRAILER
               </button>
@@ -217,7 +301,12 @@
         </ul>
       </section>
     </main>
-    <modal class="modalElement" name="movieDetailsModal" :resizable="false" :reset="true" width="800px" height="550px">
+    <modal class="modalElement"
+           name="movieDetailsModal"
+           :resizable="false"
+           :reset="true"
+           width="800px"
+           height="580px">
       <DetailsView @showEdit="hide()"/>
     </modal>
 
@@ -243,6 +332,9 @@ export default {
     },
     hide () {
       this.$modal.hide('movieDetailsModal');
+    },
+    watchTrailer () {
+      window.open("https://www.youtube.com/watch?v=pLvovWcmJ-k");
     }
   },
 }
