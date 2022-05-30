@@ -30,8 +30,8 @@
         <li>DISNEY</li>
         <li>My PC</li>
       </ul>
-      <div class="detailsViewButtons">
-        <ul>
+<!--      <div class="detailsViewButtons">-->
+        <ul class="detailsViewButtons">
           <li class="editButton" @click="show()">
             <font-awesome-icon icon="fa-solid fa-pen-to-square"/>
             EDIT
@@ -41,9 +41,9 @@
             DELETE
           </li>
         </ul>
-      </div>
+<!--      </div>-->
     </div>
-    <modal class="movieEditModal" name="movieEditModal" :resizable="false" :reset="true" width="850px" height="600px">
+    <modal class="movieEditModal" name="movieEditModal" :resizable="false" :reset="true" width="850px" height="auto" :scrollable="true">
       <EditMovie/>
     </modal>
   </div>
@@ -115,7 +115,12 @@ export default {
   text-transform: uppercase;
 }
 
-.detailsViewInfo ul.detailsViewGenres {
+.detailsViewInfo ul.detailsViewGenres,
+.detailsViewInfo ul.yearDurationAudioInfo,
+.detailsViewInfo ul.platforms,
+.detailsViewInfo ul.detailsViewButtons {
+  display: flex;
+  justify-content: space-around;
   margin: 0 1rem;
 }
 
@@ -159,10 +164,10 @@ export default {
   font-size: 1.5rem;
 }
 
-div.detailsViewButtons ul li {
+ul.detailsViewButtons li {
   display: inline-block;
-  font-size: 0.8rem;
-  margin: 2rem 4rem;
+  font-size: 1rem;
+  margin: 1.5rem 2rem;
   padding: 0.6rem 1.5rem;
   border-radius: 10px;
   text-align: center;
@@ -170,28 +175,23 @@ div.detailsViewButtons ul li {
   font-weight: bold;
 }
 
-div.detailsViewButtons ul li.deleteButton {
+ul.detailsViewButtons li.deleteButton {
   color: white;
   background-color: red;
-  position: absolute;
-  bottom: 0px;
-  right: 0px;
 }
 
-div.detailsViewButtons ul li.editButton {
+ul.detailsViewButtons li.editButton {
   color: black;
   background-color: white;
-  position: absolute;
-  bottom: 0px;
 }
 
-div.detailsViewButtons ul li.deleteButton:hover {
+ul.detailsViewButtons li.deleteButton:hover {
   cursor: pointer;
   color: red;
   background-color: white;
 }
 
-div.detailsViewButtons ul li.editButton:hover {
+ul.detailsViewButtons li.editButton:hover {
   cursor: pointer;
   background-color: greenyellow;
 }

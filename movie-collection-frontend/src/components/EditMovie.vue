@@ -1,15 +1,15 @@
 <template>
-  <div>
+  <div class="container">
     <p class="pageTitle">Edit movie</p>
     <form class="editForm" action="">
       <div class="row">
         <div class="col">
           <label for="title1">Title:</label>
-          <input id="title1" v-model="movie.title1" type="text"/>
+          <input id="title1" v-model.trim="movie.title1" type="text"/>
         </div>
         <div class="col">
           <label for="title2">Second Title:</label>
-          <input id="title2" v-model="movie.title2" type="text"/>
+          <input id="title2" v-model.trim="movie.title2" type="text"/>
         </div>
       </div>
       <div class="row">
@@ -48,22 +48,24 @@
       </div>
       <div class="urlsEdit">
         <label for="imdbUrl">IMDb URL:</label>
-        <input id="imdbUrl" type="text" v-model="movie.imbdUrl"/>
+        <input id="imdbUrl" type="text" v-model.trim="movie.imbdUrl"/>
         <label for="trailerUrl">Trailer URL:</label>
-        <input id="trailerUrl" type="text" v-model="movie.trailerUrl"/>
+        <input id="trailerUrl" type="text" v-model.trim="movie.trailerUrl"/>
         <label for="posterUrl">Poster URL:</label>
-        <input id="posterUrl" type="text" v-model="movie.imbdUrl"/>
+        <input id="posterUrl" type="text" v-model.trim="movie.imbdUrl"/>
       </div>
       <div class="platformsEdit">
-        <input type="checkbox" id="hboxmax" name="hboxmax" value="HBOMAX" v-model="movie.genres"/>
-        <label for="hboxmax">HBOMAX</label>
-        <input type="checkbox" id="disneyEdit" name="disneyEdit" value="DISNEY+" v-model="movie.genres"/>
-        <label for="disneyEdit">DISNEY+</label>
-        <input type="checkbox" id="netflixEdit" name="netflixEdit" value="NETFLIX" v-model="movie.genres"/>
-        <label for="netflixEdit">NETFLIX</label>
-        <input type="checkbox" id="mypcEdit" name="mypcEdit" value="MY-PC" v-model="movie.genres"/>
-        <label for="mypcEdit">MY-PC</label>
+          <input type="checkbox" id="hboxmax" name="hboxmax" value="HBOMAX" v-model="movie.genres"/>
+          <label for="hboxmax">HBOMAX</label>
+          <input type="checkbox" id="disneyEdit" name="disneyEdit" value="DISNEY+" v-model="movie.genres"/>
+          <label for="disneyEdit">DISNEY+</label>
+          <input type="checkbox" id="netflixEdit" name="netflixEdit" value="NETFLIX" v-model="movie.genres"/>
+          <label for="netflixEdit">NETFLIX</label>
+          <input type="checkbox" id="mypcEdit" name="mypcEdit" value="MY-PC" v-model="movie.genres"/>
+          <label for="mypcEdit">MY-PC</label>
       </div>
+      <span>Description:</span>
+      <textarea class="editMovieTextarea" v-model.trim="movie.description"></textarea>
     </form>
   </div>
 </template>
@@ -76,12 +78,13 @@ export default {
       movie: {
         title1: null,
         title2: null,
-        duration: 0,
+        duration: null,
         year: null,
         genres: [],
         imbdUrl: null,
         trailerUrl: null,
         posterUrl: null,
+        description: null,
       },
       genres: {}
     }
@@ -91,7 +94,7 @@ export default {
 
 <style scoped>
 
-div {
+div.container {
   background-color: #010340;
   height: 100%;
   width: 100%;
@@ -107,7 +110,7 @@ div p.pageTitle {
 }
 
 form.editForm {
-  margin: 0.3rem 2.0rem;
+  margin: 0 2.0rem;
 }
 
 form.editForm div.row div.col {
@@ -132,12 +135,20 @@ form.editForm div.row div.col input {
 }
 
 /* Genres */
+form.editForm div.genresEdit,
+form.editForm div.platformsEdit {
+  display: flex;
+  justify-content: space-around;
+  padding: 0.4rem 1rem;
+  flex-wrap: wrap;
+}
+
 form.editForm div.genresEdit label,
-form.editForm div.platformsEdit label
-{
+form.editForm div.platformsEdit label {
   color: #b6b8b6;
   padding: 1rem;
   margin: 0.3rem;
+  text-transform: uppercase;
 }
 
 form.editForm div.genresEdit input[type="checkbox"],
@@ -199,6 +210,22 @@ form.editForm div.urlsEdit input {
   border-radius: 6px;
   font-size: 1.2rem;
   width: 100%;
+}
+
+form.editForm span {
+  color: orange;
+  display: inline-block;
+  margin: 1% 2.5%;
+  text-transform: uppercase;
+  width: 100%;
+}
+
+form.editForm .editMovieTextarea {
+  margin: 1rem;
+  border-radius: 6px;
+  font-size: 1.2rem;
+  width: 96%;
+  height: 100px;
 }
 
 </style>
