@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -18,7 +18,7 @@ public class MovieEntity extends BaseEntity{
     private Integer duration;
     private Integer year;
     private BigDecimal rating; //ToDo write method get from IMDb
-    private String ibdbUrl;
+    private String imdbUrl;
     private String trailerUrl;
     private String posterUrl;
     private List<PlatformEntity> platforms;
@@ -28,7 +28,7 @@ public class MovieEntity extends BaseEntity{
     public MovieEntity() {
     }
 
-    @Column(nullable = false , length = 100 , unique = true)
+    @Column(nullable = false , length = 50)
     public String getTitle1() {
         return title1;
     }
@@ -38,7 +38,7 @@ public class MovieEntity extends BaseEntity{
         return this;
     }
 
-    @Column(nullable = false , length = 100 , unique = true)
+    @Column(length = 50 , unique = true)
     public String getTitle2() {
         return title2;
     }
@@ -48,7 +48,7 @@ public class MovieEntity extends BaseEntity{
         return this;
     }
 
-    @OneToMany
+    @ManyToMany
     public List<GenreEntity> getGenres() {
         return genres;
     }
@@ -88,17 +88,17 @@ public class MovieEntity extends BaseEntity{
         return this;
     }
 
-    @Column
-    public String getIbdbUrl() {
-        return ibdbUrl;
+    @Column(nullable = false)
+    public String getImdbUrl() {
+        return imdbUrl;
     }
 
-    public MovieEntity setIbdbUrl(String ibdbUrl) {
-        this.ibdbUrl = ibdbUrl;
+    public MovieEntity setImdbUrl(String ibdbUrl) {
+        this.imdbUrl = ibdbUrl;
         return this;
     }
 
-    @Column
+    @Column(nullable = false)
     public String getTrailerUrl() {
         return trailerUrl;
     }
@@ -108,7 +108,7 @@ public class MovieEntity extends BaseEntity{
         return this;
     }
 
-    @Column
+    @Column(nullable = false)
     public String getPosterUrl() {
         return posterUrl;
     }
@@ -118,7 +118,7 @@ public class MovieEntity extends BaseEntity{
         return this;
     }
 
-    @OneToMany
+    @ManyToMany
     public List<PlatformEntity> getPlatforms() {
         return platforms;
     }
