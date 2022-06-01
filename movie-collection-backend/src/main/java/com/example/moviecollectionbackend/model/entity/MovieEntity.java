@@ -4,10 +4,24 @@ import java.math.BigDecimal;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
+@NamedEntityGraph(
+    name="movie-card",
+    attributeNodes = {
+        @NamedAttributeNode("genres"),
+        @NamedAttributeNode("platforms")
+    }
+)
 @Entity
 @Table(name = "movies")
 public class MovieEntity extends BaseEntity{
@@ -48,7 +62,7 @@ public class MovieEntity extends BaseEntity{
         return this;
     }
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     public List<GenreEntity> getGenres() {
         return genres;
     }
@@ -118,7 +132,7 @@ public class MovieEntity extends BaseEntity{
         return this;
     }
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     public List<PlatformEntity> getPlatforms() {
         return platforms;
     }
