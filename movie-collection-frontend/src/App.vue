@@ -25,7 +25,8 @@
       <section class="catalogue">
         <p class="movies-title">Collection</p>
         <ul class="movies">
-          <li class="movie-card">
+          <MovieCard v-for="(movie , id) in movies" :key="id" :movie="movie" @clickDetails="clickDetails"/>
+<!--          <li class="movie-card">
             <img
                 src="https://i.ibb.co/FDGqCmM/papers-co-ag74-interstellar-wide-space-film-movie-art-33-iphone6-wallpaper.jpg"
                 class="movie-poster"/>
@@ -157,7 +158,7 @@
                 class="movie-poster"/>
             <div class="movie-info">
               <h3 class="title1">The Lord of The Rings</h3>
-<!--              <h5 class="title2">The Return of The King</h5>-->
+&lt;!&ndash;              <h5 class="title2">The Return of The King</h5>&ndash;&gt;
               <p class="duration">
                 <font-awesome-icon icon="fa-clock"/>
                 180 min.
@@ -297,7 +298,7 @@
                 DETAILS
               </button>
             </div>
-          </li>
+          </li>-->
         </ul>
       </section>
     </main>
@@ -315,15 +316,23 @@
 <script>
 
 import DetailsView from "@/components/DetailsView";
+import {MovieService} from "@/services/movie-service";
+import MovieCard from "@/components/MovieCard";
 
 export default {
   name: 'App',
   components: {
-    DetailsView
+    DetailsView,
+    MovieCard
+  },
+  mounted() {
+    console.log('mounted')
+    this.loadMovies();
   },
   data() {
     return {
-
+      movieService: new MovieService(),
+      movies: []
     }
   },
   methods: {
@@ -335,6 +344,14 @@ export default {
     },
     watchTrailer () {
       window.open("https://www.youtube.com/watch?v=pLvovWcmJ-k");
+    },
+    loadMovies () {
+      this.movies = this.movieService.findAllMovies();
+      console.log(this.movies)
+    },
+    clickDetails (movie) {
+      console.log('clickDetails')
+      console.log('movie:' , movie);
     }
   },
 }

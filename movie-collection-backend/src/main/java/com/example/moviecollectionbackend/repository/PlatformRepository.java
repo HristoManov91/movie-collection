@@ -11,4 +11,6 @@ public interface PlatformRepository extends JpaRepository<PlatformEntity, Long> 
 
     @Query(value = "SELECT * FROM platforms LEFT JOIN movies_platforms mp on platforms.id = mp.platforms_id WHERE mp.movie_entity_id = ?1", nativeQuery = true)
     List<PlatformEntity> findAllByMovieId(Long movieId);
+
+    PlatformEntity findByPlatform (String platform);
 }

@@ -22,4 +22,9 @@ public class PlatformServiceImpl implements PlatformService {
         List<PlatformEntity> allByMovieId = platformRepository.findAllByMovieId(movieId);
         return allByMovieId.stream().map(PlatformEntity::getPlatform).collect(Collectors.toList());
     }
+
+    @Override
+    public List<PlatformEntity> findAllByNames(List<String> platforms) {
+        return platforms.stream().map(platformRepository::findByPlatform).collect(Collectors.toList());
+    }
 }

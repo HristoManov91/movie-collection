@@ -1,6 +1,7 @@
 package com.example.moviecollectionbackend.web;
 
 import com.example.moviecollectionbackend.model.binding.AddMovieBindingModel;
+import com.example.moviecollectionbackend.model.binding.EditMovieBindingModel;
 import com.example.moviecollectionbackend.model.dto.MovieCardDto;
 import com.example.moviecollectionbackend.model.dto.MovieDetailsDto;
 import com.example.moviecollectionbackend.service.MovieService;
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/movie")
+@RequestMapping("/movies")
 public class MovieController {
 
     private final MovieService movieService;
@@ -29,8 +30,7 @@ public class MovieController {
 
     @PostMapping("/new")
     private ResponseEntity<MovieDetailsDto> addMovie (@RequestBody @Valid AddMovieBindingModel addMovieBindingModel){
-        movieService.addMovie(addMovieBindingModel);
-        return null;
+        return new ResponseEntity<>(movieService.addMovie(addMovieBindingModel), HttpStatus.CREATED);
     }
 
     @GetMapping("/all")
@@ -43,5 +43,10 @@ public class MovieController {
     private ResponseEntity<MovieDetailsDto> getMovieDetailsDto(@PathVariable Long movieId) throws InvalidApplicationException {
 
         return new ResponseEntity<>(movieService.getMovieDetailsDto(movieId), HttpStatus.OK);
+    }
+
+    @PostMapping("/edit")
+    private ResponseEntity<MovieDetailsDto> editMovie (@RequestBody @Valid EditMovieBindingModel editMovieBindingModel){
+        return new ResponseEntity<>(movieService.editMovie(editMovieBindingModel) , HttpStatus.OK);
     }
 }

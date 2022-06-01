@@ -1,9 +1,12 @@
 package com.example.moviecollectionbackend.service.impl;
 
 import com.example.moviecollectionbackend.model.binding.AddMovieBindingModel;
+import com.example.moviecollectionbackend.model.binding.EditMovieBindingModel;
 import com.example.moviecollectionbackend.model.dto.MovieCardDto;
 import com.example.moviecollectionbackend.model.dto.MovieDetailsDto;
+import com.example.moviecollectionbackend.model.entity.GenreEntity;
 import com.example.moviecollectionbackend.model.entity.MovieEntity;
+import com.example.moviecollectionbackend.model.entity.PlatformEntity;
 import com.example.moviecollectionbackend.repository.MovieRepository;
 import com.example.moviecollectionbackend.service.GenreService;
 import com.example.moviecollectionbackend.service.MovieService;
@@ -32,8 +35,64 @@ public class MovieServiceImpl implements MovieService {
         MovieEntity map = modelMapper.map(addMovieBindingModel, MovieEntity.class);
 
         MovieEntity movieEntity = mapDtoToEntity(addMovieBindingModel);
-        return null;
+
+        List<GenreEntity> genres = genreService.findAllByNames(addMovieBindingModel.getGenres());
+        movieEntity.setGenres(genres);
+
+        List<PlatformEntity> platforms = platformService.findAllByNames(addMovieBindingModel.getPlatforms());
+        movieEntity.setPlatforms(platforms);
+
+        MovieEntity save = movieRepository.save(movieEntity);
+
+         return mapEntityToDto(save);
+
     }
+
+    @Override
+    public MovieDetailsDto editMovie(EditMovieBindingModel editMovieBindingModel) {
+        MovieEntity movieEntity = movieRepository.findById(editMovieBindingModel.getId()).orElseThrow();
+
+        if (!editMovieBindingModel.getTitle1().equalsIgnoreCase(movieEntity.getTitle1())){
+            movieEntity.setTitle1(editMovieBindingModel.getTitle1());
+        }
+
+        if (!editMovieBindingModel.getTitle2().equalsIgnoreCase(movieEntity.getTitle2())){
+            movieEntity.setTitle2(editMovieBindingModel.getTitle2());
+        }
+
+        if (editMovieBindingModel.getDuration() != movieEntity.getDuration()){
+            movieEntity.setDuration(editMovieBindingModel.getDuration());
+        }
+
+        if (editMovieBindingModel.getYear() != movieEntity.getYear()){
+            movieEntity.setYear(editMovieBindingModel.getYear());
+        }
+
+        if (!editMovieBindingModel.getImdbUrl().equalsIgnoreCase(movieEntity.getImdbUrl())){
+            movieEntity.setImdbUrl(editMovieBindingModel.getImdbUrl());
+        }
+
+        if (!editMovieBindingModel.getTrailerUrl().equalsIgnoreCase(movieEntity.getTrailerUrl())){
+            movieEntity.setTrailerUrl(editMovieBindingModel.getTrailerUrl());
+        }
+
+        if (!editMovieBindingModel.getDescription().equalsIgnoreCase(movieEntity.getDescription())){
+            movieEntity.setDescription(editMovieBindingModel.getDescription());
+        }
+
+        movieEntity.setBulgarianLanguage(editMovieBindingModel.getBulgarianLanguage());
+
+        List<GenreEntity> genres = genreService.findAllByNames(editMovieBindingModel.getGenres());
+        movieEntity.setGenres(genres);
+
+        List<PlatformEntity> platforms = platformService.findAllByNames(editMovieBindingModel.getPlatforms());
+        movieEntity.setPlatforms(platforms);
+
+        MovieEntity save = movieRepository.save(movieEntity);
+
+        return mapEntityToDto(save);
+    }
+
     @Override
     public List<MovieCardDto> findAllMovies() {
         List<MovieEntity> allMovies = movieRepository.findAll();
@@ -44,23 +103,12 @@ public class MovieServiceImpl implements MovieService {
     @Override
     public MovieDetailsDto getMovieDetailsDto(Long movieId) {
         MovieEntity movieEntity = movieRepository.findById(movieId).orElseThrow();
-        MovieDetailsDto movieDetailsDto = mapEntityToDto(movieEntity);
 
-        if (movieDetailsDto == null){
-            throw new IllegalArgumentException();
-        }
-
-        List<String> genres = genreService.findAllByMovieId(movieId);
-        movieDetailsDto.setGenres(genres);
-
-        List<String> platforms = platformService.findAllByMovieId(movieId);
-        movieDetailsDto.setPlatforms(platforms);
-
-        return movieDetailsDto;
+        return mapEntityToDto(movieEntity);
     }
 
     private MovieDetailsDto mapEntityToDto (MovieEntity me){
-        return new MovieDetailsDto()
+        MovieDetailsDto movieDetailsDto = new MovieDetailsDto()
             .setTitle1(me.getTitle1() != null ? me.getTitle1() : null)
             .setTitle2(me.getTitle2() != null ? me.getTitle2() : null)
             .setDuration(me.getDuration() != null ? me.getDuration() : null)
@@ -72,6 +120,13 @@ public class MovieServiceImpl implements MovieService {
             .setImdbUrl(me.getImdbUrl() != null ? me.getImdbUrl() : null)
             .setYear(me.getYear() != null ? me.getYear() : null);
 
+        List<String> genres = genreService.findAllByMovieId(me.getId());
+        movieDetailsDto.setGenres(genres);
+
+        List<String> platforms = platformService.findAllByMovieId(me.getId());
+        movieDetailsDto.setPlatforms(platforms);
+
+        return movieDetailsDto;
     }
 
     private MovieEntity mapDtoToEntity (AddMovieBindingModel bindingModel){
