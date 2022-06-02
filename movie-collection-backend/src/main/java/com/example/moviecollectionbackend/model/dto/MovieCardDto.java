@@ -10,6 +10,7 @@ public class MovieCardDto {
     private String trailerUrl;
     private Integer duration;
     private BigDecimal rating;
+    private String posterUrl;
 
     public MovieCardDto() {
     }
@@ -65,6 +66,15 @@ public class MovieCardDto {
 
     public MovieCardDto setRating(BigDecimal rating) {
         this.rating = rating;
+        return this;
+    }
+
+    public String getPosterUrl() {
+        return posterUrl;
+    }
+
+    public MovieCardDto setPosterUrl(String posterUrl) {
+        this.posterUrl = posterUrl;
         return this;
     }
 }
