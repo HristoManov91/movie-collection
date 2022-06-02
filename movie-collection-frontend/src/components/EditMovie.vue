@@ -86,7 +86,8 @@ export default {
         posterUrl: null,
         description: null,
       },
-      genres: {}
+      genres: {},
+      platforms: {}
     }
   }
 }

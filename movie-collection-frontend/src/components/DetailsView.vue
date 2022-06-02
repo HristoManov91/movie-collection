@@ -1,19 +1,16 @@
 <template>
   <div class="detailsView">
     <img class="detailsPosterImage"
-         src="https://i.ibb.co/FDGqCmM/papers-co-ag74-interstellar-wide-space-film-movie-art-33-iphone6-wallpaper.jpg"
+         :src="movie.posterUrl"
          alt="poster-image">
     <div class="detailsViewInfo">
-      <p class="detailsViewTitle1">The lord of the rings</p>
-      <p class="detailsViewTitle2">The return of the king</p>
-      <ul class="detailsViewGenres">
-        <li>ACTION</li>
-        <li>FANTASY</li>
-        <li>ACTION</li>
+      <p class="detailsViewTitle1">{{movie.title1}}</p>
+      <p class="detailsViewTitle2">{{movie.title2}}</p>
+      <ul class="detailsViewGenres" >
+        <li v-for="(genre , index) in movie.genres" :key="index">{{ genre }}</li>
       </ul>
       <p class="detailsViewDescription">
-        lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-        magna aliqua. Ut enim adipiscing
+        {{movie.description}}
       </p>
       <button class="detailsViewButtonTrailer" @click="watchTrailer()">
         <font-awesome-icon icon="fa-solid fa-circle-play"/>
@@ -21,14 +18,13 @@
       </button>
       <p class="detailsViewIMDb">IMDb: 7.3</p>
       <ul class="yearDurationAudioInfo">
-        <li class="year">Year: 2005</li>
-        <li class="duration">Duration: 180min</li>
-        <li>Audio: Българско</li>
+        <li class="year">Year: {{movie.year}}</li>
+        <li class="duration">Duration: {{movie.duration}}min</li>
+        <li>Audio: {{movie.bulgarianLanguage ? 'Българско' : 'Английско'}}</li>
       </ul>
       <ul class="platforms">
-        <li>HBOMAX</li>
-        <li>DISNEY</li>
-        <li>My PC</li>
+        <li v-for="(platform , index) in movie.platforms" :key="index">{{ platform }}</li>
+
       </ul>
       <ul class="detailsViewButtons">
         <li class="editButton" @click="show()">
@@ -56,6 +52,28 @@ export default {
   components: {
     EditMovie
   },
+  props: {
+    movie: {
+      movie: {
+        title1: String,
+        title2: String,
+        genres: {
+          type: {},
+        },
+        duration: Number,
+        year: Number,
+        rating: Number,
+        imdbUrl: String,
+        trailerUrl: String,
+        posterUrl: String,
+        platforms: {
+          type: {},
+        },
+        bulgarianLanguage: Boolean,
+        description: String,
+      }
+    }
+  },
   methods: {
     show() {
       this.$modal.show('movieEditModal');
@@ -64,7 +82,7 @@ export default {
       this.$modal.hide('movieEditModal');
     },
     watchTrailer() {
-      window.open("https://www.youtube.com/watch?v=pLvovWcmJ-k");
+      window.open(this.movie.trailerUrl);
     }
   },
 }

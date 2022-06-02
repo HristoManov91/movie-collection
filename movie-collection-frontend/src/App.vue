@@ -26,7 +26,7 @@
         <p class="movies-title">Collection</p>
         <ul class="movies">
           <MovieCard v-for="(movie , id) in movies" :key="id" :movie="movie" @clickDetails="clickDetails"/>
-<!--          <li class="movie-card">
+          <!--          <li class="movie-card">
             <img
                 src="https://i.ibb.co/FDGqCmM/papers-co-ag74-interstellar-wide-space-film-movie-art-33-iphone6-wallpaper.jpg"
                 class="movie-poster"/>
@@ -308,7 +308,7 @@
            :reset="true"
            width="800px"
            height="580px">
-      <DetailsView @showEdit="hide()"/>
+      <DetailsView :movie="this.movie"/>
     </modal>
 
   </div>
@@ -332,7 +332,25 @@ export default {
   data() {
     return {
       movieService: new MovieService(),
-      movies: []
+      movies: {},
+      movie: {
+        title1: String,
+        title2: String,
+        genres: {
+          type: {},
+        },
+        duration: Number,
+        year: Number,
+        rating: Number,
+        imdbUrl: String,
+        trailerUrl: String,
+        posterUrl: String,
+        platforms: {
+          type: {},
+        },
+        bulgarianLanguage: Boolean,
+        description: String,
+      }
     }
   },
   methods: {
@@ -345,13 +363,27 @@ export default {
     watchTrailer () {
       window.open("https://www.youtube.com/watch?v=pLvovWcmJ-k");
     },
-    loadMovies () {
-      this.movies = this.movieService.findAllMovies();
-      console.log(this.movies)
+    loadMovies: function () {
+      this.movieService.findAllMovies().then((moviePreviewDto) => {
+        if (moviePreviewDto.status === 'OK'){
+          this.movies = moviePreviewDto.data;
+          console.log('movies' , this.movies);
+        } else {
+          alert('Error')
+        }
+      });
+      // .finally() ToDo
+
     },
-    clickDetails (movie) {
-      console.log('clickDetails')
-      console.log('movie:' , movie);
+    clickDetails: function (movieId) {
+      this.movieService.findMovieDetail(movieId).then((movieDetailsDto) => {
+        if (movieDetailsDto.status === 'OK') {
+          this.movie = movieDetailsDto.data;
+          this.show();
+        } else {
+          alert('Error')
+        }
+      })
     }
   },
 }

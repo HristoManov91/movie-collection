@@ -1,7 +1,7 @@
 <template>
   <li class="movie-card">
     <img
-        src="https://i.ibb.co/FDGqCmM/papers-co-ag74-interstellar-wide-space-film-movie-art-33-iphone6-wallpaper.jpg"
+        :src="movie.posterUrl"
         class="movie-poster"/>
     <div class="movie-info">
       <h3 class="title1">{{movie.title1}}</h3>
@@ -15,7 +15,7 @@
         <font-awesome-icon icon="fa-solid fa-circle-play"/>
         TRAILER
       </button>
-      <button class="button-details" @click="clickDetails(movie)">
+      <button class="button-details" @click="clickDetails(movie.id)">
         DETAILS
       </button>
     </div>
@@ -27,7 +27,11 @@ export default {
   name: "MovieCard",
   props: {
     movie: {
-      poster: {
+      id: {
+        type: Number,
+        required: true
+      },
+      posterUrl: {
         type: String,
         required: true
       },
@@ -54,8 +58,9 @@ export default {
     watchTrailer () {
       window.open(this.movie.trailerUrl);
     },
-    clickDetails(movie) {
-      this.$emit('clickDetails' , movie);
+    clickDetails(movieId) {
+      console.log('id' , movieId)
+      this.$emit('clickDetails' , movieId);
     }
   }
 }
