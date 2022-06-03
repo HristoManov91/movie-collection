@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <p class="pageTitle">Edit movie</p>
-    <form class="editForm" action="">
+    <form class="editForm">
       <div class="row">
         <div class="col">
           <label for="title1">Title:</label>
@@ -55,13 +55,13 @@
         <input id="posterUrl" type="text" v-model.trim="movie.imbdUrl"/>
       </div>
       <div class="platformsEdit">
-          <input type="checkbox" id="hboxmax" name="hboxmax" value="HBOMAX" v-model="movie.genres"/>
+          <input type="checkbox" id="hboxmax" name="hboxmax" value="HBOMAX" v-model="movie.platforms"/>
           <label for="hboxmax">HBOMAX</label>
-          <input type="checkbox" id="disneyEdit" name="disneyEdit" value="DISNEY+" v-model="movie.genres"/>
+          <input type="checkbox" id="disneyEdit" name="disneyEdit" value="DISNEY+" v-model="movie.platforms"/>
           <label for="disneyEdit">DISNEY+</label>
-          <input type="checkbox" id="netflixEdit" name="netflixEdit" value="NETFLIX" v-model="movie.genres"/>
+          <input type="checkbox" id="netflixEdit" name="netflixEdit" value="NETFLIX" v-model="movie.platforms"/>
           <label for="netflixEdit">NETFLIX</label>
-          <input type="checkbox" id="mypcEdit" name="mypcEdit" value="MY-PC" v-model="movie.genres"/>
+          <input type="checkbox" id="mypcEdit" name="mypcEdit" value="MY-PC" v-model="movie.platforms"/>
           <label for="mypcEdit">MY-PC</label>
       </div>
       <span>Description:</span>
@@ -81,6 +81,7 @@ export default {
         duration: null,
         year: null,
         genres: [],
+        platforms: [],
         imbdUrl: null,
         trailerUrl: null,
         posterUrl: null,

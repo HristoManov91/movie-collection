@@ -19,7 +19,6 @@ import org.hibernate.annotations.FetchMode;
     name="movie-card",
     attributeNodes = {
         @NamedAttributeNode("genres"),
-        @NamedAttributeNode("platforms")
     }
 )
 @Entity

@@ -12,6 +12,7 @@ import com.example.moviecollectionbackend.service.GenreService;
 import com.example.moviecollectionbackend.service.MovieService;
 import com.example.moviecollectionbackend.service.PlatformService;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -44,7 +45,7 @@ public class MovieServiceImpl implements MovieService {
 
         MovieEntity save = movieRepository.save(movieEntity);
 
-         return mapEntityToDto(save);
+        return mapEntityToDto(save);
 
     }
 
@@ -52,31 +53,31 @@ public class MovieServiceImpl implements MovieService {
     public MovieDetailsDto editMovie(EditMovieBindingModel editMovieBindingModel) {
         MovieEntity movieEntity = movieRepository.findById(editMovieBindingModel.getId()).orElseThrow();
 
-        if (!editMovieBindingModel.getTitle1().equalsIgnoreCase(movieEntity.getTitle1())){
+        if (!editMovieBindingModel.getTitle1().equalsIgnoreCase(movieEntity.getTitle1())) {
             movieEntity.setTitle1(editMovieBindingModel.getTitle1());
         }
 
-        if (!editMovieBindingModel.getTitle2().equalsIgnoreCase(movieEntity.getTitle2())){
+        if (!editMovieBindingModel.getTitle2().equalsIgnoreCase(movieEntity.getTitle2())) {
             movieEntity.setTitle2(editMovieBindingModel.getTitle2());
         }
 
-        if (editMovieBindingModel.getDuration() != movieEntity.getDuration()){
+        if (editMovieBindingModel.getDuration() != movieEntity.getDuration()) {
             movieEntity.setDuration(editMovieBindingModel.getDuration());
         }
 
-        if (editMovieBindingModel.getYear() != movieEntity.getYear()){
+        if (editMovieBindingModel.getYear() != movieEntity.getYear()) {
             movieEntity.setYear(editMovieBindingModel.getYear());
         }
 
-        if (!editMovieBindingModel.getImdbUrl().equalsIgnoreCase(movieEntity.getImdbUrl())){
+        if (!editMovieBindingModel.getImdbUrl().equalsIgnoreCase(movieEntity.getImdbUrl())) {
             movieEntity.setImdbUrl(editMovieBindingModel.getImdbUrl());
         }
 
-        if (!editMovieBindingModel.getTrailerUrl().equalsIgnoreCase(movieEntity.getTrailerUrl())){
+        if (!editMovieBindingModel.getTrailerUrl().equalsIgnoreCase(movieEntity.getTrailerUrl())) {
             movieEntity.setTrailerUrl(editMovieBindingModel.getTrailerUrl());
         }
 
-        if (!editMovieBindingModel.getDescription().equalsIgnoreCase(movieEntity.getDescription())){
+        if (!editMovieBindingModel.getDescription().equalsIgnoreCase(movieEntity.getDescription())) {
             movieEntity.setDescription(editMovieBindingModel.getDescription());
         }
 
@@ -95,9 +96,13 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public List<MovieCardDto> findAllMovies() {
-        List<MovieEntity> allMovies = movieRepository.findAll();
+        List<MovieEntity> allMovies = movieRepository.findAllMoviesCard();
 
-        return allMovies.stream().map(m -> modelMapper.map(m, MovieCardDto.class)).toList();
+        return allMovies.stream().map(m -> {
+            MovieCardDto map = modelMapper.map(m, MovieCardDto.class);
+            map.setGenres(m.getGenres().stream().map(GenreEntity::getGenre).collect(Collectors.toList()));
+            return map;
+        }).toList();
     }
 
     @Override
@@ -107,7 +112,7 @@ public class MovieServiceImpl implements MovieService {
         return mapEntityToDto(movieEntity);
     }
 
-    private MovieDetailsDto mapEntityToDto (MovieEntity me){
+    private MovieDetailsDto mapEntityToDto(MovieEntity me) {
         MovieDetailsDto movieDetailsDto = new MovieDetailsDto()
             .setTitle1(me.getTitle1() != null ? me.getTitle1() : null)
             .setTitle2(me.getTitle2() != null ? me.getTitle2() : null)
@@ -129,7 +134,7 @@ public class MovieServiceImpl implements MovieService {
         return movieDetailsDto;
     }
 
-    private MovieEntity mapDtoToEntity (AddMovieBindingModel bindingModel){
+    private MovieEntity mapDtoToEntity(AddMovieBindingModel bindingModel) {
         return new MovieEntity()
             .setTitle1(bindingModel.getTitle1() != null ? bindingModel.getTitle1() : null)
             .setTitle2(bindingModel.getTitle2() != null ? bindingModel.getTitle2() : null)

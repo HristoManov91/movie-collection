@@ -28,4 +28,9 @@ public class GenreServiceImpl implements GenreService {
     public List<GenreEntity> findAllByNames(List<String> genresNames){
         return genresNames.stream().map(genreRepository::findByGenre).collect(Collectors.toList());
     }
+
+    @Override
+    public List<String> findAllGenres() {
+        return genreRepository.findAll().stream().map(GenreEntity::getGenre).collect(Collectors.toList());
+    }
 }
