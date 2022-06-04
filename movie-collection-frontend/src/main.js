@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import App from './App.vue'
 import VModal from 'vue-js-modal'
+import Vuelidate from 'vuelidate'
 
 import {library} from "@fortawesome/fontawesome-svg-core"
 import {fas} from '@fortawesome/free-solid-svg-icons'
@@ -11,6 +12,7 @@ library.add(fas , faR);
 Vue.component('font-awesome-icon' , FontAwesomeIcon)
 
 Vue.use(VModal)
+Vue.use(Vuelidate)
 
 Vue.config.productionTip = false
 

@@ -45,15 +45,17 @@ header nav li:hover {
 main {
     display: grid;
     grid-template-columns: 200px 1fr;
-    gap: 20px;
     grid-template-areas:
     "aside section";
-    background-color: orange;
+    background-color: #4158D0;
+    background-image: linear-gradient(118deg, #4158D0 0%, #C850C0 34%, #FFCC70 74%);
+
+
 }
 
 /* Filters */
 aside.filter {
-    background-color: #121514;
+    /*background-color: #121514;*/
     display: inline-block;
 }
 
@@ -66,7 +68,7 @@ aside.filter p {
     border-radius: 10px;
 }
 aside.filter label {
-    color: #b6b8b6;
+    color: #DFE0DF;
 }
 
 aside.filter input[type="checkbox"] {
@@ -83,7 +85,7 @@ aside.filter input[type="checkbox"] + *::before {
     border-radius: 10%;
     border-style: solid;
     border-width: 0.1rem;
-    border-color: #b6b8b6;
+    border-color: #DFE0DF;
     flex-shrink: 0;
 }
 
@@ -102,6 +104,15 @@ aside.filter input[type="checkbox"]:checked + *::before {
 aside.filter input[type="checkbox"] + * {
     display: inline-flex;
     padding: 0.3rem 1rem;
+}
+
+aside.filter input[type="checkbox"] + *:hover{
+    cursor: pointer;
+    color: white;
+}
+
+aside.filter input[type="checkbox"]:checked + *:hover{
+    color: orange;
 }
 
 /* Collection */
@@ -203,8 +214,12 @@ aside.filter input[type="checkbox"] + * {
 .button-trailer:hover ,
 .button-details:hover {
     cursor: pointer;
-    color: rgba(32, 32, 32, 0.9);
-    background: orange;
+    /*color: rgba(32, 32, 32, 0.9);*/
+    /*background: orange;*/
+    color: black;
+    border: none;
+    background-color: #FAD961;
+    background-image: linear-gradient(62deg, #FAD961 0%, #F76B1C 100%);
 }
 
 .modalElement {

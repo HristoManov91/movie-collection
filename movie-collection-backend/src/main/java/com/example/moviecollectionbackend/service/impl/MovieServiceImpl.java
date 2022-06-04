@@ -114,6 +114,7 @@ public class MovieServiceImpl implements MovieService {
 
     private MovieDetailsDto mapEntityToDto(MovieEntity me) {
         MovieDetailsDto movieDetailsDto = new MovieDetailsDto()
+            .setMovieId(me.getId())
             .setTitle1(me.getTitle1() != null ? me.getTitle1() : null)
             .setTitle2(me.getTitle2() != null ? me.getTitle2() : null)
             .setDuration(me.getDuration() != null ? me.getDuration() : null)

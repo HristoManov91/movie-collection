@@ -34,13 +34,16 @@ INSERT INTO genres(genre)
 VALUES ('SERIAL');
 
 INSERT INTO platforms(platform)
-VALUES ('HBO');
+VALUES ('HBOMAX');
 
 INSERT INTO platforms(platform)
-VALUES ('DISNEY');
+VALUES ('DISNEY+');
 
 INSERT INTO platforms(platform)
 VALUES ('NETFLIX');
+
+INSERT INTO platforms(platform)
+VALUES ('MY-PC');
 
 INSERT INTO movies(title1, title2, duration, year, imdb_url, trailer_url, poster_url, bulgarian_language, description , rating)
 VALUES ('The Avengers',

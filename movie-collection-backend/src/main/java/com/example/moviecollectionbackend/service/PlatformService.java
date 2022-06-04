@@ -8,4 +8,6 @@ public interface PlatformService {
     List<String> findAllByMovieId(Long movieId);
 
     List<PlatformEntity> findAllByNames(List<String> platforms);
+
+    List<String> findAllPlatformsNames();
 }

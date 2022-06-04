@@ -1,13 +1,13 @@
 import axios from "axios";
 
-const MOVIE_API_BASE_URL = 'http://localhost:8081/movies/'
+const MOVIES_CONTROLLER_BASE_URL = 'http://localhost:8081/movies/'
 
 export class MovieService {
 
     async findAllMovies() {
         let movies = {};
 
-        await axios.get(MOVIE_API_BASE_URL + 'all').then((resp) => {
+        await axios.get(MOVIES_CONTROLLER_BASE_URL + 'all').then((resp) => {
             movies.status = 'OK'
             movies.data = resp.data;
         }).catch((err) => {
@@ -24,7 +24,7 @@ export class MovieService {
 
         // const params = {movieId : movieId};
 
-        await axios.get(MOVIE_API_BASE_URL + movieId).then((resp) => {
+        await axios.get(MOVIES_CONTROLLER_BASE_URL + movieId).then((resp) => {
             movie.status = 'OK';
             movie.data = resp.data;
             console.log(movie)

@@ -5,6 +5,7 @@ import java.util.List;
 
 public class MovieDetailsDto {
 
+    private Long movieId;
     private String title1;
     private String title2;
     private List<String> genres;
@@ -19,6 +20,15 @@ public class MovieDetailsDto {
     private String description;
 
     public MovieDetailsDto() {
+    }
+
+    public Long getMovieId() {
+        return movieId;
+    }
+
+    public MovieDetailsDto setMovieId(Long movieId) {
+        this.movieId = movieId;
+        return this;
     }
 
     public String getTitle1() {

@@ -59,7 +59,6 @@ export default {
       window.open(this.movie.trailerUrl);
     },
     clickDetails(movieId) {
-      console.log('id' , movieId)
       this.$emit('clickDetails' , movieId);
     }
   }

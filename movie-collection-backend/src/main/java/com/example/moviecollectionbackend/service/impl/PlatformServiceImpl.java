@@ -27,4 +27,9 @@ public class PlatformServiceImpl implements PlatformService {
     public List<PlatformEntity> findAllByNames(List<String> platforms) {
         return platforms.stream().map(platformRepository::findByPlatform).collect(Collectors.toList());
     }
+
+    @Override
+    public List<String> findAllPlatformsNames() {
+        return platformRepository.findAll().stream().map(PlatformEntity::getPlatform).collect(Collectors.toList());
+    }
 }

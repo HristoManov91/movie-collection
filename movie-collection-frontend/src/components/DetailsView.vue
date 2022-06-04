@@ -4,13 +4,13 @@
          :src="movie.posterUrl"
          alt="poster-image">
     <div class="detailsViewInfo">
-      <p class="detailsViewTitle1">{{movie.title1}}</p>
-      <p class="detailsViewTitle2">{{movie.title2}}</p>
-      <ul class="detailsViewGenres" >
+      <p class="detailsViewTitle1">{{ movie.title1 }}</p>
+      <p class="detailsViewTitle2">{{ movie.title2 }}</p>
+      <ul class="detailsViewGenres">
         <li v-for="(genre , index) in movie.genres" :key="index">{{ genre }}</li>
       </ul>
-      <p class="detailsViewDescription">
-        {{movie.description}}
+      <p v-if="movie.description !== null" class="detailsViewDescription">
+        {{ movie.description }}
       </p>
       <button class="detailsViewButtonTrailer" @click="watchTrailer()">
         <font-awesome-icon icon="fa-solid fa-circle-play"/>
@@ -18,9 +18,9 @@
       </button>
       <p class="detailsViewIMDb">IMDb: 7.3</p>
       <ul class="yearDurationAudioInfo">
-        <li class="year">Year: {{movie.year}}</li>
-        <li class="duration">Duration: {{movie.duration}}min</li>
-        <li>Audio: {{movie.bulgarianLanguage ? 'Българско' : 'Английско'}}</li>
+        <li class="year">Year: {{ movie.year }}</li>
+        <li class="duration">Duration: {{ movie.duration }}min</li>
+        <li>Audio: {{ movie.bulgarianLanguage ? 'Българско' : 'Английско' }}</li>
       </ul>
       <ul class="platforms">
         <li v-for="(platform , index) in movie.platforms" :key="index">{{ platform }}</li>
@@ -39,7 +39,7 @@
     </div>
     <modal class="movieEditModal" name="movieEditModal" :resizable="false" :reset="true" width="850px" height="auto"
            :scrollable="true">
-      <EditMovie/>
+      <EditMovie :movie="movie"/>
     </modal>
   </div>
 </template>
@@ -54,24 +54,26 @@ export default {
   },
   props: {
     movie: {
-      movie: {
-        title1: String,
-        title2: String,
-        genres: {
-          type: {},
-        },
-        duration: Number,
-        year: Number,
-        rating: Number,
-        imdbUrl: String,
-        trailerUrl: String,
-        posterUrl: String,
-        platforms: {
-          type: {},
-        },
-        bulgarianLanguage: Boolean,
-        description: String,
-      }
+      movieId: {
+        type: Number,
+        required: true
+      },
+      title1: String,
+      title2: String,
+      genres: {
+        type: {},
+      },
+      duration: Number,
+      year: Number,
+      rating: Number,
+      imdbUrl: String,
+      trailerUrl: String,
+      posterUrl: String,
+      platforms: {
+        type: {},
+      },
+      bulgarianLanguage: Boolean,
+      description: String,
     }
   },
   methods: {
@@ -151,6 +153,9 @@ export default {
 
 .detailsViewInfo p.detailsViewDescription {
   margin: 1.5rem 2rem;
+  border: 1px solid orange;
+  padding: 0.5rem;
+  border-radius: 5px;
 }
 
 .detailsViewInfo button.detailsViewButtonTrailer {
@@ -188,24 +193,32 @@ ul.detailsViewButtons li {
 }
 
 ul.detailsViewButtons li.deleteButton {
-  color: white;
-  background-color: red;
+  color: black;
+  background-color: #FFE53B;
+  background-image: linear-gradient(225deg, #FFE53B 0%, #FF2525 74%);
+
 }
 
 ul.detailsViewButtons li.editButton {
   color: black;
-  background-color: white;
+  background-color: #08AEEA;
+  background-image: linear-gradient(43deg, #08AEEA 0%, #2AF598 100%);
+
 }
 
 ul.detailsViewButtons li.deleteButton:hover {
   cursor: pointer;
-  color: red;
-  background-color: white;
+  color: black;
+  background-color: #FFE53B;
+  background-image: linear-gradient(45deg, #FFE53B 0%, #FF2525 74%);
+
 }
 
 ul.detailsViewButtons li.editButton:hover {
   cursor: pointer;
-  background-color: greenyellow;
+  background-color: #08AEEA;
+  background-image: linear-gradient(243deg, #08AEEA 0%, #2AF598 100%);
+
 }
 
 .detailsViewInfo ul.yearDurationAudioInfo {

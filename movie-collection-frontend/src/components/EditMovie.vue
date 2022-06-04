@@ -5,90 +5,247 @@
       <div class="row">
         <div class="col">
           <label for="title1">Title:</label>
-          <input id="title1" v-model.trim="movie.title1" type="text"/>
+          <input id="title1" v-model.trim="$v.editedMovie.title1.$model" type="text"/>
         </div>
         <div class="col">
           <label for="title2">Second Title:</label>
-          <input id="title2" v-model.trim="movie.title2" type="text"/>
+          <input id="title2" v-model.trim="$v.editedMovie.title2.$model" type="text"/>
+        </div>
+      </div>
+      <div class="rowError">
+        <div class="colError">
+          <span v-if="$v.editedMovie.title1.required" class="errorMessage">Title is required!</span>
+          <span v-else-if="$v.editedMovie.title1.emptyStringValidate" class="errorMessage">Title cannot be empty string!</span>
+          <span v-else-if="$v.editedMovie.title1.minLength || $v.editedMovie.title1.maxLength" class="errorMessage">Length must be between 2 and 50 characters!</span>
+        </div>
+        <div class="colError">
+          <span v-if="$v.editedMovie.title2.required" class="errorMessage">Second title is required!</span>
+          <span v-else-if="$v.editedMovie.title2.emptyStringValidate" class="errorMessage">Second cannot be empty string!</span>
+          <span v-else-if="$v.editedMovie.title2.minLength || $v.editedMovie.title2.maxLength" class="errorMessage">Length must be between 2 and 50 characters!</span>
         </div>
       </div>
       <div class="row">
         <div class="col">
           <label for="duration">Duration:</label>
-          <input id="duration" v-model="movie.duration" type="number"/>
+          <input id="duration" v-model.number="$v.editedMovie.duration.$model" type="number"/>
         </div>
         <div class="col">
           <label for="year">Year:</label>
-          <input id="year" v-model="movie.year" type="number"/>
+          <input id="year" v-model.number="$v.editedMovie.year.$model" type="number"/>
         </div>
       </div>
-      <div class="genresEdit">
-        <input type="checkbox" id="actionEdit" name="actionEdit" value="ACTION" v-model="movie.genres"/>
-        <label for="actionEdit">Action</label>
-        <input type="checkbox" id="fantasyEdit" name="fantasyEdit" value="FANTASY" v-model="movie.genres"/>
-        <label for="fantasyEdit">Fantasy</label>
-        <input type="checkbox" id="comedyEdit" name="comedyEdit" value="COMEDY" v-model="movie.genres"/>
-        <label for="comedyEdit">Comedy</label>
-        <input type="checkbox" id="dramaEdit" name="dramaEdit" value="DRAMA" v-model="movie.genres"/>
-        <label for="dramaEdit">Drama</label>
-        <input type="checkbox" id="animationEdit" name="animationEdit" value="ANIMATION" v-model="movie.genres"/>
-        <label for="animationEdit">Animation</label>
-        <input type="checkbox" id="adventureEdit" name="adventureEdit" value="ADVENTURE" v-model="movie.genres"/>
-        <label for="adventureEdit">Adventure</label>
-        <input type="checkbox" id="romanceEdit" name="romanceEdit" value="ROMANCE" v-model="movie.genres"/>
-        <label for="romanceEdit">Romance</label>
-        <input type="checkbox" id="thrillerEdit" name="thrillerEdit" value="THRILLER" v-model="movie.genres"/>
-        <label for="thrillerEdit">Thriller</label>
-        <input type="checkbox" id="crimeEdit" name="crimeEdit" value="CRIME" v-model="movie.genres"/>
-        <label for="crimeEdit">Crime</label>
-        <input type="checkbox" id="documentaryEdit" name="documentaryEdit" value="DOCUMENTARY" v-model="movie.genres"/>
-        <label for="documentaryEdit">Documentary</label>
-        <input type="checkbox" id="serialEdit" name="serialEdit" value="SERIAL" v-model="movie.genres"/>
-        <label for="serialEdit">Serial</label>
+      <div class="rowError">
+        <div class="colError">
+          <span v-if="$v.editedMovie.duration.required" class="errorMessage">Duration is required!</span>
+          <span v-else-if="$v.editedMovie.duration.numeric" class="errorMessage">Duration must be contains only numbers!</span>
+          <span v-else-if="$v.editedMovie.duration.between" class="errorMessage">Duration must be between 30 and 300 minutes!</span>
+        </div>
+        <div class="colError">
+          <span v-if="$v.editedMovie.year.required" class="errorMessage">Year is required!</span>
+          <span v-else-if="$v.editedMovie.year.numeric" class="errorMessage">Year must be contains only numbers!</span>
+          <span v-else-if="$v.editedMovie.year.between" class="errorMessage">Year must be between 1950 and 2100 year!</span>
+        </div>
+      </div>
+      <div class="genresEdit" >
+        <div v-for="(genre , i) in genres" :key="i">
+          <input type="checkbox" :id="genre + 'Edit'" :name="genre + 'Edit'" :value="genre"
+                 v-model="$v.editedMovie.genres.$model">
+          <label :for="genre + 'Edit'">{{ genre }}</label>
+        </div>
+        <span v-if="$v.editedMovie.genres.required" class="errorMessage">Genres is required!</span>
+        <span v-if="$v.editedMovie.genres.minLength" class="errorMessage">You must be select at least one genre!</span>
       </div>
       <div class="urlsEdit">
         <label for="imdbUrl">IMDb URL:</label>
-        <input id="imdbUrl" type="text" v-model.trim="movie.imbdUrl"/>
+        <input id="imdbUrl" type="text" v-model.trim="$v.editedMovie.imdbUrl.$model"/>
+        <span v-if="$v.editedMovie.imdbUrl.url" class="errorMessage">IMDb URL must be a valid URL!</span>
+        <span v-else-if="$v.editedMovie.imdbUrl.emptyStringValidate" class="errorMessage">IMDb URL cannot be empty string!</span>
+        <span v-else-if="$v.editedMovie.imdbUrl.maxLength" class="errorMessage">IMDb URL max length must be 254 characters!</span>
         <label for="trailerUrl">Trailer URL:</label>
-        <input id="trailerUrl" type="text" v-model.trim="movie.trailerUrl"/>
+        <input id="trailerUrl" type="text" v-model.trim="$v.editedMovie.trailerUrl.$model"/>
+        <span v-if="$v.editedMovie.trailerUrl.required" class="errorMessage">Trailer URL is required!</span>
+        <span v-else-if="$v.editedMovie.trailerUrl.url" class="errorMessage">Trailer URL must be a valid URL!</span>
+        <span v-else-if="$v.editedMovie.trailerUrl.emptyStringValidate" class="errorMessage">Trailer URL cannot be empty string!</span>
+        <span v-else-if="$v.editedMovie.trailerUrl.maxLength" class="errorMessage">Trailer URL max length must be 254 characters!</span>
         <label for="posterUrl">Poster URL:</label>
-        <input id="posterUrl" type="text" v-model.trim="movie.imbdUrl"/>
+        <input id="posterUrl" type="text" v-model.trim="$v.editedMovie.posterUrl.$model"/>
+        <span v-if="$v.editedMovie.posterUrl.required" class="errorMessage">Poster URL is required!</span>
+        <span v-else-if="$v.editedMovie.posterUrl.url" class="errorMessage">Poster URL must be a valid URL!</span>
+        <span v-else-if="$v.editedMovie.posterUrl.emptyStringValidate" class="errorMessage">Poster URL cannot be empty string!</span>
+        <span v-else-if="$v.editedMovie.posterUrl.maxLength" class="errorMessage">Poster URL max length must be 254 characters!</span>
       </div>
+      <div class="audioEdit">
+        <input id="english" type="radio" v-model="$v.editedMovie.bulgarianLanguage.$model" :value="false"/>
+        <label for="english">English Audio</label>
+        <input id="bulgarian" type="radio" v-model="$v.editedMovie.bulgarianLanguage.$model" :value="true"/>
+        <label for="bulgarian">Bulgarian Audio</label>
+      </div>
+      <span class="description">Description:</span>
+      <textarea class="editMovieTextarea" v-model.trim="$v.editedMovie.description.$model"></textarea>
+      <span v-if="$v.editedMovie.description.emptyStringValidate" class="errorMessage">Description text cannot be empty string!</span>
+      <span v-else-if="$v.editedMovie.description.maxLength" class="errorMessage">Description text max length must be 254 characters!</span>
       <div class="platformsEdit">
-          <input type="checkbox" id="hboxmax" name="hboxmax" value="HBOMAX" v-model="movie.platforms"/>
-          <label for="hboxmax">HBOMAX</label>
-          <input type="checkbox" id="disneyEdit" name="disneyEdit" value="DISNEY+" v-model="movie.platforms"/>
-          <label for="disneyEdit">DISNEY+</label>
-          <input type="checkbox" id="netflixEdit" name="netflixEdit" value="NETFLIX" v-model="movie.platforms"/>
-          <label for="netflixEdit">NETFLIX</label>
-          <input type="checkbox" id="mypcEdit" name="mypcEdit" value="MY-PC" v-model="movie.platforms"/>
-          <label for="mypcEdit">MY-PC</label>
+        <div v-for="(platform , i) in platforms" :key="i">
+          <input type="checkbox" :id="platform + 'Edit'" :name="platform + 'Edit'" :value="platform"
+                 v-model="$v.editedMovie.platforms.$model">
+          <label :for="platform + 'Edit'">{{ platform }}</label>
+        </div>
       </div>
-      <span>Description:</span>
-      <textarea class="editMovieTextarea" v-model.trim="movie.description"></textarea>
+      <span v-if="$v.editedMovie.platforms.required" class="errorMessage">Platforms is required!</span>
+      <span v-if="$v.editedMovie.platforms.minLength" class="errorMessage">You must be select at least one platform!</span>
+      <button class="saveButton" @click="saveEditMovie()">
+        SAVE MOVIE
+      </button>
     </form>
   </div>
 </template>
 
 <script>
+
+import {GenreService} from "@/services/genre-service";
+import {PlatformService} from "@/services/platform-service";
+import {MovieService} from "@/services/movie-service";
+import {between, maxLength, minLength, numeric, required, url} from "vuelidate/lib/validators";
+
+const emptyStringValidate = (value) => {
+  if (value){
+    return value.trim;
+  }
+}
+
 export default {
   name: "EditMovie",
+  mounted() {
+    this.loadGenres();
+    this.loadPlatforms();
+    this.loadMovieData();
+  },
+  props: {
+    movie: {
+      movieId: {
+        type: Number,
+        required: true
+      },
+      title1: String,
+      title2: String,
+      genres: {
+        type: {},
+      },
+      duration: Number,
+      year: Number,
+      rating: Number,
+      imdbUrl: String,
+      trailerUrl: String,
+      posterUrl: String,
+      platforms: {
+        type: {},
+      },
+      bulgarianLanguage: Boolean,
+      description: String,
+    }
+  },
   data() {
     return {
-      movie: {
+      genreService: new GenreService(),
+      platformService: new PlatformService(),
+      movieService: new MovieService(),
+      editedMovie: {
+        movieId: null,
         title1: null,
         title2: null,
         duration: null,
         year: null,
         genres: [],
         platforms: [],
-        imbdUrl: null,
+        imdbUrl: null,
         trailerUrl: null,
         posterUrl: null,
         description: null,
+        bulgarianLanguage: null
       },
       genres: {},
       platforms: {}
+    }
+  },
+  validations: {
+    editedMovie: {
+      title1: {
+        required,
+        emptyStringValidate,
+        minLength: minLength(2),
+        maxLength: maxLength(50),
+      },
+      title2: {
+        required,
+        emptyStringValidate,
+        minLength: minLength(2),
+        maxLength: maxLength(50),
+      },
+      duration: {
+        required,
+        numeric,
+        between: between(30 , 300)
+      },
+      year: {
+        required,
+        numeric,
+        between: between(1950 , 2100)
+      },
+      genres: {
+        required,
+        minLength: minLength(1)
+      },
+      platforms: {
+        required,
+        minLength: minLength(1)
+      },
+      imdbUrl: {
+        url,
+        emptyStringValidate,
+        maxLength: maxLength(254)
+      },
+      trailerUrl: {
+        required,
+        emptyStringValidate,
+        maxLength: maxLength(254),
+        url
+      },
+      posterUrl: {
+        required,
+        emptyStringValidate,
+        maxLength: maxLength(254),
+        url
+      },
+      description: {
+        emptyStringValidate,
+        maxLength: maxLength(254)
+      },
+    }
+  },
+  methods: {
+    loadGenres() {
+      this.genreService.findAllGenres().then((resp) => {
+        if (resp.status === 'OK') {
+          this.genres = resp.data;
+        } else {
+          alert('Error in genres')
+        }
+      })
+    },
+    loadPlatforms() {
+      this.platformService.findAllPlatforms().then((resp) => {
+        if (resp.status === 'OK') {
+          this.platforms = resp.data;
+        } else {
+          alert('Error in platforms')
+        }
+      })
+    },
+    loadMovieData() {
+      this.editedMovie = this.movie;
+    },
+    saveEditMovie() {
+      console.log('editMovie' , this.editedMovie)
     }
   }
 }
@@ -115,10 +272,17 @@ form.editForm {
   margin: 0 2.0rem;
 }
 
+form.editForm div.rowError div.colError {
+  display: inline-block;
+  width: 45%;
+  margin: 0 2.5%;
+  font-size: 0.7rem;
+}
+
 form.editForm div.row div.col {
   display: inline-block;
   width: 45%;
-  margin: 1% 2.5%;
+  margin: 0.5% 2.5%;
 }
 
 form.editForm div.row div.col label {
@@ -134,19 +298,34 @@ form.editForm div.row div.col input {
   border-radius: 6px;
   font-size: 1.2rem;
   width: 100%;
+  text-align: center;
+  background-color: #74EBD5;
+  background-image: linear-gradient(212deg, #74EBD5 0%, #f5f564 100%);
+
+
+
+
 }
 
 /* Genres */
+
 form.editForm div.genresEdit,
-form.editForm div.platformsEdit {
+form.editForm div.platformsEdit,
+form.editForm div.audioEdit {
   display: flex;
   justify-content: space-around;
   padding: 0.4rem 1rem;
   flex-wrap: wrap;
 }
 
+form.editForm div.genresEdit div {
+  display:inline-block;
+  margin: 0 0.5rem;
+}
+
 form.editForm div.genresEdit label,
-form.editForm div.platformsEdit label {
+form.editForm div.platformsEdit label,
+form.editForm div.audioEdit label {
   color: #b6b8b6;
   padding: 1rem;
   margin: 0.3rem;
@@ -154,12 +333,14 @@ form.editForm div.platformsEdit label {
 }
 
 form.editForm div.genresEdit input[type="checkbox"],
-form.editForm div.platformsEdit input[type="checkbox"] {
+form.editForm div.platformsEdit input[type="checkbox"],
+form.editForm div.audioEdit input[type="radio"] {
   display: none;
 }
 
 form.editForm div.genresEdit input[type="checkbox"] + *::before,
-form.editForm div.platformsEdit input[type="checkbox"] + *::before {
+form.editForm div.platformsEdit input[type="checkbox"] + *::before,
+form.editForm div.audioEdit input[type="radio"] + *::before {
   content: "";
   display: inline-block;
   vertical-align: bottom;
@@ -174,12 +355,14 @@ form.editForm div.platformsEdit input[type="checkbox"] + *::before {
 }
 
 form.editForm div.genresEdit input[type="checkbox"]:checked + *,
-form.editForm div.platformsEdit input[type="checkbox"]:checked + * {
+form.editForm div.platformsEdit input[type="checkbox"]:checked + *,
+form.editForm div.audioEdit input[type="radio"]:checked + * {
   color: orange;
 }
 
 form.editForm div.genresEdit input[type="checkbox"]:checked + *::before,
-form.editForm div.platformsEdit input[type="checkbox"]:checked + *::before {
+form.editForm div.platformsEdit input[type="checkbox"]:checked + *::before,
+form.editForm div.audioEdit input[type="radio"]:checked + *::before {
   content: "✓";
   color: orange;
   text-align: center;
@@ -187,9 +370,24 @@ form.editForm div.platformsEdit input[type="checkbox"]:checked + *::before {
 }
 
 form.editForm div.genresEdit input[type="checkbox"] + *,
-form.editForm div.platformsEdit input[type="checkbox"] + * {
+form.editForm div.platformsEdit input[type="checkbox"] + *,
+form.editForm div.audioEdit input[type="radio"] + * {
   display: inline-flex;
   padding: 0.4rem 0;
+}
+
+form.editForm div.genresEdit input[type="checkbox"] + *:hover,
+form.editForm div.platformsEdit input[type="checkbox"] + *:hover,
+form.editForm div.audioEdit input[type="radio"] + *:hover {
+  color: white;
+  cursor: pointer;
+}
+
+form.editForm div.genresEdit input[type="checkbox"]:checked + *:hover,
+form.editForm div.platformsEdit input[type="checkbox"]:checked + *:hover,
+form.editForm div.audioEdit input[type="radio"]:checked + *:hover {
+  color: orange;
+  cursor: pointer;
 }
 
 /* URLs */
@@ -212,9 +410,12 @@ form.editForm div.urlsEdit input {
   border-radius: 6px;
   font-size: 1.2rem;
   width: 100%;
+  background-color: #74EBD5;
+  background-image: linear-gradient(212deg, #74EBD5 0%, #f5f564 100%);
+
 }
 
-form.editForm span {
+form.editForm span.description {
   color: orange;
   display: inline-block;
   margin: 0.5rem 2.5%;
@@ -228,6 +429,39 @@ form.editForm .editMovieTextarea {
   font-size: 1.2rem;
   width: 96%;
   height: 100px;
+  background-color: #74EBD5;
+  background-image: linear-gradient(212deg, #74EBD5 0%, #f5f564 100%);
+
+}
+
+button.saveButton {
+  text-transform: uppercase;
+  text-align: center;
+  font-weight: bold;
+  border: 1px solid black;
+  border-radius: 10px;
+  background-color: #08AEEA;
+  background-image: linear-gradient(43deg, #08AEEA 0%, #2AF598 100%);
+  color: #010340;
+  font-size: 1.5rem;
+  padding: 0.5rem 1rem;
+  margin: 1rem 35%;
+  width: 30%
+}
+
+button.saveButton:hover {
+  background-color: #08AEEA;
+  background-image: linear-gradient(223deg, #08AEEA 0%, #2AF598 100%);
+  cursor: pointer;
+}
+
+span.errorMessage {
+  position: relative;
+  display: block;
+  color: red;
+  padding: 5px;
+  bottom: 0;
+  text-align: center;
 }
 
 </style>

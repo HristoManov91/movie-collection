@@ -1,12 +1,6 @@
 <template>
   <div id="app">
     <header>
-      <!--      <nav>-->
-      <!--        <ul>-->
-      <!--          <li ref="#">MOVIES</li>-->
-      <!--          <li ref="#">SERIALS</li>-->
-      <!--        </ul>-->
-      <!--      </nav>-->
       <p>My favorite movies</p>
       <img src="./assets/image/welcome-image.jpg" alt="home-cinema-image">
     </header>
@@ -17,12 +11,6 @@
           <input type="checkbox" :id="i" :name="genre" :value="genre">
           <label @click="addOrRemoveInFilters(i)" :for="i">{{ genre }}</label><br>
         </div>
-        <!--        <input type="checkbox" id="comedy" name="comedy" value="COMEDY">
-          <label for="comedy">COMEDY</label><br>
-          <input type="checkbox" id="fantasy" name="fantasy" value="FANTASY">
-          <label for="fantasy">FANTASY</label><br>
-          <input type="checkbox" id="drama" name="drama" value="DRAMA">
-          <label for="drama">DRAMA</label><br>-->
       </aside>
       <section class="catalogue">
         <p class="movies-title">Collection</p>
@@ -66,6 +54,10 @@ export default {
       movies: [],
       moviesToShow: [],
       movie: {
+        movieId: {
+          required: true,
+          type: Number
+        },
         title1: String,
         title2: String,
         genres: {
@@ -94,10 +86,7 @@ export default {
     hide() {
       this.$modal.hide('movieDetailsModal');
     },
-    watchTrailer() {
-      window.open("https://www.youtube.com/watch?v=pLvovWcmJ-k");
-    },
-    loadMovies: function () {
+    loadMovies() {
       this.movieService.findAllMovies().then((moviePreviewDto) => {
         if (moviePreviewDto.status === 'OK') {
           this.movies = moviePreviewDto.data;
@@ -108,7 +97,7 @@ export default {
       });
       // .finally() ToDo
     },
-    loadGenres: function () {
+    loadGenres() {
       this.genreService.findAllGenres().then((resp) => {
         if (resp.status === 'OK') {
           this.genres = resp.data;
@@ -117,7 +106,7 @@ export default {
         }
       })
     },
-    clickDetails: function (movieId) {
+    clickDetails(movieId) {
       this.movieService.findMovieDetail(movieId).then((movieDetailsDto) => {
         if (movieDetailsDto.status === 'OK') {
           this.movie = movieDetailsDto.data;
@@ -142,8 +131,7 @@ export default {
     filters: function (newValue) {
       if (newValue.length === 0) {
         this.moviesToShow = this.movies;
-      }
-      else {
+      } else {
         this.moviesToShow = [];
         for (const movie of this.movies) {
           for (const newValueElement of newValue) {
