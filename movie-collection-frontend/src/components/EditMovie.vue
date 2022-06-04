@@ -14,14 +14,11 @@
       </div>
       <div class="rowError">
         <div class="colError">
-          <span v-if="$v.editedMovie.title1.required" class="errorMessage">Title is required!</span>
-          <span v-else-if="$v.editedMovie.title1.emptyStringValidate" class="errorMessage">Title cannot be empty string!</span>
-          <span v-else-if="$v.editedMovie.title1.minLength || $v.editedMovie.title1.maxLength" class="errorMessage">Length must be between 2 and 50 characters!</span>
+          <span v-if="!$v.editedMovie.title1.required" class="errorMessage">Title is required and cannot be empty string!</span>
+          <span v-else-if="!$v.editedMovie.title1.minLength || !$v.editedMovie.title1.maxLength" class="errorMessage">Length must be between 2 and 50 characters!</span>
         </div>
         <div class="colError">
-          <span v-if="$v.editedMovie.title2.required" class="errorMessage">Second title is required!</span>
-          <span v-else-if="$v.editedMovie.title2.emptyStringValidate" class="errorMessage">Second cannot be empty string!</span>
-          <span v-else-if="$v.editedMovie.title2.minLength || $v.editedMovie.title2.maxLength" class="errorMessage">Length must be between 2 and 50 characters!</span>
+          <span v-if="!$v.editedMovie.title2.minLength || !$v.editedMovie.title2.maxLength" class="errorMessage">Length must be between 2 and 50 characters!</span>
         </div>
       </div>
       <div class="row">
@@ -36,14 +33,14 @@
       </div>
       <div class="rowError">
         <div class="colError">
-          <span v-if="$v.editedMovie.duration.required" class="errorMessage">Duration is required!</span>
-          <span v-else-if="$v.editedMovie.duration.numeric" class="errorMessage">Duration must be contains only numbers!</span>
-          <span v-else-if="$v.editedMovie.duration.between" class="errorMessage">Duration must be between 30 and 300 minutes!</span>
+          <span v-if="!$v.editedMovie.duration.required" class="errorMessage">Duration is required!</span>
+          <span v-else-if="!$v.editedMovie.duration.numeric" class="errorMessage">Duration must be contains only numbers!</span>
+          <span v-else-if="!$v.editedMovie.duration.between" class="errorMessage">Duration must be between 30 and 300 minutes!</span>
         </div>
         <div class="colError">
-          <span v-if="$v.editedMovie.year.required" class="errorMessage">Year is required!</span>
-          <span v-else-if="$v.editedMovie.year.numeric" class="errorMessage">Year must be contains only numbers!</span>
-          <span v-else-if="$v.editedMovie.year.between" class="errorMessage">Year must be between 1950 and 2100 year!</span>
+          <span v-if="!$v.editedMovie.year.required" class="errorMessage">Year is required!</span>
+          <span v-else-if="!$v.editedMovie.year.numeric" class="errorMessage">Year must be contains only numbers!</span>
+          <span v-else-if="!$v.editedMovie.year.between" class="errorMessage">Year must be between 1950 and 2100 year!</span>
         </div>
       </div>
       <div class="genresEdit" >
@@ -52,38 +49,33 @@
                  v-model="$v.editedMovie.genres.$model">
           <label :for="genre + 'Edit'">{{ genre }}</label>
         </div>
-        <span v-if="$v.editedMovie.genres.required" class="errorMessage">Genres is required!</span>
-        <span v-if="$v.editedMovie.genres.minLength" class="errorMessage">You must be select at least one genre!</span>
+        <span v-if="!$v.editedMovie.genres.required || !$v.editedMovie.genres.minLength" class="errorMessage">Genres is required! You must be select at least one genre!</span>
       </div>
       <div class="urlsEdit">
         <label for="imdbUrl">IMDb URL:</label>
         <input id="imdbUrl" type="text" v-model.trim="$v.editedMovie.imdbUrl.$model"/>
-        <span v-if="$v.editedMovie.imdbUrl.url" class="errorMessage">IMDb URL must be a valid URL!</span>
-        <span v-else-if="$v.editedMovie.imdbUrl.emptyStringValidate" class="errorMessage">IMDb URL cannot be empty string!</span>
-        <span v-else-if="$v.editedMovie.imdbUrl.maxLength" class="errorMessage">IMDb URL max length must be 254 characters!</span>
+        <span v-if="!$v.editedMovie.imdbUrl.url" class="errorMessage">IMDb URL must be a valid URL!</span>
+        <span v-else-if="!$v.editedMovie.imdbUrl.maxLength" class="errorMessage">IMDb URL max length must be 254 characters!</span>
         <label for="trailerUrl">Trailer URL:</label>
         <input id="trailerUrl" type="text" v-model.trim="$v.editedMovie.trailerUrl.$model"/>
-        <span v-if="$v.editedMovie.trailerUrl.required" class="errorMessage">Trailer URL is required!</span>
-        <span v-else-if="$v.editedMovie.trailerUrl.url" class="errorMessage">Trailer URL must be a valid URL!</span>
-        <span v-else-if="$v.editedMovie.trailerUrl.emptyStringValidate" class="errorMessage">Trailer URL cannot be empty string!</span>
-        <span v-else-if="$v.editedMovie.trailerUrl.maxLength" class="errorMessage">Trailer URL max length must be 254 characters!</span>
+        <span v-if="!$v.editedMovie.trailerUrl.required" class="errorMessage">Trailer URL is required!</span>
+        <span v-else-if="!$v.editedMovie.trailerUrl.url" class="errorMessage">Trailer URL must be a valid URL!</span>
+        <span v-else-if="!$v.editedMovie.trailerUrl.maxLength" class="errorMessage">Trailer URL max length must be 254 characters!</span>
         <label for="posterUrl">Poster URL:</label>
         <input id="posterUrl" type="text" v-model.trim="$v.editedMovie.posterUrl.$model"/>
-        <span v-if="$v.editedMovie.posterUrl.required" class="errorMessage">Poster URL is required!</span>
-        <span v-else-if="$v.editedMovie.posterUrl.url" class="errorMessage">Poster URL must be a valid URL!</span>
-        <span v-else-if="$v.editedMovie.posterUrl.emptyStringValidate" class="errorMessage">Poster URL cannot be empty string!</span>
-        <span v-else-if="$v.editedMovie.posterUrl.maxLength" class="errorMessage">Poster URL max length must be 254 characters!</span>
+        <span v-if="!$v.editedMovie.posterUrl.required" class="errorMessage">Poster URL is required!</span>
+        <span v-else-if="!$v.editedMovie.posterUrl.url" class="errorMessage">Poster URL must be a valid URL!</span>
+        <span v-else-if="!$v.editedMovie.posterUrl.maxLength" class="errorMessage">Poster URL max length must be 254 characters!</span>
       </div>
       <div class="audioEdit">
-        <input id="english" type="radio" v-model="$v.editedMovie.bulgarianLanguage.$model" :value="false"/>
+        <input id="english" type="radio" v-model="editedMovie.bulgarianLanguage" :value="false"/>
         <label for="english">English Audio</label>
-        <input id="bulgarian" type="radio" v-model="$v.editedMovie.bulgarianLanguage.$model" :value="true"/>
+        <input id="bulgarian" type="radio" v-model="editedMovie.bulgarianLanguage" :value="true"/>
         <label for="bulgarian">Bulgarian Audio</label>
       </div>
       <span class="description">Description:</span>
       <textarea class="editMovieTextarea" v-model.trim="$v.editedMovie.description.$model"></textarea>
-      <span v-if="$v.editedMovie.description.emptyStringValidate" class="errorMessage">Description text cannot be empty string!</span>
-      <span v-else-if="$v.editedMovie.description.maxLength" class="errorMessage">Description text max length must be 254 characters!</span>
+      <span v-if="!$v.editedMovie.description.maxLength" class="errorMessage">Description text max length must be 254 characters!</span>
       <div class="platformsEdit">
         <div v-for="(platform , i) in platforms" :key="i">
           <input type="checkbox" :id="platform + 'Edit'" :name="platform + 'Edit'" :value="platform"
@@ -91,8 +83,7 @@
           <label :for="platform + 'Edit'">{{ platform }}</label>
         </div>
       </div>
-      <span v-if="$v.editedMovie.platforms.required" class="errorMessage">Platforms is required!</span>
-      <span v-if="$v.editedMovie.platforms.minLength" class="errorMessage">You must be select at least one platform!</span>
+      <span v-if="!$v.editedMovie.platforms.required || !$v.editedMovie.platforms.minLength" class="errorMessage">Platforms is required! You must be select at least one platform!</span>
       <button class="saveButton" @click="saveEditMovie()">
         SAVE MOVIE
       </button>
@@ -106,12 +97,6 @@ import {GenreService} from "@/services/genre-service";
 import {PlatformService} from "@/services/platform-service";
 import {MovieService} from "@/services/movie-service";
 import {between, maxLength, minLength, numeric, required, url} from "vuelidate/lib/validators";
-
-const emptyStringValidate = (value) => {
-  if (value){
-    return value.trim;
-  }
-}
 
 export default {
   name: "EditMovie",
@@ -171,13 +156,11 @@ export default {
     editedMovie: {
       title1: {
         required,
-        emptyStringValidate,
         minLength: minLength(2),
         maxLength: maxLength(50),
       },
       title2: {
-        required,
-        emptyStringValidate,
+        // ToDo empty imput validate
         minLength: minLength(2),
         maxLength: maxLength(50),
       },
@@ -200,24 +183,22 @@ export default {
         minLength: minLength(1)
       },
       imdbUrl: {
+        // ToDo empty imput validate
         url,
-        emptyStringValidate,
         maxLength: maxLength(254)
       },
       trailerUrl: {
         required,
-        emptyStringValidate,
         maxLength: maxLength(254),
         url
       },
       posterUrl: {
         required,
-        emptyStringValidate,
         maxLength: maxLength(254),
         url
       },
       description: {
-        emptyStringValidate,
+        // ToDo empty imput validate
         maxLength: maxLength(254)
       },
     }
@@ -301,10 +282,6 @@ form.editForm div.row div.col input {
   text-align: center;
   background-color: #74EBD5;
   background-image: linear-gradient(212deg, #74EBD5 0%, #f5f564 100%);
-
-
-
-
 }
 
 /* Genres */
@@ -456,12 +433,16 @@ button.saveButton:hover {
 }
 
 span.errorMessage {
-  position: relative;
+  font-size: 0.7rem;
   display: block;
-  color: red;
+  color: white;
+  letter-spacing: 1px;
   padding: 5px;
-  bottom: 0;
   text-align: center;
+  background-color: red;
+  border-radius: 6px;
+  width: 80%;
+  margin: 10px 10%;
 }
 
 </style>
