@@ -8,10 +8,11 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
+import org.hibernate.validator.constraints.Length;
 
 public class EditMovieBindingModel {
 
-    private Long id;
+    private Long movieId;
     private String title1;
     private String title2;
     private List<String> genres;
@@ -27,12 +28,12 @@ public class EditMovieBindingModel {
     public EditMovieBindingModel() {
     }
 
-    public Long getId() {
-        return id;
+    public Long getMovieId() {
+        return movieId;
     }
 
-    public EditMovieBindingModel setId(Long id) {
-        this.id = id;
+    public EditMovieBindingModel setMovieId(Long movieId) {
+        this.movieId = movieId;
         return this;
     }
 
@@ -67,6 +68,7 @@ public class EditMovieBindingModel {
         return this;
     }
 
+    @NotNull
     @Positive(message = "The value must be a positive")
     @Max(value = 300 , message = "The duration must be max 300 min")
     @Min(value = 30 , message = "The duration must be min 30 min")
@@ -79,6 +81,7 @@ public class EditMovieBindingModel {
         return this;
     }
 
+    @NotNull
     @Positive(message = "The value must be a positive")
     @Max(value = 2100 , message = "The year must be max 2100 min")
     @Min(value = 1950 , message = "The year must be min 1950 min")
@@ -91,6 +94,7 @@ public class EditMovieBindingModel {
         return this;
     }
 
+    @Length(min = 1 , max = 254)
     public String getImdbUrl() {
         return imdbUrl;
     }

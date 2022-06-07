@@ -91,6 +91,7 @@ aside.filter input[type="checkbox"] + *::before {
 
 aside.filter input[type="checkbox"]:checked + * {
     color: orange;
+    font-weight: bold;
 }
 
 aside.filter input[type="checkbox"]:checked + *::before {

@@ -54,7 +54,7 @@ export default {
   },
   props: {
     movie: {
-      movieId: {
+      id: {
         type: Number,
         required: true
       },

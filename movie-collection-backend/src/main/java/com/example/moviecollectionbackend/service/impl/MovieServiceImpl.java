@@ -1,5 +1,6 @@
 package com.example.moviecollectionbackend.service.impl;
 
+import com.example.moviecollectionbackend.exception.UserNotFoundException;
 import com.example.moviecollectionbackend.model.binding.AddMovieBindingModel;
 import com.example.moviecollectionbackend.model.binding.EditMovieBindingModel;
 import com.example.moviecollectionbackend.model.dto.MovieCardDto;
@@ -12,6 +13,7 @@ import com.example.moviecollectionbackend.service.GenreService;
 import com.example.moviecollectionbackend.service.MovieService;
 import com.example.moviecollectionbackend.service.PlatformService;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -51,36 +53,27 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public MovieDetailsDto editMovie(EditMovieBindingModel editMovieBindingModel) {
-        MovieEntity movieEntity = movieRepository.findById(editMovieBindingModel.getId()).orElseThrow();
+        MovieEntity movieEntity = movieRepository.findById(editMovieBindingModel.getMovieId()).orElseThrow();
 
         if (!editMovieBindingModel.getTitle1().equalsIgnoreCase(movieEntity.getTitle1())) {
             movieEntity.setTitle1(editMovieBindingModel.getTitle1());
         }
 
-        if (!editMovieBindingModel.getTitle2().equalsIgnoreCase(movieEntity.getTitle2())) {
-            movieEntity.setTitle2(editMovieBindingModel.getTitle2());
-        }
-
-        if (editMovieBindingModel.getDuration() != movieEntity.getDuration()) {
+        if (!Objects.equals(editMovieBindingModel.getDuration(), movieEntity.getDuration())) {
             movieEntity.setDuration(editMovieBindingModel.getDuration());
         }
 
-        if (editMovieBindingModel.getYear() != movieEntity.getYear()) {
+        if (!Objects.equals(editMovieBindingModel.getYear(), movieEntity.getYear())) {
             movieEntity.setYear(editMovieBindingModel.getYear());
-        }
-
-        if (!editMovieBindingModel.getImdbUrl().equalsIgnoreCase(movieEntity.getImdbUrl())) {
-            movieEntity.setImdbUrl(editMovieBindingModel.getImdbUrl());
         }
 
         if (!editMovieBindingModel.getTrailerUrl().equalsIgnoreCase(movieEntity.getTrailerUrl())) {
             movieEntity.setTrailerUrl(editMovieBindingModel.getTrailerUrl());
         }
 
-        if (!editMovieBindingModel.getDescription().equalsIgnoreCase(movieEntity.getDescription())) {
-            movieEntity.setDescription(editMovieBindingModel.getDescription());
-        }
-
+        movieEntity.setTitle2(editMovieBindingModel.getTitle2());
+        movieEntity.setImdbUrl(editMovieBindingModel.getImdbUrl());
+        movieEntity.setDescription(editMovieBindingModel.getDescription());
         movieEntity.setBulgarianLanguage(editMovieBindingModel.getBulgarianLanguage());
 
         List<GenreEntity> genres = genreService.findAllByNames(editMovieBindingModel.getGenres());
@@ -106,8 +99,9 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public MovieDetailsDto getMovieDetailsDto(Long movieId) {
-        MovieEntity movieEntity = movieRepository.findById(movieId).orElseThrow();
+    public MovieDetailsDto getMovieDetailsDto(Long movieId) throws UserNotFoundException {
+        MovieEntity movieEntity = movieRepository.findById(movieId)
+            .orElseThrow(() -> new UserNotFoundException("User with this id " + movieId + " not found!"));
 
         return mapEntityToDto(movieEntity);
     }

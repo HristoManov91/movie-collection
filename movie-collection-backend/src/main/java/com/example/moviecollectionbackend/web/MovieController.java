@@ -1,12 +1,12 @@
 package com.example.moviecollectionbackend.web;
 
+import com.example.moviecollectionbackend.exception.UserNotFoundException;
 import com.example.moviecollectionbackend.model.binding.AddMovieBindingModel;
 import com.example.moviecollectionbackend.model.binding.EditMovieBindingModel;
 import com.example.moviecollectionbackend.model.dto.MovieCardDto;
 import com.example.moviecollectionbackend.model.dto.MovieDetailsDto;
 import com.example.moviecollectionbackend.service.MovieService;
 import java.util.List;
-import javax.management.InvalidApplicationException;
 import javax.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,7 +42,7 @@ public class MovieController {
     }
 
     @GetMapping("/{movieId}")
-    private ResponseEntity<MovieDetailsDto> getMovieDetailsDto(@PathVariable Long movieId) throws InvalidApplicationException {
+    private ResponseEntity<MovieDetailsDto> getMovieDetailsDto(@PathVariable Long movieId) throws UserNotFoundException {
 
         return new ResponseEntity<>(movieService.getMovieDetailsDto(movieId), HttpStatus.OK);
     }

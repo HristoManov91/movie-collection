@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <p class="pageTitle">Edit movie</p>
-    <form class="editForm">
+    <form @submit.prevent="saveEditMovie" class="editForm">
       <div class="row">
         <div class="col">
           <label for="title1">Title:</label>
@@ -14,11 +14,11 @@
       </div>
       <div class="rowError">
         <div class="colError">
-          <span v-if="!$v.editedMovie.title1.required" class="errorMessage">Title is required and cannot be empty string!</span>
-          <span v-else-if="!$v.editedMovie.title1.minLength || !$v.editedMovie.title1.maxLength" class="errorMessage">Length must be between 2 and 50 characters!</span>
+          <span v-if="!$v.editedMovie.title1.required" class="errorMessage"><font-awesome-icon icon="fa-solid fa-circle-exclamation" /> Title is required and cannot be empty string!</span>
+          <span v-else-if="!$v.editedMovie.title1.minLength || !$v.editedMovie.title1.maxLength" class="errorMessage"><font-awesome-icon icon="fa-solid fa-circle-exclamation" /> Length must be between 2 and 50 characters!</span>
         </div>
         <div class="colError">
-          <span v-if="!$v.editedMovie.title2.minLength || !$v.editedMovie.title2.maxLength" class="errorMessage">Length must be between 2 and 50 characters!</span>
+          <span v-if="!$v.editedMovie.title2.minLength || !$v.editedMovie.title2.maxLength" class="errorMessage"><font-awesome-icon icon="fa-solid fa-circle-exclamation" /> Length must be between 2 and 50 characters!</span>
         </div>
       </div>
       <div class="row">
@@ -33,14 +33,14 @@
       </div>
       <div class="rowError">
         <div class="colError">
-          <span v-if="!$v.editedMovie.duration.required" class="errorMessage">Duration is required!</span>
-          <span v-else-if="!$v.editedMovie.duration.numeric" class="errorMessage">Duration must be contains only numbers!</span>
-          <span v-else-if="!$v.editedMovie.duration.between" class="errorMessage">Duration must be between 30 and 300 minutes!</span>
+          <span v-if="!$v.editedMovie.duration.required" class="errorMessage"><font-awesome-icon icon="fa-solid fa-circle-exclamation" /> Duration is required!</span>
+          <span v-else-if="!$v.editedMovie.duration.numeric" class="errorMessage"><font-awesome-icon icon="fa-solid fa-circle-exclamation" /> Duration must be contains only numbers!</span>
+          <span v-else-if="!$v.editedMovie.duration.between" class="errorMessage"><font-awesome-icon icon="fa-solid fa-circle-exclamation" /> Duration must be between 30 and 300 minutes!</span>
         </div>
         <div class="colError">
-          <span v-if="!$v.editedMovie.year.required" class="errorMessage">Year is required!</span>
-          <span v-else-if="!$v.editedMovie.year.numeric" class="errorMessage">Year must be contains only numbers!</span>
-          <span v-else-if="!$v.editedMovie.year.between" class="errorMessage">Year must be between 1950 and 2100 year!</span>
+          <span v-if="!$v.editedMovie.year.required" class="errorMessage"><font-awesome-icon icon="fa-solid fa-circle-exclamation" /> Year is required!</span>
+          <span v-else-if="!$v.editedMovie.year.numeric" class="errorMessage"><font-awesome-icon icon="fa-solid fa-circle-exclamation" /> Year must be contains only numbers!</span>
+          <span v-else-if="!$v.editedMovie.year.between" class="errorMessage"><font-awesome-icon icon="fa-solid fa-circle-exclamation" /> Year must be between 1950 and 2100 year!</span>
         </div>
       </div>
       <div class="genresEdit" >
@@ -49,23 +49,23 @@
                  v-model="$v.editedMovie.genres.$model">
           <label :for="genre + 'Edit'">{{ genre }}</label>
         </div>
-        <span v-if="!$v.editedMovie.genres.required || !$v.editedMovie.genres.minLength" class="errorMessage">Genres is required! You must be select at least one genre!</span>
+        <span v-if="!$v.editedMovie.genres.required || !$v.editedMovie.genres.minLength" class="errorMessage"><font-awesome-icon icon="fa-solid fa-circle-exclamation" /> Genres is required! You must be select at least one genre!</span>
       </div>
       <div class="urlsEdit">
         <label for="imdbUrl">IMDb URL:</label>
         <input id="imdbUrl" type="text" v-model.trim="$v.editedMovie.imdbUrl.$model"/>
-        <span v-if="!$v.editedMovie.imdbUrl.url" class="errorMessage">IMDb URL must be a valid URL!</span>
-        <span v-else-if="!$v.editedMovie.imdbUrl.maxLength" class="errorMessage">IMDb URL max length must be 254 characters!</span>
+        <span v-if="!$v.editedMovie.imdbUrl.url" class="errorMessage"><font-awesome-icon icon="fa-solid fa-circle-exclamation" /> IMDb URL must be a valid URL!</span>
+        <span v-else-if="!$v.editedMovie.imdbUrl.maxLength" class="errorMessage"><font-awesome-icon icon="fa-solid fa-circle-exclamation" /> IMDb URL max length must be 254 characters!</span>
         <label for="trailerUrl">Trailer URL:</label>
         <input id="trailerUrl" type="text" v-model.trim="$v.editedMovie.trailerUrl.$model"/>
-        <span v-if="!$v.editedMovie.trailerUrl.required" class="errorMessage">Trailer URL is required!</span>
-        <span v-else-if="!$v.editedMovie.trailerUrl.url" class="errorMessage">Trailer URL must be a valid URL!</span>
-        <span v-else-if="!$v.editedMovie.trailerUrl.maxLength" class="errorMessage">Trailer URL max length must be 254 characters!</span>
+        <span v-if="!$v.editedMovie.trailerUrl.required" class="errorMessage"><font-awesome-icon icon="fa-solid fa-circle-exclamation" /> Trailer URL is required!</span>
+        <span v-else-if="!$v.editedMovie.trailerUrl.url" class="errorMessage"><font-awesome-icon icon="fa-solid fa-circle-exclamation" /> Trailer URL must be a valid URL!</span>
+        <span v-else-if="!$v.editedMovie.trailerUrl.maxLength" class="errorMessage"><font-awesome-icon icon="fa-solid fa-circle-exclamation" /> Trailer URL max length must be 254 characters!</span>
         <label for="posterUrl">Poster URL:</label>
         <input id="posterUrl" type="text" v-model.trim="$v.editedMovie.posterUrl.$model"/>
-        <span v-if="!$v.editedMovie.posterUrl.required" class="errorMessage">Poster URL is required!</span>
-        <span v-else-if="!$v.editedMovie.posterUrl.url" class="errorMessage">Poster URL must be a valid URL!</span>
-        <span v-else-if="!$v.editedMovie.posterUrl.maxLength" class="errorMessage">Poster URL max length must be 254 characters!</span>
+        <span v-if="!$v.editedMovie.posterUrl.required" class="errorMessage"><font-awesome-icon icon="fa-solid fa-circle-exclamation" /> Poster URL is required!</span>
+        <span v-else-if="!$v.editedMovie.posterUrl.url" class="errorMessage"><font-awesome-icon icon="fa-solid fa-circle-exclamation" /> Poster URL must be a valid URL!</span>
+        <span v-else-if="!$v.editedMovie.posterUrl.maxLength" class="errorMessage"><font-awesome-icon icon="fa-solid fa-circle-exclamation" /> Poster URL max length must be 254 characters!</span>
       </div>
       <div class="audioEdit">
         <input id="english" type="radio" v-model="editedMovie.bulgarianLanguage" :value="false"/>
@@ -75,7 +75,7 @@
       </div>
       <span class="description">Description:</span>
       <textarea class="editMovieTextarea" v-model.trim="$v.editedMovie.description.$model"></textarea>
-      <span v-if="!$v.editedMovie.description.maxLength" class="errorMessage">Description text max length must be 254 characters!</span>
+      <span v-if="!$v.editedMovie.description.maxLength" class="errorMessage"><font-awesome-icon icon="fa-solid fa-circle-exclamation" /> Description text max length must be 254 characters!</span>
       <div class="platformsEdit">
         <div v-for="(platform , i) in platforms" :key="i">
           <input type="checkbox" :id="platform + 'Edit'" :name="platform + 'Edit'" :value="platform"
@@ -83,11 +83,14 @@
           <label :for="platform + 'Edit'">{{ platform }}</label>
         </div>
       </div>
-      <span v-if="!$v.editedMovie.platforms.required || !$v.editedMovie.platforms.minLength" class="errorMessage">Platforms is required! You must be select at least one platform!</span>
-      <button class="saveButton" @click="saveEditMovie()">
+      <span v-if="!$v.editedMovie.platforms.required || !$v.editedMovie.platforms.minLength" class="errorMessage"><font-awesome-icon icon="fa-solid fa-circle-exclamation" /> Platforms is required! You must be select at least one platform!</span>
+      <button class="saveButton">
         SAVE MOVIE
       </button>
     </form>
+    <modal name="errorModal" class="errorModal" :shiftX="1" :shiftY="0" :height="0" :width="0">
+      <ErrorModal :error-modal="errorModal" />
+    </modal>
   </div>
 </template>
 
@@ -97,9 +100,11 @@ import {GenreService} from "@/services/genre-service";
 import {PlatformService} from "@/services/platform-service";
 import {MovieService} from "@/services/movie-service";
 import {between, maxLength, minLength, numeric, required, url} from "vuelidate/lib/validators";
+import ErrorModal from "@/components/ErrorModal";
 
 export default {
   name: "EditMovie",
+  components: {ErrorModal},
   mounted() {
     this.loadGenres();
     this.loadPlatforms();
@@ -149,7 +154,11 @@ export default {
         bulgarianLanguage: null
       },
       genres: {},
-      platforms: {}
+      platforms: {},
+      errorModal: {
+        status: '',
+        errorMessage: null
+      }
     }
   },
   validations: {
@@ -204,6 +213,12 @@ export default {
     }
   },
   methods: {
+    show() {
+      this.$modal.show('errorModal');
+    },
+    hide(){
+      this.$modal.hide('errorModal');
+    },
     loadGenres() {
       this.genreService.findAllGenres().then((resp) => {
         if (resp.status === 'OK') {
@@ -226,7 +241,23 @@ export default {
       this.editedMovie = this.movie;
     },
     saveEditMovie() {
-      console.log('editMovie' , this.editedMovie)
+      // if (this.$v.$invalid) {
+      //   alert('Fill in the form correctly!')
+      // } else {
+
+        let editedMovieDto = this.editedMovie;
+
+        this.movieService.saveEditedMovie(editedMovieDto).then((resp) => {
+          if (resp.status === 'OK') {
+            console.log('res' , resp.data);
+          } else {
+            this.errorModal.status = 'Error';
+            this.errorModal.errorMessage = resp.error.message;
+            this.show();
+            setTimeout(() => {this.hide()} , 4000 )
+          }
+        })
+      // }
     }
   }
 }
@@ -435,14 +466,27 @@ button.saveButton:hover {
 span.errorMessage {
   font-size: 0.7rem;
   display: block;
-  color: white;
+  color: #D8000C;
   letter-spacing: 1px;
   padding: 5px;
   text-align: center;
-  background-color: red;
+  background-color: #FFBABA;
   border-radius: 6px;
   width: 80%;
   margin: 10px 10%;
+  border: 1px solid #D8000C;
 }
 
+/*.errorModal {*/
+/*  animation: hideAnimation 0.3s ease-in-out 4s;*/
+/*  animation-fill-mode: forwards;*/
+/*}*/
+
+/*@keyframes hideAnimation {*/
+/*  to {*/
+/*    visibility: hidden;*/
+/*    width: 330px;*/
+/*    height: 150px;*/
+/*  }*/
+/*}*/
 </style>
