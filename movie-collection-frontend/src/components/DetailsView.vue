@@ -9,9 +9,9 @@
       <ul class="detailsViewGenres">
         <li v-for="(genre , index) in movie.genres" :key="index">{{ genre }}</li>
       </ul>
-      <p v-if="movie.description !== null" class="detailsViewDescription">
-        {{ movie.description }}
-      </p>
+      <textarea v-if="movie.description !== null && movie.description.length > 0"
+                :value="movie.description" readonly :rows="rowsDecl" cols="52" class="detailsViewDescription">
+      </textarea>
       <button class="detailsViewButtonTrailer" @click="watchTrailer()">
         <font-awesome-icon icon="fa-solid fa-circle-play"/>
         WATCH TRAILER
@@ -52,6 +52,11 @@ export default {
   components: {
     EditMovie
   },
+  data() {
+    return {
+      descriptionRows: 0
+    }
+  },
   props: {
     movie: {
       id: {
@@ -77,6 +82,13 @@ export default {
     }
   },
   methods: {
+    // fixRowsDesc() {
+    //   if (this.movie.description != null) {
+    //     let length = this.movie.description.length;
+    //     this.descriptionRows = Math.ceil(length % 50);
+    //     console.log(length , this.descriptionRows)
+    //     }
+    //   },
     show() {
       this.$modal.show('movieEditModal');
     },
@@ -85,8 +97,18 @@ export default {
     },
     watchTrailer() {
       window.open(this.movie.trailerUrl);
-    }
+    },
   },
+  computed: {
+    rowsDecl: function() {
+      if (this.movie.description != null) {
+        let length = this.movie.description.length;
+        console.log(Math.ceil(length / 50))
+        return Math.ceil(length / 50);
+      }
+      return 0;
+    },
+  }
 }
 </script>
 
@@ -151,11 +173,19 @@ export default {
   font-weight: bold;
 }
 
-.detailsViewInfo p.detailsViewDescription {
+.detailsViewInfo textarea.detailsViewDescription {
+  height: auto;
+  color: orange;
+  /*width: 85%;*/
   margin: 1.5rem 2rem;
   border: 1px solid orange;
   padding: 0.5rem;
   border-radius: 5px;
+  /*box-sizing: border-box;*/
+  /*font-size: inherit;*/
+  /*outline: none;*/
+  background-color: #010229;
+  resize: none;
 }
 
 .detailsViewInfo button.detailsViewButtonTrailer {

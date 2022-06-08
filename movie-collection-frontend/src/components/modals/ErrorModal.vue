@@ -1,7 +1,7 @@
 <template>
     <div class="modal">
       <p class="title"><font-awesome-icon icon="fa-solid fa-circle-exclamation"/></p>
-      <p>Title cannot be empty string!</p>
+      <p>{{ this.errorMessage }}</p>
     </div>
 </template>
 
@@ -9,15 +9,9 @@
 export default {
   name: "ErrorModal",
   props: {
-    errorModal: {
-      errorTitle: {
-        required: true,
-        type: String
-      },
-      errorMessage: {
-        required: true,
-        type: String
-      }
+    errorMessage: {
+      type: String,
+      required: true
     }
   }
 }
@@ -27,22 +21,22 @@ export default {
 
 .modal {
   position: fixed;
-  width: 330px;
-  height: 150px;
+  width: 300px;
+  height: 100px;
   text-align: center;
   top: 10px;
   right: 10px;
-  font-size: 1.9rem;
+  font-size: 1.2rem;
   display: block;
   color: #D8000C;
   letter-spacing: 1px;
   padding: 10px;
   background-color: #FFBABA;
   border-radius: 15px;
-  border: 4px solid #D8000C;
+  border: 3px solid #D8000C;
 }
 
 .modal p{
-  margin: 10px;
+  margin: 5px;
 }
 </style>

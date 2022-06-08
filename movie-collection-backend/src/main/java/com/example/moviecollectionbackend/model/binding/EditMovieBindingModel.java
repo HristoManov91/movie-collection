@@ -37,8 +37,8 @@ public class EditMovieBindingModel {
         return this;
     }
 
-    @NotBlank(message = "Title cannot be empty string!")
-    @Size(max = 50 , min = 2, message = "Length must be between 2 and 50 characters!")
+    @NotBlank(message = "Title is required and cannot be empty string!")
+    @Size(max = 50 , min = 2, message = "Title length must be between 2 and 50 characters!")
     public String getTitle1() {
         return title1;
     }
@@ -48,7 +48,7 @@ public class EditMovieBindingModel {
         return this;
     }
 
-    @Size(max = 50 , min = 2, message = "Length must be between 2 and 50 characters!")
+    @Size(max = 50 , min = 2, message = "Second title length must be between 2 and 50 characters!")
     public String getTitle2() {
         return title2;
     }
@@ -58,7 +58,7 @@ public class EditMovieBindingModel {
         return this;
     }
 
-    @NotEmpty(message = "You must select at least one genres")
+    @NotEmpty(message = "You must select at least one Genres!")
     public List<@NotBlank String> getGenres() {
         return genres;
     }
@@ -68,10 +68,10 @@ public class EditMovieBindingModel {
         return this;
     }
 
-    @NotNull
-    @Positive(message = "The value must be a positive")
-    @Max(value = 300 , message = "The duration must be max 300 min")
-    @Min(value = 30 , message = "The duration must be min 30 min")
+    @NotNull(message = "Field Duration is required!")
+    @Positive(message = "The value of the Duration field must be a positive number!")
+    @Max(value = 300 , message = "The value of the Duration field must be max 300 min!")
+    @Min(value = 30 , message = "The value of the Duration field must be min 30 min!")
     public Integer getDuration() {
         return duration;
     }
@@ -81,10 +81,10 @@ public class EditMovieBindingModel {
         return this;
     }
 
-    @NotNull
-    @Positive(message = "The value must be a positive")
-    @Max(value = 2100 , message = "The year must be max 2100 min")
-    @Min(value = 1950 , message = "The year must be min 1950 min")
+    @NotNull(message = "Field Year is required!")
+    @Positive(message = "The value of the Year field must be a positive number!")
+    @Max(value = 2100 , message = "The value of the Year field must be max 2100 min!")
+    @Min(value = 1950 , message = "The value of the Year field must be min 1950 min!")
     public Integer getYear() {
         return year;
     }
@@ -94,7 +94,8 @@ public class EditMovieBindingModel {
         return this;
     }
 
-    @Length(min = 1 , max = 254)
+    @NotBlank(message = "IMDbURL cannot be empty string!")
+    @Length(max = 254 , message = "The length of the IMDbURL field must be max 254 characters!")
     public String getImdbUrl() {
         return imdbUrl;
     }
@@ -104,7 +105,8 @@ public class EditMovieBindingModel {
         return this;
     }
 
-    @NotBlank()
+    @NotBlank(message = "TrailerURL cannot be empty string!")
+    @Length(max = 254 , message = "The length of the TrailerURL field must be max 254 characters!")
     public String getTrailerUrl() {
         return trailerUrl;
     }
@@ -114,7 +116,8 @@ public class EditMovieBindingModel {
         return this;
     }
 
-    @NotBlank
+    @NotBlank(message = "PosterURL cannot be empty string!")
+    @Length(max = 254 , message = "The length of the PosterURL field must be max 254 characters!")
     public String getPosterUrl() {
         return posterUrl;
     }
@@ -124,7 +127,7 @@ public class EditMovieBindingModel {
         return this;
     }
 
-    @NotEmpty(message = "You must select at least one platforms")
+    @NotEmpty(message = "You must select at least one Platforms")
     public List<@NotBlank String> getPlatforms() {
         return platforms;
     }
@@ -134,7 +137,7 @@ public class EditMovieBindingModel {
         return this;
     }
 
-    @NotNull
+    @NotNull(message = "You need to choose a audio language!")
     public Boolean getBulgarianLanguage() {
         return bulgarianLanguage;
     }
@@ -144,6 +147,7 @@ public class EditMovieBindingModel {
         return this;
     }
 
+    @Length(max = 254 , message = "The length of the Description field must be max 254 characters!")
     public String getDescription() {
         return description;
     }
