@@ -6,11 +6,27 @@
     </header>
     <main class="container">
       <aside class="filter">
-        <p>Filters:</p>
+        <p>Filters</p>
+        <span class="filterTitle">Genres:</span>
         <div v-for="(genre , i) in genres" :key="i">
           <input type="checkbox" :id="i" :name="genre" :value="genre">
-          <label @click="addOrRemoveInFilters(i)" :for="i">{{ genre }}</label><br>
+          <label @click="addOrRemoveInGenresFilter(i)" :for="i">{{ genre }}</label>
         </div>
+        <span class="filterTitle">Duration:</span>
+        <div>
+          <div class="values">
+            <span id="range1">{{this.durationFilter.minDuration}}</span>
+            <span> &dash; </span>
+            <span id="range2">{{this.durationFilter.maxDuration}}</span>
+          </div>
+          <div class="sliderTrack"></div>
+          <input class="sliderRange" v-model="durationFilter.minDuration" id="slider1" type="range" min="0" max="300" step="5">
+          <input class="sliderRange" v-model="durationFilter.maxDuration" id="slider2" type="range" min="0" max="300" step="5">
+        </div>
+<!--        <span class="filterTitle">IMDb rating:</span>-->
+<!--        <div>-->
+
+<!--        </div>-->
       </aside>
       <section class="catalogue">
         <p class="movies-title">Collection</p>
@@ -46,6 +62,7 @@ export default {
   mounted() {
     this.loadMovies();
     this.loadGenres();
+    this.fillSlideColor();
   },
   data() {
     return {
@@ -76,7 +93,12 @@ export default {
         description: String,
       },
       genres: [],
-      filters: [],
+      genresFilter: [],
+      durationFilter: {
+        minDuration: 0,
+        maxDuration: 300
+      },
+      minGap: 10,
     }
   },
   methods: {
@@ -85,6 +107,14 @@ export default {
     },
     hide() {
       this.$modal.hide('movieDetailsModal');
+    },
+    fillSlideColor() {
+      //ToDo fix % calculate from 30 to 300
+      let startPercent = ( this.durationFilter.minDuration / 300 ) * 100;
+      let overPercent = ( this.durationFilter.maxDuration / 300 ) * 100;
+
+      let sliderTrackElement = document.querySelector('.sliderTrack');
+      sliderTrackElement.style.background = `linear-gradient(to right, white ${startPercent}% , orange ${startPercent}% , orange ${overPercent}% , white ${overPercent}%)`;
     },
     loadMovies() {
       this.movieService.findAllMovies().then((moviePreviewDto) => {
@@ -116,19 +146,20 @@ export default {
         }
       })
     },
-    addOrRemoveInFilters(index) {
+    addOrRemoveInGenresFilter(index) {
       let genre = this.genres[index];
-      let elementIndex = this.filters.indexOf(genre);
+      let elementIndex = this.genresFilter.indexOf(genre);
 
       if (elementIndex === -1) {
-        this.filters.push(genre)
+        this.genresFilter.push(genre)
       } else {
-        this.filters.splice(elementIndex, 1);
+        this.genresFilter.splice(elementIndex, 1);
       }
     },
+
   },
   watch: {
-    filters: function (newValue) {
+    genresFilter: function (newValue) {
       if (newValue.length === 0) {
         this.moviesToShow = this.movies;
       } else {
@@ -142,6 +173,25 @@ export default {
         }
       }
     },
+    durationFilter: {
+      handler(value){
+        if (typeof value.minDuration === 'string') {
+          if (this.durationFilter.maxDuration - Number(this.durationFilter.minDuration) <= this.minGap){
+            this.durationFilter.minDuration = this.durationFilter.maxDuration - this.minGap;
+          }
+        } else if (typeof value.maxDuration === 'string') {
+          if (Number(this.durationFilter.maxDuration) - this.durationFilter.minDuration <= this.minGap){
+            this.durationFilter.maxDuration = this.durationFilter.minDuration + this.minGap;
+          }
+        }
+        this.fillSlideColor();
+        this.moviesToShow = this.movies.filter((m) => {
+          return m.duration >= this.durationFilter.minDuration && m.duration <= this.durationFilter.maxDuration;
+        })
+        console.log(this.moviesToShow);
+      },
+      deep: true
+    }
   }
 }
 </script>
