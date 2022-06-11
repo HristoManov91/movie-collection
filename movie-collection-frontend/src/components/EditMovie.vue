@@ -273,16 +273,17 @@ export default {
           if (resp.status === 'OK') {
 
             this.editedMovie = resp.data;
-            this.successMessage = 'Successful film editing!';
-            this.showSuccessModal();
-            setTimeout(() => {this.hideSuccessModal()} , 4000 )
+            // this.successMessage = 'Successful film editing!';
+            // this.showSuccessModal();
+            // setTimeout(() => {this.hideSuccessModal()} , 4000 )
+
+            this.$emit('editMovie');
 
           } else {
 
             this.errorMessage = resp.error.message;
             this.showErrorModal();
             setTimeout(() => {this.hideErrorModal()} , 4000 )
-
           }
         })
       }

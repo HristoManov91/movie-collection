@@ -39,6 +39,7 @@
       </aside>
       <section class="catalogue">
         <p class="movies-title">Collection</p>
+        <input class="searchInput" v-model.trim="searchTextFilter" type="text" placeholder="Search...">
         <ul class="movies">
           <MovieCard v-for="(movie , id) in moviesToShow" :key="id" :movie="movie" @clickDetails="clickDetails"/>
         </ul>
@@ -50,16 +51,16 @@
            :reset="true"
            width="830px"
            height="550px">
-      <DetailsView :movie="this.movie"/>
+      <DetailsView :movie="this.movie" @deleteMovie="deletedMovie"/>
     </modal>
     <modal name="errorModal" :shiftX="1" :shiftY="0" :height="0" :width="0">
       <ErrorModal :errorMessage="this.errorMessage"/>
     </modal>
     <modal name="successfulModal" :shiftX="1" :shiftY="0" :height="0" :width="0">
-      <SuccessfulModal/>
+      <SuccessfulModal :success-message="this.successMessage"/>
     </modal>
     <modal name="warningModal" :shiftX="1" :shiftY="0" :height="0" :width="0">
-      <WarningModal />
+      <WarningModal/>
     </modal>
   </div>
 </template>
@@ -128,26 +129,28 @@ export default {
         maxRating: 10,
         minGap: 1,
       },
+      searchTextFilter: '',
       errorMessage: null,
+      successMessage: null
     }
   },
   methods: {
     showDetailsModal() {
       this.$modal.show('movieDetailsModal');
     },
-    hide() {
+    hideDetailsModal() {
       this.$modal.hide('movieDetailsModal');
     },
     showSuccessModal() {
       this.$modal.show('successfulModal');
     },
-    hideSuccessModal(){
+    hideSuccessModal() {
       this.$modal.hide('successfulModal');
     },
     showErrorModal() {
       this.$modal.show('errorModal');
     },
-    hideErrorModal(){
+    hideErrorModal() {
       this.$modal.hide('errorModal');
     },
     showWarningModal() {
@@ -179,7 +182,9 @@ export default {
         } else {
           this.errorMessage = 'Error in loadMovies!';
           this.showErrorModal();
-          setTimeout(() => {this.hideErrorModal()} , 4000 )
+          setTimeout(() => {
+            this.hideErrorModal()
+          }, 4000)
         }
       });
       // .finally() ToDo
@@ -191,9 +196,16 @@ export default {
         } else {
           this.errorMessage = 'Error in loadGenres!';
           this.showErrorModal();
-          setTimeout(() => {this.hideErrorModal()} , 4000 )
+          setTimeout(() => {
+            this.hideErrorModal()
+          }, 4000)
         }
       })
+    },
+    caseInsensitiveCheck(word1, word2) {
+      word1 = word1.toLowerCase();
+      word2 = word2.toLowerCase();
+      return word1.includes(word2);
     },
     clickDetails(movieId) {
       this.movieService.findMovieDetail(movieId).then((movieDetailsDto) => {
@@ -203,7 +215,9 @@ export default {
         } else {
           this.errorMessage = 'Error in clickDetails!';
           this.showErrorModal();
-          setTimeout(() => {this.hideErrorModal()} , 4000 )
+          setTimeout(() => {
+            this.hideErrorModal()
+          }, 4000)
         }
       })
     },
@@ -220,7 +234,7 @@ export default {
       this.filtersMovies();
     },
     filtersMovies() {
-      //ToDo make to load and other movie in database
+      //ToDo make to load and other movies in database
       this.moviesToShow = [];
 
       if (this.genresFilter.length === 0) {
@@ -244,9 +258,43 @@ export default {
         return m.rating >= this.ratingFilter.minRating && m.rating <= this.ratingFilter.maxRating;
       })
 
-      if (this.moviesToShow.length === 0){
+      this.moviesToShow = this.moviesToShow.filter((m) => {
+        if (m.title2 !== null) {
+          return this.caseInsensitiveCheck(m.title1, this.searchTextFilter)
+              || this.caseInsensitiveCheck(m.title2, this.searchTextFilter);
+        } else {
+          return this.caseInsensitiveCheck(m.title1, this.searchTextFilter);
+        }
+      })
+
+      if (this.moviesToShow.length === 0) {
         this.showWarningModal();
-        setTimeout(() => {this.hideWarningModal()} , 4000 )
+        setTimeout(() => {
+          this.hideWarningModal()
+        }, 4000)
+      }
+    },
+    deletedMovie(isDeleted) {
+
+      if (isDeleted) {
+        this.hideDetailsModal();
+        this.successMessage = 'The movie was successfully deleted!';
+        this.showSuccessModal();
+        setTimeout(() => {
+          this.hideSuccessModal()
+        }, 4000)
+
+        this.loadMovies();
+        this.filtersMovies();
+
+      } else {
+
+        this.errorMessage = 'We could not delete the movie!'
+        this.showErrorModal();
+        setTimeout(() => {
+          this.hideErrorModal()
+        }, 3000)
+
       }
     }
   },
@@ -284,6 +332,9 @@ export default {
         this.filtersMovies();
       },
       deep: true
+    },
+    searchTextFilter() {
+      this.filtersMovies();
     }
   }
 }

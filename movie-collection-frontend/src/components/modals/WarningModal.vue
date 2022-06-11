@@ -19,7 +19,7 @@ export default {
   text-align: center;
   top: 10px;
   right: 20px;
-  font-size: 1rem;
+  font-size: 1.2rem;
   display: block;
   letter-spacing: 1px;
   padding: 10px;

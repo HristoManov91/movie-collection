@@ -39,7 +39,7 @@
     </div>
     <modal class="movieEditModal" name="movieEditModal" :resizable="false" :reset="true" width="850px" height="auto"
            :scrollable="true">
-      <EditMovie :movie="movie"/>
+      <EditMovie :movie="movie" @editMovie="editedMovie"/>
     </modal>
     <modal name="detailsErrorModal" :shiftX="1" :shiftY="0" :height="0" :width="0">
       <ErrorModal :errorMessage="this.errorMessage"/>
@@ -111,7 +111,7 @@ export default {
     showEditModal() {
       this.$modal.show('movieEditModal');
     },
-    hide() {
+    hideEditModal() {
       this.$modal.hide('movieEditModal');
     },
     watchTrailer() {
@@ -122,19 +122,27 @@ export default {
       this.movieService.deleteMovie(movieId).then((resp) => {
         if (resp.status === 'OK') {
 
-          this.successMessage = 'The movie was successfully deleted!';
-          this.showSuccessModal();
-          setTimeout(() => {this.hideSuccessModal()} , 4000 )
+
+          // this.successMessage = 'The movie was successfully deleted!';
+          // this.showSuccessModal();
+          // setTimeout(() => {this.hideSuccessModal()} , 4000 )
+          this.$emit('deleteMovie' , true);
 
         } else {
 
-          this.errorMessage = 'We could not delete the movie!'
-          this.showErrorModal();
-          setTimeout(() => {this.hideErrorModal()} , 3000 )
-
+          // this.errorMessage = 'We could not delete the movie!'
+          // this.showErrorModal();
+          // setTimeout(() => {this.hideErrorModal()} , 3000 )
+          this.$emit('deleteMovie' , false);
         }
       })
-    }
+    },
+    editedMovie() {
+      this.hideEditModal();
+      this.successMessage = 'Successful film editing!'
+      this.showSuccessModal();
+      setTimeout(() => {this.hideSuccessModal()} , 4000 )
+    },
   },
   computed: {
     rowsDecl: function() {

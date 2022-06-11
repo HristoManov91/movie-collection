@@ -245,12 +245,22 @@ aside.filter div.values:before {
 .movies-title {
     font-size: 1.5rem;
     background-color: black;
-    margin: 0.5rem 42.75%;
+    margin: 0.5rem 0 0.5rem 42.75%;
     padding: 0.5rem 3rem;
     border-radius: 10px;
     display: inline-block;
     color: orange;
+}
 
+input.searchInput {
+    width: 200px;
+    height: 2rem;
+    border: 1px solid black;
+    border-radius: 3px;
+    display: inline-block;
+    padding: 0.5rem;
+    margin: 0.5rem 1rem 0.5rem 19.5rem;
+    background: white url("../image/search-img.svg") no-repeat scroll 175px 6px;
 }
 
 .movie-card {
