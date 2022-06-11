@@ -1,24 +1,17 @@
 <template>
   <div class="modal">
-    <p class="title"><font-awesome-icon icon="fa-solid fa-circle-check" /></p>
-    <p>{{ this.successMessage }}</p>
+    <p class="title"><font-awesome-icon icon="fa-solid fa-triangle-exclamation" /></p>
+    <p>No movies found with these filters!</p>
   </div>
 </template>
 
 <script>
 export default {
-  name: "SuccessfulModal",
-  props: {
-    successMessage: {
-      type: String,
-      required: true
-    }
-  },
+  name: "WarningModal"
 }
 </script>
 
 <style scoped>
-
 .modal {
   position: fixed;
   width: 300px;
@@ -31,9 +24,9 @@ export default {
   letter-spacing: 1px;
   padding: 10px;
   border-radius: 15px;
-  border: 3px solid #4F8A10;
-  color: #4F8A10;
-  background-color: #DFF2BF;
+  border: 3px solid #9F6000;
+  color: #9F6000;
+  background-color: #FEEFB3;
 }
 
 .modal p{

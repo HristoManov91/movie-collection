@@ -27,11 +27,11 @@
 
       </ul>
       <ul class="detailsViewButtons">
-        <li class="editButton" @click="show()">
+        <li class="editButton" @click="showEditModal()">
           <font-awesome-icon icon="fa-solid fa-pen-to-square"/>
           EDIT
         </li>
-        <li class="deleteButton">
+        <li class="deleteButton" @click="deleteMovie(movie.movieId)">
           <font-awesome-icon icon="fa-solid fa-trash-can"/>
           DELETE
         </li>
@@ -41,25 +41,31 @@
            :scrollable="true">
       <EditMovie :movie="movie"/>
     </modal>
+    <modal name="detailsErrorModal" :shiftX="1" :shiftY="0" :height="0" :width="0">
+      <ErrorModal :errorMessage="this.errorMessage"/>
+    </modal>
+    <modal name="detailsSuccessfulModal" :shiftX="1" :shiftY="0" :height="0" :width="0">
+      <SuccessfulModal :successMessage="this.successMessage"/>
+    </modal>
   </div>
 </template>
 
 <script>
 import EditMovie from "@/components/EditMovie";
+import {MovieService} from "@/services/movie-service";
+import ErrorModal from "@/components/modals/ErrorModal";
+import SuccessfulModal from "@/components/modals/SuccessfulModal";
 
 export default {
   name: "DetailsView",
   components: {
-    EditMovie
-  },
-  data() {
-    return {
-      descriptionRows: 0
-    }
+    EditMovie,
+    ErrorModal,
+    SuccessfulModal
   },
   props: {
     movie: {
-      id: {
+      movieId: {
         type: Number,
         required: true
       },
@@ -81,15 +87,28 @@ export default {
       description: String,
     }
   },
+  data() {
+    return {
+      movieService: new MovieService(),
+      descriptionRows: 0,
+      errorMessage: null,
+      successMessage: null
+    }
+  },
   methods: {
-    // fixRowsDesc() {
-    //   if (this.movie.description != null) {
-    //     let length = this.movie.description.length;
-    //     this.descriptionRows = Math.ceil(length % 50);
-    //     console.log(length , this.descriptionRows)
-    //     }
-    //   },
-    show() {
+    showSuccessModal() {
+      this.$modal.show('detailsSuccessfulModal');
+    },
+    hideSuccessModal(){
+      this.$modal.hide('detailsSuccessfulModal');
+    },
+    showErrorModal() {
+      this.$modal.show('detailsErrorModal');
+    },
+    hideErrorModal(){
+      this.$modal.hide('detailsErrorModal');
+    },
+    showEditModal() {
       this.$modal.show('movieEditModal');
     },
     hide() {
@@ -98,12 +117,29 @@ export default {
     watchTrailer() {
       window.open(this.movie.trailerUrl);
     },
+    deleteMovie(movieId){
+
+      this.movieService.deleteMovie(movieId).then((resp) => {
+        if (resp.status === 'OK') {
+
+          this.successMessage = 'The movie was successfully deleted!';
+          this.showSuccessModal();
+          setTimeout(() => {this.hideSuccessModal()} , 4000 )
+
+        } else {
+
+          this.errorMessage = 'We could not delete the movie!'
+          this.showErrorModal();
+          setTimeout(() => {this.hideErrorModal()} , 3000 )
+
+        }
+      })
+    }
   },
   computed: {
     rowsDecl: function() {
       if (this.movie.description != null) {
         let length = this.movie.description.length;
-        console.log(Math.ceil(length / 50))
         return Math.ceil(length / 50);
       }
       return 0;

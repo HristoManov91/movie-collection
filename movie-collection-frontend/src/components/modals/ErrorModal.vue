@@ -25,7 +25,7 @@ export default {
   height: 100px;
   text-align: center;
   top: 10px;
-  right: 10px;
+  right: 20px;
   font-size: 1.2rem;
   display: block;
   color: #D8000C;

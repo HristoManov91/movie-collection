@@ -22,8 +22,6 @@ export class MovieService {
     async findMovieDetail(movieId) {
         let movie = {}
 
-        // const params = {movieId : movieId};
-
         await axios.get(MOVIES_CONTROLLER_BASE_URL + movieId).then((resp) => {
             movie.status = 'OK';
             movie.data = resp.data;
@@ -35,19 +33,33 @@ export class MovieService {
         return movie;
     }
 
-    async saveEditedMovie(editedMovieDto){
+    async saveEditedMovie(editedMovieDto) {
         let movieDetails = {};
 
-        await axios.post(MOVIES_CONTROLLER_BASE_URL + 'edit' , editedMovieDto).then((resp) => {
+        await axios.post(MOVIES_CONTROLLER_BASE_URL + 'edit', editedMovieDto).then((resp) => {
             movieDetails.status = 'OK';
             movieDetails.data = resp.data;
-            console.log(movieDetails)
         }).catch((err) => {
             movieDetails.status = 'ERROR';
             movieDetails.error = err.response.data;
         })
 
         return movieDetails;
+    }
+
+    async deleteMovie(movieId) {
+        let deleteMovie = {};
+
+        const params = {movieId : movieId};
+
+        await axios.delete(MOVIES_CONTROLLER_BASE_URL + 'delete', {params}).then(() => {
+            deleteMovie.status = 'OK';
+        }).catch((err) => {
+            deleteMovie.status = 'ERROR';
+            deleteMovie.error = err.message;
+        })
+
+        return deleteMovie;
     }
 }
 

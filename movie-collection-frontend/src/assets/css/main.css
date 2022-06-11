@@ -49,13 +49,11 @@ main {
     "aside section";
     background-color: #4158D0;
     background-image: linear-gradient(118deg, #4158D0 0%, #C850C0 34%, #FFCC70 74%);
-
-
+    min-height: 700px;
 }
 
 /* Filters */
 aside.filter {
-    /*background-color: #121514;*/
     display: inline-block;
 }
 
@@ -68,7 +66,10 @@ aside.filter p {
     border-radius: 10px;
 }
 
-aside.filter span.filterTitle {
+/* Genres Filter */
+
+aside.filter span.filterTitle,
+aside.filter span.ratingFilterTitle {
     background-color: black;
     color: orange;
     border-radius: 5px;
@@ -76,23 +77,65 @@ aside.filter span.filterTitle {
     display: flex;
     justify-content: center;
     padding: 3px 5px;
-    margin: 10px 30px;
+    margin: 20px 30px;
 }
 
-/*
-*,
-*:before,
-*:after{
-padding = 0;
-margin = 0;
-box-sizing = border-box;
-font-family: "Popins" sans-serif;
+aside.filter span.ratingFilterTitle {
+    margin-top: 50px;
+}
 
-display: -ms-grid;
-display" grid
- */
+aside.filter label {
+    color: #DFE0DF;
+}
 
-aside.filter div.sliderTrack {
+aside.filter input[type="checkbox"] {
+    display: none;
+}
+
+aside.filter input[type="checkbox"] + *::before {
+    content: "";
+    display: inline-block;
+    vertical-align: bottom;
+    width: 1rem;
+    height: 1rem;
+    margin-right: 0.5rem;
+    border-radius: 10%;
+    border-style: solid;
+    border-width: 0.1rem;
+    border-color: #DFE0DF;
+    flex-shrink: 0;
+}
+
+aside.filter input[type="checkbox"]:checked + * {
+    color: orange;
+    font-weight: bold;
+}
+
+aside.filter input[type="checkbox"]:checked + *::before {
+    content: "✓";
+    color: orange;
+    text-align: center;
+    border-color: orange;
+}
+
+aside.filter input[type="checkbox"] + * {
+    display: inline-flex;
+    padding: 0.3rem 1rem;
+}
+
+aside.filter input[type="checkbox"] + *:hover{
+    cursor: pointer;
+    color: white;
+}
+
+aside.filter input[type="checkbox"]:checked + *:hover{
+    color: orange;
+}
+
+/* Duration + Rating Filter */
+
+aside.filter div.durationSliderTrack ,
+aside.filter div.ratingSliderTrack {
     width: 180px;
     height: 5px;
     background-color: white;
@@ -187,55 +230,6 @@ aside.filter div.values:before {
     bottom: -8px;
     left: 0;
     right: 0;
-}
-
-aside.filter label {
-    color: #DFE0DF;
-}
-
-aside.filter input[type="checkbox"] {
-    display: none;
-}
-
-aside.filter input[type="checkbox"] + *::before {
-    content: "";
-    display: inline-block;
-    vertical-align: bottom;
-    width: 1rem;
-    height: 1rem;
-    margin-right: 0.5rem;
-    border-radius: 10%;
-    border-style: solid;
-    border-width: 0.1rem;
-    border-color: #DFE0DF;
-    flex-shrink: 0;
-}
-
-aside.filter input[type="checkbox"]:checked + * {
-    color: orange;
-    font-weight: bold;
-}
-
-aside.filter input[type="checkbox"]:checked + *::before {
-    content: "✓";
-    color: orange;
-    text-align: center;
-    /*background: black;*/
-    border-color: orange;
-}
-
-aside.filter input[type="checkbox"] + * {
-    display: inline-flex;
-    padding: 0.3rem 1rem;
-}
-
-aside.filter input[type="checkbox"] + *:hover{
-    cursor: pointer;
-    color: white;
-}
-
-aside.filter input[type="checkbox"]:checked + *:hover{
-    color: orange;
 }
 
 /* Collection */

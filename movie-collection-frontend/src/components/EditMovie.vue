@@ -88,11 +88,11 @@
         SAVE MOVIE
       </button>
     </form>
-    <modal name="errorModal" :shiftX="1" :shiftY="0" :height="0" :width="0">
+    <modal name="editErrorModal" :shiftX="1" :shiftY="0" :height="0" :width="0">
       <ErrorModal :errorMessage="this.errorMessage"/>
     </modal>
-    <modal name="successfulModal" :shiftX="1" :shiftY="0" :height="0" :width="0">
-      <SuccessfulModal/>
+    <modal name="editSuccessfulModal" :shiftX="1" :shiftY="0" :height="0" :width="0">
+      <SuccessfulModal :success-message="this.successMessage"/>
     </modal>
   </div>
 </template>
@@ -165,6 +165,7 @@ export default {
       genres: {},
       platforms: {},
       errorMessage: null,
+      successMessage: null
     }
   },
   validations: {
@@ -220,23 +221,25 @@ export default {
   },
   methods: {
     showSuccessModal() {
-      this.$modal.show('successfulModal');
+      this.$modal.show('editSuccessfulModal');
     },
     hideSuccessModal(){
-      this.$modal.hide('successfulModal');
+      this.$modal.hide('editSuccessfulModal');
     },
     showErrorModal() {
-      this.$modal.show('errorModal');
+      this.$modal.show('editErrorModal');
     },
     hideErrorModal(){
-      this.$modal.hide('errorModal');
+      this.$modal.hide('editErrorModal');
     },
     loadGenres() {
       this.genreService.findAllGenres().then((resp) => {
         if (resp.status === 'OK') {
           this.genres = resp.data;
         } else {
-          this.errorMessage = 'Fill form genres!'
+          this.errorMessage = 'Fill form genres!';
+          this.showErrorModal();
+          setTimeout(() => {this.hideErrorModal()} , 4000 )
         }
       })
     },
@@ -245,7 +248,9 @@ export default {
         if (resp.status === 'OK') {
           this.platforms = resp.data;
         } else {
-          this.errorMessage = 'Errors in platforms!'
+          this.errorMessage = 'Errors in platforms!';
+          this.showErrorModal();
+          setTimeout(() => {this.hideErrorModal()} , 3000 )
         }
       })
     },
@@ -268,6 +273,7 @@ export default {
           if (resp.status === 'OK') {
 
             this.editedMovie = resp.data;
+            this.successMessage = 'Successful film editing!';
             this.showSuccessModal();
             setTimeout(() => {this.hideSuccessModal()} , 4000 )
 

@@ -16,5 +16,7 @@ public interface MovieService {
     MovieDetailsDto addMovie(AddMovieBindingModel addMovieBindingModel);
 
     MovieDetailsDto editMovie(EditMovieBindingModel editMovieBindingModel);
+
+    Boolean deleteMovieById(Long movieId);
 }
 

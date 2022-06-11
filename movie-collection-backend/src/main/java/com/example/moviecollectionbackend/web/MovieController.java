@@ -11,11 +11,13 @@ import javax.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -43,12 +45,16 @@ public class MovieController {
 
     @GetMapping("/{movieId}")
     private ResponseEntity<MovieDetailsDto> getMovieDetailsDto(@PathVariable Long movieId) throws UserNotFoundException {
-
         return new ResponseEntity<>(movieService.getMovieDetailsDto(movieId), HttpStatus.OK);
     }
 
     @PostMapping("/edit")
     private ResponseEntity<MovieDetailsDto> editMovie (@RequestBody @Valid EditMovieBindingModel editMovieBindingModel){
         return new ResponseEntity<>(movieService.editMovie(editMovieBindingModel) , HttpStatus.OK);
+    }
+
+    @DeleteMapping("/delete")
+    private ResponseEntity<Boolean> deleteMovie(@RequestParam(name = "movieId") Long movieId){
+        return new ResponseEntity<>(this.movieService.deleteMovieById(movieId) , HttpStatus.OK);
     }
 }

@@ -14,6 +14,7 @@ import com.example.moviecollectionbackend.service.MovieService;
 import com.example.moviecollectionbackend.service.PlatformService;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -85,6 +86,17 @@ public class MovieServiceImpl implements MovieService {
         MovieEntity save = movieRepository.save(movieEntity);
 
         return mapEntityToDto(save);
+    }
+
+    @Override
+    public Boolean deleteMovieById(Long movieId) {
+        boolean equals = movieRepository.findById(movieId).equals(Optional.empty());
+        if (!equals){
+            movieRepository.deleteById(movieId);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override

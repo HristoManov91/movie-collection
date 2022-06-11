@@ -2,6 +2,7 @@ package com.example.moviecollectionbackend.model.entity;
 
 import java.math.BigDecimal;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -61,7 +62,7 @@ public class MovieEntity extends BaseEntity{
         return this;
     }
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY , cascade = CascadeType.DETACH)
     public List<GenreEntity> getGenres() {
         return genres;
     }
@@ -131,7 +132,7 @@ public class MovieEntity extends BaseEntity{
         return this;
     }
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY , cascade = CascadeType.DETACH)
     public List<PlatformEntity> getPlatforms() {
         return platforms;
     }
