@@ -5,6 +5,7 @@ import com.example.moviecollectionbackend.model.binding.AddMovieBindingModel;
 import com.example.moviecollectionbackend.model.binding.EditMovieBindingModel;
 import com.example.moviecollectionbackend.model.dto.MovieCardDto;
 import com.example.moviecollectionbackend.model.dto.MovieDetailsDto;
+import java.net.URISyntaxException;
 import java.util.List;
 
 public interface MovieService {
@@ -18,5 +19,7 @@ public interface MovieService {
     MovieDetailsDto editMovie(EditMovieBindingModel editMovieBindingModel);
 
     Boolean deleteMovieById(Long movieId);
+
+    void updateRatings() throws URISyntaxException;
 }
 

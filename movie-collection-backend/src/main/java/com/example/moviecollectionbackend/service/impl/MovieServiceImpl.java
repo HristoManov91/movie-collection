@@ -12,12 +12,19 @@ import com.example.moviecollectionbackend.repository.MovieRepository;
 import com.example.moviecollectionbackend.service.GenreService;
 import com.example.moviecollectionbackend.service.MovieService;
 import com.example.moviecollectionbackend.service.PlatformService;
+import java.math.BigDecimal;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 @Service
 public class MovieServiceImpl implements MovieService {
@@ -36,7 +43,6 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public MovieDetailsDto addMovie(AddMovieBindingModel addMovieBindingModel) {
-        MovieEntity map = modelMapper.map(addMovieBindingModel, MovieEntity.class);
 
         MovieEntity movieEntity = mapDtoToEntity(addMovieBindingModel);
 
@@ -91,13 +97,14 @@ public class MovieServiceImpl implements MovieService {
     @Override
     public Boolean deleteMovieById(Long movieId) {
         boolean equals = movieRepository.findById(movieId).equals(Optional.empty());
-        if (!equals){
+        if (!equals) {
             movieRepository.deleteById(movieId);
             return true;
         } else {
             return false;
         }
     }
+
 
     @Override
     public List<MovieCardDto> findAllMovies() {
@@ -116,6 +123,18 @@ public class MovieServiceImpl implements MovieService {
             .orElseThrow(() -> new UserNotFoundException("User with this id " + movieId + " not found!"));
 
         return mapEntityToDto(movieEntity);
+    }
+
+    @Override
+    public void updateRatings() throws URISyntaxException {
+        List<MovieEntity> all = movieRepository.findAll();
+        for (MovieEntity movie : all) {
+            BigDecimal rating = getIMDbRating(movie.getImdbUrl());
+            if (rating != null) {
+                movie.setRating(rating);
+                movieRepository.save(movie);
+            }
+        }
     }
 
     private MovieDetailsDto mapEntityToDto(MovieEntity me) {
@@ -152,5 +171,30 @@ public class MovieServiceImpl implements MovieService {
             .setPosterUrl(bindingModel.getPosterUrl() != null ? bindingModel.getPosterUrl() : null)
             .setImdbUrl(bindingModel.getImdbUrl() != null ? bindingModel.getImdbUrl() : null)
             .setYear(bindingModel.getYear() != null ? bindingModel.getYear() : null);
+    }
+
+    private BigDecimal getIMDbRating(String IMDbURL) throws URISyntaxException {
+        RestTemplate restTemplate = new RestTemplate();
+        URI uri = new URI(IMDbURL);
+
+        ResponseEntity<String> forEntity = restTemplate.getForEntity(uri, String.class);
+        String body = forEntity.getBody();
+
+        String regex = "worstRating\\\":[0-9]+,\\\"ratingValue\\\":[0-9]\\.?[0-9]?";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(body);
+
+        String result = "";
+        while (matcher.find()) {
+            result = matcher.group();
+        }
+
+        if (result.length() > 0) {
+            int lastIndex = result.lastIndexOf(":");
+            String substring = result.substring(lastIndex + 1);
+            return new BigDecimal(substring);
+        }
+
+        return null;
     }
 }

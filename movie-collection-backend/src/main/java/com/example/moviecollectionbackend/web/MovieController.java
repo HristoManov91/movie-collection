@@ -6,6 +6,7 @@ import com.example.moviecollectionbackend.model.binding.EditMovieBindingModel;
 import com.example.moviecollectionbackend.model.dto.MovieCardDto;
 import com.example.moviecollectionbackend.model.dto.MovieDetailsDto;
 import com.example.moviecollectionbackend.service.MovieService;
+import java.net.URISyntaxException;
 import java.util.List;
 import javax.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -49,7 +50,7 @@ public class MovieController {
     }
 
     @PostMapping("/edit")
-    private ResponseEntity<MovieDetailsDto> editMovie (@RequestBody @Valid EditMovieBindingModel editMovieBindingModel){
+    private ResponseEntity<MovieDetailsDto> editMovie (@RequestBody @Valid EditMovieBindingModel editMovieBindingModel) {
         return new ResponseEntity<>(movieService.editMovie(editMovieBindingModel) , HttpStatus.OK);
     }
 
