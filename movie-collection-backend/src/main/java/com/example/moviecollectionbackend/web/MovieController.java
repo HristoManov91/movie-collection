@@ -34,7 +34,7 @@ public class MovieController {
 
 
     @PostMapping("/new")
-    private ResponseEntity<MovieDetailsDto> addMovie (@RequestBody @Valid AddMovieBindingModel addMovieBindingModel){
+    private ResponseEntity<MovieDetailsDto> addMovie (@RequestBody @Valid AddMovieBindingModel addMovieBindingModel) throws URISyntaxException {
         return new ResponseEntity<>(movieService.addMovie(addMovieBindingModel), HttpStatus.CREATED);
     }
 

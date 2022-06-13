@@ -18,6 +18,21 @@ export class MovieService {
         return movies;
     }
 
+    async addMovie(movieDto) {
+        //ToDo може върне обект и да се отвори details
+        let result = {};
+
+        await axios.post(MOVIES_CONTROLLER_BASE_URL + 'new' , movieDto).then((response) => {
+            result.status = 'OK';
+            result.data = response.data;
+        }).catch((err) => {
+            result.status = 'ERROR';
+            result.error = err.response.data;
+            console.log(err);
+        })
+
+        return result;
+    }
 
     async findMovieDetail(movieId) {
         let movie = {}

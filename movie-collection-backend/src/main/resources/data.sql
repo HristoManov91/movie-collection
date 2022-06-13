@@ -10,6 +10,12 @@ INSERT INTO genres(genre)
 VALUES ('DRAMA');
 
 INSERT INTO genres(genre)
+VALUES ('MYSTERY');
+
+INSERT INTO genres(genre)
+VALUES ('SCI-FI');
+
+INSERT INTO genres(genre)
 VALUES ('ANIMATION');
 
 INSERT INTO genres(genre)
@@ -52,7 +58,7 @@ VALUES ('The Avengers',
         2012,
         'https://www.imdb.com/title/tt0848228/',
         'https://www.youtube.com/watch?v=eOrNdBpGMv8',
-        'https://www.themoviedb.org/t/p/original/tYqp6vEOo8YlVWrYQvt9nyOhsA2.jpg',
+        'https://res.cloudinary.com/manoraev/image/upload/v1655050531/Hnet.com-image_izxiba.jpg',
         true,
         null,
         8),

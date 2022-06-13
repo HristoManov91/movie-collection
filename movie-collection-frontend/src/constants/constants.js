@@ -19,6 +19,7 @@ export const Constants = {
         TRAILER_URL_REQUIRED: 'TrailerURL is required and cannot be empty string!',
         TRAILER_URL: 'The value on TrailerURL field is not valid URL!',
         TRAILER_URL_MAX_LENGTH: 'The length of the TrailerURL field must be max 254 characters!',
-        DESCRIPTION_MAX_LENGTH: 'The length of the Description field must be max 254 characters!'
+        DESCRIPTION_MAX_LENGTH: 'The length of the Description field must be max 254 characters!',
+        LANGUAGE_REQUIRED: 'Language is required!'
     }
 }

@@ -14,7 +14,7 @@ public interface MovieService {
 
     MovieDetailsDto getMovieDetailsDto(Long movieId) throws UserNotFoundException;
 
-    MovieDetailsDto addMovie(AddMovieBindingModel addMovieBindingModel);
+    MovieDetailsDto addMovie(AddMovieBindingModel addMovieBindingModel) throws URISyntaxException;
 
     MovieDetailsDto editMovie(EditMovieBindingModel editMovieBindingModel);
 

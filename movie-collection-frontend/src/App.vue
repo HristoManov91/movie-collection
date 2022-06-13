@@ -1,7 +1,13 @@
 <template>
   <div id="app">
     <header>
-      <p>My favorite movies</p>
+      <nav>
+        <ul>
+          <li>HOME</li>
+          <li @click="addMovie">ADD MOVIE</li>
+        </ul>
+      </nav>
+      <!--      <p>My favorite movies</p>-->
       <img src="./assets/image/welcome-image.jpg" alt="home-cinema-image">
     </header>
     <main class="container">
@@ -49,7 +55,7 @@
            name="movieDetailsModal"
            :resizable="false"
            :reset="true"
-           width="830px"
+           width="860px"
            height="550px">
       <DetailsView :movie="this.movie" @deleteMovie="deletedMovie"/>
     </modal>
@@ -62,6 +68,15 @@
     <modal name="warningModal" :shiftX="1" :shiftY="0" :height="0" :width="0">
       <WarningModal/>
     </modal>
+    <modal class="addMovieModal"
+           name="addMovieModal"
+           :resizable="false"
+           :reset="true"
+           width="850px"
+           height="auto"
+           :scrollable="true">
+      <AddMovie @addMovie="successAddMovie"/>
+    </modal>
   </div>
 </template>
 <script>
@@ -70,9 +85,10 @@ import {MovieService} from "@/services/movie-service";
 import {GenreService} from "@/services/genre-service";
 import DetailsView from "@/components/DetailsView";
 import MovieCard from "@/components/MovieCard";
-import ErrorModal from "@/components/modals/ErrorModal";
-import SuccessfulModal from "@/components/modals/SuccessfulModal";
-import WarningModal from "@/components/modals/WarningModal";
+import ErrorModal from "@/components/messages/ErrorModal";
+import SuccessfulModal from "@/components/messages/SuccessfulModal";
+import WarningModal from "@/components/messages/WarningModal";
+import AddMovie from "@/components/AddMovie";
 
 export default {
   name: 'App',
@@ -81,7 +97,8 @@ export default {
     MovieCard,
     ErrorModal,
     SuccessfulModal,
-    WarningModal
+    WarningModal,
+    AddMovie
   },
   mounted() {
     this.loadMovies();
@@ -135,6 +152,12 @@ export default {
     }
   },
   methods: {
+    showAddMovieModal() {
+      this.$modal.show('addMovieModal');
+    },
+    hideAddMovieModal() {
+      this.$modal.hide('addMovieModal');
+    },
     showDetailsModal() {
       this.$modal.show('movieDetailsModal');
     },
@@ -206,6 +229,9 @@ export default {
       word1 = word1.toLowerCase();
       word2 = word2.toLowerCase();
       return word1.includes(word2);
+    },
+    addMovie() {
+      this.showAddMovieModal();
     },
     clickDetails(movieId) {
       this.movieService.findMovieDetail(movieId).then((movieDetailsDto) => {
@@ -296,6 +322,15 @@ export default {
         }, 3000)
 
       }
+    },
+    successAddMovie(){
+      this.hideAddMovieModal();
+      this.successMessage = 'The movie was successfully added!';
+      this.showSuccessModal();
+      setTimeout(() => {this.hideSuccessModal()}, 4000)
+
+      this.loadMovies();
+      this.filtersMovies();
     }
   },
   watch: {

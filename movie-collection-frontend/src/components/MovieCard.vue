@@ -10,7 +10,7 @@
         <font-awesome-icon icon="fa-clock"/>
         {{ movie.duration }} min.
       </p>
-      <p class="rating">IMDb: {{ movie.rating }}</p>
+      <p class="rating">IMDb: {{ movie.rating ? movie.rating : 'N/A'}}</p>
       <button class="button-trailer" @click="watchTrailer">
         <font-awesome-icon icon="fa-solid fa-circle-play"/>
         TRAILER

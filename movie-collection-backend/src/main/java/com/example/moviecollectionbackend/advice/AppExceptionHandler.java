@@ -1,6 +1,7 @@
 package com.example.moviecollectionbackend.advice;
 
 import com.example.moviecollectionbackend.exception.UserNotFoundException;
+import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 import org.springframework.http.HttpStatus;
@@ -15,6 +16,7 @@ public class AppExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public Map<String , String> handleInvalidArgumentEx(MethodArgumentNotValidException ex){
+        //ToDo fix message
         Map<String , String> errors = new HashMap<>();
         ex.getBindingResult().getFieldErrors().forEach(err -> {
             errors.put("field" , err.getField());
@@ -31,5 +33,12 @@ public class AppExceptionHandler {
         error.put("errorMessage" , ex.getMessage());
 
         return error;
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(URISyntaxException.class)
+    public String handleIMDbURLError(URISyntaxException ex){
+        return ex.getMessage();
+//        return "IMDb URL is not valid!";
     }
 }

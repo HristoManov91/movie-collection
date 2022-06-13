@@ -103,8 +103,8 @@ import {GenreService} from "@/services/genre-service";
 import {PlatformService} from "@/services/platform-service";
 import {MovieService} from "@/services/movie-service";
 import {between, maxLength, minLength, numeric, required, url} from "vuelidate/lib/validators";
-import ErrorModal from "@/components/modals/ErrorModal";
-import SuccessfulModal from "@/components/modals/SuccessfulModal";
+import ErrorModal from "@/components/messages/ErrorModal";
+import SuccessfulModal from "@/components/messages/SuccessfulModal";
 import {Constants} from "@/constants/constants";
 
 export default {
@@ -273,10 +273,6 @@ export default {
           if (resp.status === 'OK') {
 
             this.editedMovie = resp.data;
-            // this.successMessage = 'Successful film editing!';
-            // this.showSuccessModal();
-            // setTimeout(() => {this.hideSuccessModal()} , 4000 )
-
             this.$emit('editMovie');
 
           } else {
@@ -504,5 +500,9 @@ span.errorMessage {
   width: 80%;
   margin: 10px 10%;
   border: 1px solid #D8000C;
+}
+
+input:focus, textarea:focus, select:focus{
+  outline: none;
 }
 </style>

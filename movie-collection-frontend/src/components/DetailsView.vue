@@ -16,7 +16,7 @@
         <font-awesome-icon icon="fa-solid fa-circle-play"/>
         WATCH TRAILER
       </button>
-      <p class="detailsViewIMDb">IMDb: 7.3</p>
+      <p class="detailsViewIMDb">IMDb: {{movie.rating ? movie.rating : 'N/A'}}</p>
       <ul class="yearDurationAudioInfo">
         <li class="year">Year: {{ movie.year }}</li>
         <li class="duration">Duration: {{ movie.duration }}min</li>
@@ -53,8 +53,8 @@
 <script>
 import EditMovie from "@/components/EditMovie";
 import {MovieService} from "@/services/movie-service";
-import ErrorModal from "@/components/modals/ErrorModal";
-import SuccessfulModal from "@/components/modals/SuccessfulModal";
+import ErrorModal from "@/components/messages/ErrorModal";
+import SuccessfulModal from "@/components/messages/SuccessfulModal";
 
 export default {
   name: "DetailsView",
@@ -122,17 +122,10 @@ export default {
       this.movieService.deleteMovie(movieId).then((resp) => {
         if (resp.status === 'OK') {
 
-
-          // this.successMessage = 'The movie was successfully deleted!';
-          // this.showSuccessModal();
-          // setTimeout(() => {this.hideSuccessModal()} , 4000 )
           this.$emit('deleteMovie' , true);
 
         } else {
 
-          // this.errorMessage = 'We could not delete the movie!'
-          // this.showErrorModal();
-          // setTimeout(() => {this.hideErrorModal()} , 3000 )
           this.$emit('deleteMovie' , false);
         }
       })
@@ -160,7 +153,7 @@ export default {
 
 .detailsView {
   display: grid;
-  grid-template-columns: 20rem 1fr;
+  grid-template-columns: 23rem 1fr;
   grid-template-areas:
     "img div";
   width: 100%;
@@ -319,6 +312,10 @@ ul.detailsViewButtons li.editButton:hover {
 
 .movieEditModal {
   background: rgb(252, 186, 3, 0.4);
+}
+
+input:focus, textarea:focus, select:focus{
+  outline: none;
 }
 
 </style>

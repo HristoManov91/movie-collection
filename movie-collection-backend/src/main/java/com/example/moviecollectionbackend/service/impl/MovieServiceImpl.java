@@ -42,7 +42,7 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public MovieDetailsDto addMovie(AddMovieBindingModel addMovieBindingModel) {
+    public MovieDetailsDto addMovie(AddMovieBindingModel addMovieBindingModel) throws URISyntaxException {
 
         MovieEntity movieEntity = mapDtoToEntity(addMovieBindingModel);
 
@@ -51,6 +51,10 @@ public class MovieServiceImpl implements MovieService {
 
         List<PlatformEntity> platforms = platformService.findAllByNames(addMovieBindingModel.getPlatforms());
         movieEntity.setPlatforms(platforms);
+
+        if (addMovieBindingModel.getImdbUrl() != null) {
+            movieEntity.setRating(getIMDbRating(addMovieBindingModel.getImdbUrl()));
+        }
 
         MovieEntity save = movieRepository.save(movieEntity);
 
@@ -62,7 +66,7 @@ public class MovieServiceImpl implements MovieService {
     public MovieDetailsDto editMovie(EditMovieBindingModel editMovieBindingModel) {
         MovieEntity movieEntity = movieRepository.findById(editMovieBindingModel.getMovieId()).orElseThrow();
 
-        if (!editMovieBindingModel.getTitle1().equalsIgnoreCase(movieEntity.getTitle1())) {
+        if (!editMovieBindingModel.getTitle1().equals(movieEntity.getTitle1())) {
             movieEntity.setTitle1(editMovieBindingModel.getTitle1());
         }
 
@@ -74,8 +78,12 @@ public class MovieServiceImpl implements MovieService {
             movieEntity.setYear(editMovieBindingModel.getYear());
         }
 
-        if (!editMovieBindingModel.getTrailerUrl().equalsIgnoreCase(movieEntity.getTrailerUrl())) {
+        if (!editMovieBindingModel.getTrailerUrl().equals(movieEntity.getTrailerUrl())) {
             movieEntity.setTrailerUrl(editMovieBindingModel.getTrailerUrl());
+        }
+
+        if (!editMovieBindingModel.getPosterUrl().equals(movieEntity.getPosterUrl())) {
+            movieEntity.setPosterUrl(editMovieBindingModel.getPosterUrl());
         }
 
         movieEntity.setTitle2(editMovieBindingModel.getTitle2());
