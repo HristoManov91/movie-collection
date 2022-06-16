@@ -49,6 +49,7 @@
         <ul class="movies">
           <MovieCard v-for="(movie , id) in moviesToShow" :key="id" :movie="movie" @clickDetails="clickDetails"/>
         </ul>
+        <MyPagination :pagination="this.pagination" @changePerPage="changePerPage" @changeCurrentPage="changeCurrentPage"/>
       </section>
     </main>
     <modal class="modalElement"
@@ -89,6 +90,7 @@ import ErrorModal from "@/components/messages/ErrorModal";
 import SuccessfulModal from "@/components/messages/SuccessfulModal";
 import WarningModal from "@/components/messages/WarningModal";
 import AddMovie from "@/components/AddMovie";
+import MyPagination from "@/components/MyPagination";
 
 export default {
   name: 'App',
@@ -98,10 +100,11 @@ export default {
     ErrorModal,
     SuccessfulModal,
     WarningModal,
-    AddMovie
+    AddMovie,
+    MyPagination
   },
   mounted() {
-    this.loadMovies();
+    // this.loadMovies();
     this.loadGenres();
     this.fillDurationSlideColor();
     this.fillRatingSlideColor();
@@ -147,6 +150,15 @@ export default {
         minGap: 1,
       },
       searchTextFilter: '',
+      pagination: {
+        empty: null,
+        first: null,
+        last: null,
+        currentPage: 1,
+        perPage: 10,
+        totalElements: null,
+        totalPages: null,
+      },
       errorMessage: null,
       successMessage: null
     }
@@ -198,10 +210,14 @@ export default {
       sliderTrackElement.style.background = `linear-gradient(to right, white ${startPercent}% , orange ${startPercent}% , orange ${overPercent}% , white ${overPercent}%)`;
     },
     loadMovies() {
-      this.movieService.findAllMovies().then((moviePreviewDto) => {
-        if (moviePreviewDto.status === 'OK') {
-          this.movies = moviePreviewDto.data;
-          this.moviesToShow = this.movies;
+      console.log('loadMovies')
+      this.movieService.findAllMovies2(this.pagination.currentPage - 1, this.pagination.perPage).then((resp) => {
+        if (resp.status === 'OK') {
+          // console.log('resp' , resp.data)
+          this.mapRespPagToPag(resp.data);
+          // console.log('pagination' , this.pagination)
+          this.moviesToShow = resp.data.content;
+          // console.log('movies' , this.moviesToShow)
         } else {
           this.errorMessage = 'Error in loadMovies!';
           this.showErrorModal();
@@ -331,6 +347,25 @@ export default {
 
       this.loadMovies();
       this.filtersMovies();
+    },
+    mapRespPagToPag(data){
+      this.pagination.empty = data.empty;
+      this.pagination.first = data.first;
+      this.pagination.last = data.last;
+      this.pagination.currentPage = data.number + 1;
+      this.pagination.perPage = data.size;
+      this.pagination.totalElements = data.totalElements;
+      this.pagination.totalPages = data.totalPages;
+    },
+    changePerPage(value) {
+      console.log('changePerPage')
+      this.pagination.perPage = value;
+      this.loadMovies();
+    },
+    changeCurrentPage(value){
+      console.log('changeCurrentPage')
+      this.pagination.currentPage = value;
+      this.loadMovies();
     }
   },
   watch: {
@@ -370,7 +405,7 @@ export default {
     },
     searchTextFilter() {
       this.filtersMovies();
-    }
+    },
   }
 }
 </script>

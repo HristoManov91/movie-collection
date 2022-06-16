@@ -5,10 +5,13 @@ import com.example.moviecollectionbackend.model.binding.AddMovieBindingModel;
 import com.example.moviecollectionbackend.model.binding.EditMovieBindingModel;
 import com.example.moviecollectionbackend.model.dto.MovieCardDto;
 import com.example.moviecollectionbackend.model.dto.MovieDetailsDto;
+import com.example.moviecollectionbackend.model.entity.MovieEntity;
 import com.example.moviecollectionbackend.service.MovieService;
 import java.net.URISyntaxException;
 import java.util.List;
 import javax.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -42,6 +45,13 @@ public class MovieController {
     private ResponseEntity<List<MovieCardDto>> findAllMovies(){
         List<MovieCardDto> allMovies = movieService.findAllMovies();
         return ResponseEntity.ok(allMovies);
+    }
+
+    @GetMapping("/all2")
+    private ResponseEntity<Page<MovieCardDto>> findAllWithPagination (Pageable pageable){
+        Page<MovieCardDto> allMoviesWithPagination = movieService.findAllMoviesWithPagination(pageable);
+
+        return ResponseEntity.ok(allMoviesWithPagination);
     }
 
     @GetMapping("/{movieId}")

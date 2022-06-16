@@ -270,8 +270,24 @@ ul.detailsViewButtons li.editButton {
   color: black;
   background-color: #08AEEA;
   background-image: linear-gradient(43deg, #08AEEA 0%, #2AF598 100%);
-
 }
+
+/*
+async findAllMovies(currentPage , perPage) {
+        let movies = {};
+        let url = MOVIES_CONTROLLER_BASE_URL + `all?page=${currentPage}&perPage${perPage}`
+
+        await axios.get(url).then((resp) => {
+            movies.status = 'OK'
+            movies.data = resp.data;
+        }).catch((err) => {
+            movies.status = 'ERROR';
+            movies.error = err.response.data;
+        })
+
+        return movies;
+    }
+ */
 
 ul.detailsViewButtons li.deleteButton:hover {
   cursor: pointer;

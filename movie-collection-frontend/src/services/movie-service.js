@@ -18,6 +18,25 @@ export class MovieService {
         return movies;
     }
 
+    async findAllMovies2(currentPage , perPage) {
+        // console.log(currentPage + ' ' + perPage)
+        let movies = {};
+        let url = MOVIES_CONTROLLER_BASE_URL + `all2?page=${currentPage}&size=${perPage}`
+
+        await axios.get(url).then((resp) => {
+            // console.log('resp' , resp)
+            movies.status = 'OK'
+            movies.data = resp.data;
+        }).catch((err) => {
+            // console.log('error' , err)
+            movies.status = 'ERROR';
+            movies.error = err.response.data;
+        })
+
+        // console.log('movies' , movies)
+        return movies;
+    }
+
     async addMovie(movieDto) {
         //ToDo може върне обект и да се отвори details
         let result = {};

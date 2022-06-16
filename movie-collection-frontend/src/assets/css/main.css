@@ -342,8 +342,6 @@ input.searchInput {
 .button-trailer:hover ,
 .button-details:hover {
     cursor: pointer;
-    /*color: rgba(32, 32, 32, 0.9);*/
-    /*background: orange;*/
     color: black;
     border: none;
     background-color: #FAD961;

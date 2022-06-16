@@ -22,6 +22,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -113,16 +117,25 @@ public class MovieServiceImpl implements MovieService {
         }
     }
 
+    @Override
+    public Page<MovieCardDto> findAllMoviesWithPagination(Pageable pageable){
+        Page<MovieCardDto> map = movieRepository.findAllMoviesCard(pageable).map(m -> modelMapper.map(m, MovieCardDto.class));
+
+        System.out.println();
+
+        return map;
+    }
 
     @Override
     public List<MovieCardDto> findAllMovies() {
-        List<MovieEntity> allMovies = movieRepository.findAllMoviesCard();
-
-        return allMovies.stream().map(m -> {
-            MovieCardDto map = modelMapper.map(m, MovieCardDto.class);
-            map.setGenres(m.getGenres().stream().map(GenreEntity::getGenre).collect(Collectors.toList()));
-            return map;
-        }).toList();
+//        List<MovieEntity> allMovies = movieRepository.findAllMoviesCard();
+//
+//        return allMovies.stream().map(m -> {
+//            MovieCardDto map = modelMapper.map(m, MovieCardDto.class);
+//            map.setGenres(m.getGenres().stream().map(GenreEntity::getGenre).collect(Collectors.toList()));
+//            return map;
+//        }).toList();
+        return null;
     }
 
     @Override
