@@ -106,8 +106,8 @@ div.pagination ul {
 
 div.pagination ul li.paginationElement {
   display: inline-block;
-  padding: 0.3rem 0.5rem;
-  margin: 0.3rem 0.3rem;
+  padding: 0.3rem 0.6rem;
+  margin: 0.2rem 0.2rem;
 }
 
 div.pagination ul li.paginationElement:hover {
@@ -125,7 +125,7 @@ li.currentPageStyle {
   color: black;
   font-weight: bold;
   border: 2px solid black;
-  border-radius: 50px;
+  border-radius: 60%;
 }
 
 </style>

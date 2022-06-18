@@ -8,6 +8,7 @@ import com.example.moviecollectionbackend.model.dto.MovieDetailsDto;
 import com.example.moviecollectionbackend.model.entity.MovieEntity;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.Map;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -15,7 +16,7 @@ public interface MovieService {
 
     List<MovieCardDto> findAllMovies();
 
-    Page<MovieCardDto> findAllMoviesWithPagination(Pageable pageable);
+    Page<MovieCardDto> findAllMoviesWithPagination(Pageable pageable , Map<String , Object> params);
 
     MovieDetailsDto getMovieDetailsDto(Long movieId) throws UserNotFoundException;
 

@@ -15,9 +15,12 @@ import com.example.moviecollectionbackend.service.PlatformService;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -28,6 +31,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 
 @Service
@@ -118,10 +123,24 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public Page<MovieCardDto> findAllMoviesWithPagination(Pageable pageable){
-        Page<MovieCardDto> map = movieRepository.findAllMoviesCard(pageable).map(m -> modelMapper.map(m, MovieCardDto.class));
-
+    public Page<MovieCardDto> findAllMoviesWithPagination(Pageable pageable, Map<String, Object> params) {
         System.out.println();
+
+        Page<MovieEntity> allMoviesCard = movieRepository
+            .findAllMoviesCard(pageable,
+                params.get("minDuration") != null && !("").equals(params.get("minDuration")) ? Optional.of((Integer) params.get("minDuration"))
+                    : Optional.empty(),
+                params.get("maxDuration") != null && !("").equals(params.get("maxDuration")) ? Optional.of((Integer) params.get("maxDuration"))
+                    : Optional.empty(),
+                params.get("minRating") != null && !("").equals(params.get("minRating")) ? Optional.of((Number) params.get("minRating"))
+                    : Optional.empty(),
+                params.get("maxRating") != null && !("").equals(params.get("maxRating")) ? Optional.of((Number) params.get("maxRating"))
+                    : Optional.empty(),
+                params.get("searchText") != null ? Optional.of((String) params.get("searchText"))
+                    : Optional.empty(),
+                params.get("genres") != null ? Optional.of((List<String>) params.get("genres")) : Optional.empty());
+
+        Page<MovieCardDto> map = allMoviesCard.map(m -> modelMapper.map(m, MovieCardDto.class));
 
         return map;
     }
