@@ -5,15 +5,15 @@ header {
     position: relative;
 }
 
-header p {
-    color: orange;
-    font-size: 2rem;
-    text-transform: uppercase;
-    padding-left: 40%;
-    position: absolute;
-    bottom: 25rem;
-    z-index: 50;
-}
+/*header p {*/
+/*    color: orange;*/
+/*    font-size: 2rem;*/
+/*    text-transform: uppercase;*/
+/*    padding-left: 40%;*/
+/*    position: absolute;*/
+/*    bottom: 25rem;*/
+/*    z-index: 50;*/
+/*}*/
 
 header img {
     width: 100%;
@@ -26,6 +26,12 @@ header nav {
     height: 3rem;
     padding-top: 5px;
     padding-bottom: 5px;
+}
+
+#time {
+    display: flex;
+    gap: 0.8rem;
+    color: white;
 }
 
 header nav li {
@@ -50,7 +56,7 @@ main {
     "aside section";
     background-color: #4158D0;
     background-image: linear-gradient(118deg, #4158D0 0%, #C850C0 34%, #FFCC70 74%);
-    min-height: 700px;
+    min-height: 50rem;
 }
 
 /* Filters */
@@ -66,6 +72,26 @@ aside.filter p {
     padding: 0.5rem;
     border-radius: 10px;
 }
+
+/*#clearButton {*/
+/*    display: inline-block;*/
+/*    font-size: 1rem;*/
+/*    margin: 3rem 1.7rem;*/
+/*    padding: 0.5rem 0.5rem;*/
+/*    border-radius: 10px;*/
+/*    text-align: center;*/
+/*    text-transform: uppercase;*/
+/*    font-weight: bold;*/
+/*    color: black;*/
+/*    background-color: #FFE53B;*/
+/*    background-image: linear-gradient(225deg, #FFE53B 0%, #FF2525 74%);*/
+/*}*/
+
+/*#clearButton:hover {*/
+/*    cursor: pointer;*/
+/*    background-color: #FFE53B;*/
+/*    background-image: linear-gradient(45deg, #FFE53B 0%, #FF2525 74%);*/
+/*}*/
 
 /* Genres Filter */
 

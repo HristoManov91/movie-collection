@@ -148,12 +148,12 @@ public class MovieServiceImpl implements MovieService {
     @Override
     public List<MovieCardDto> findAllMovies() {
 //        List<MovieEntity> allMovies = movieRepository.findAllMoviesCard();
-//
+
 //        return allMovies.stream().map(m -> {
 //            MovieCardDto map = modelMapper.map(m, MovieCardDto.class);
-//            map.setGenres(m.getGenres().stream().map(GenreEntity::getGenre).collect(Collectors.toList()));
 //            return map;
 //        }).toList();
+
         return null;
     }
 

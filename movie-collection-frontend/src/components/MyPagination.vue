@@ -10,6 +10,7 @@
     </div>
     <ul>
       <li class="paginationElement prev-next" @click="changeCurrentPage('Prev')">Prev</li>
+      <!-- ToDo fix css circle reset -->
       <li class="paginationElement" @click="changeCurrentPage(n)" :class="{currentPageStyle : n === currentPage}"
           v-for="n in this.pagination.totalPages" :key="n">{{n}}</li>
       <li class="paginationElement prev-next" @click="changeCurrentPage('Next')">Next</li>

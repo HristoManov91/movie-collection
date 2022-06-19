@@ -19,22 +19,17 @@ export class MovieService {
     }
 
     async findAllMoviesWithParams(currentPage , perPage , params) {
-        console.log(currentPage + ' ' + perPage)
-        console.log(params)
         let movies = {};
         let url = MOVIES_CONTROLLER_BASE_URL + `all?page=${currentPage}&size=${perPage}`
 
         await axios.post(url , params).then((resp) => {
-            console.log('resp' , resp)
             movies.status = 'OK'
             movies.data = resp.data;
         }).catch((err) => {
-            // console.log('error' , err)
             movies.status = 'ERROR';
             movies.error = err.response.data;
         })
 
-        // console.log('movies' , movies)
         return movies;
     }
 

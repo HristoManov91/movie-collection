@@ -3,7 +3,6 @@
     <header>
       <nav>
         <ul>
-          <li>HOME</li>
           <li @click="addMovie">ADD MOVIE</li>
         </ul>
       </nav>
@@ -42,6 +41,7 @@
                step="0.5">
         <input class="sliderRange" v-model="ratingFilter.maxRating" id="ratingSlider2" type="range" min="0" max="10"
                step="0.5">
+<!--        <p id="clearButton" @click="clearFilters">Clear Filters</p>-->
       </aside>
       <section class="catalogue">
         <p class="movies-title">Collection</p>
@@ -49,7 +49,7 @@
         <ul class="movies">
           <MovieCard v-for="(movie , id) in moviesToShow" :key="id" :movie="movie" @clickDetails="clickDetails"/>
         </ul>
-        <MyPagination v-if="this.moviesToShow.length > 0" :pagination="this.pagination" @changePerPage="changePerPage"
+        <MyPagination :pagination="this.pagination" @changePerPage="changePerPage"
                       @changeCurrentPage="changeCurrentPage"/>
       </section>
     </main>
@@ -105,10 +105,11 @@ export default {
     MyPagination
   },
   mounted() {
-    this.loadMovies();
+    // this.loadMovies();
     this.loadGenres();
     this.fillDurationSlideColor();
     this.fillRatingSlideColor();
+    this.setClock();
   },
   data() {
     return {
@@ -139,7 +140,7 @@ export default {
         description: String,
       },
       genres: [],
-      durationFilter:{
+      durationFilter: {
         minDuration: 0,
         maxDuration: 300,
         minGap: 10,
@@ -167,7 +168,7 @@ export default {
         genres: [],
       },
       errorMessage: null,
-      successMessage: null
+      successMessage: null,
     }
   },
   methods: {
@@ -218,13 +219,10 @@ export default {
     },
     loadMovies() {
 
-      this.movieService.findAllMoviesWithParams(this.pagination.currentPage - 1, this.pagination.perPage , this.filterParams).then((resp) => {
+      this.movieService.findAllMoviesWithParams(this.pagination.currentPage - 1, this.pagination.perPage, this.filterParams).then((resp) => {
         if (resp.status === 'OK') {
-          console.log('resp' , resp.data)
           this.mapRespPagToPag(resp.data);
-          console.log('pagination' , this.pagination)
           this.moviesToShow = resp.data.content;
-          console.log('movies' , this.moviesToShow)
         } else {
           this.errorMessage = 'Error in loadMovies!';
           this.showErrorModal();
@@ -248,11 +246,11 @@ export default {
         }
       })
     },
-    caseInsensitiveCheck(word1, word2) {
-      word1 = word1.toLowerCase();
-      word2 = word2.toLowerCase();
-      return word1.includes(word2);
-    },
+    // caseInsensitiveCheck(word1, word2) {
+    //   word1 = word1.toLowerCase();
+    //   word2 = word2.toLowerCase();
+    //   return word1.includes(word2);
+    // },
     addMovie() {
       this.showAddMovieModal();
     },
@@ -280,8 +278,8 @@ export default {
         this.filterParams.genres.splice(elementIndex, 1);
       }
 
+      this.pagination.currentPage = 1;
       this.loadMovies();
-      // this.filtersMovies();
     },
     // filtersMovies()
     //   this.moviesToShow = [];
@@ -375,7 +373,20 @@ export default {
       console.log('changeCurrentPage')
       this.pagination.currentPage = value;
       this.loadMovies();
-    }
+    },
+    // clearFilters() {
+    //   this.durationFilter.maxDuration = 300;
+    //   this.durationFilter.minDuration = 0;
+    //   this.ratingFilter.minRating = 0;
+    //   this.ratingFilter.maxRating = 10;
+    //
+    //   this.filterParams.minDuration = 0;
+    //   this.filterParams.maxDuration = 0;
+    //   this.filterParams.minRating = 1;
+    //   this.filterParams.maxRating = 10;
+    //   this.filterParams.searchText = '';
+    //   this.filterParams.genres = [];
+    // }
   },
   watch: {
     durationFilter: {
@@ -394,8 +405,8 @@ export default {
         this.filterParams.maxDuration = Number(this.durationFilter.maxDuration);
 
         this.fillDurationSlideColor();
+        this.pagination.currentPage = 1;
         this.loadMovies();
-        // this.filtersMovies();
       },
       deep: true
     },
@@ -415,13 +426,14 @@ export default {
         this.filterParams.maxRating = Number(this.ratingFilter.maxRating);
 
         this.fillRatingSlideColor();
+        this.pagination.currentPage = 1;
         this.loadMovies();
-        // this.filtersMovies();
       },
       deep: true
     },
     "filterParams.searchText": {
       handler() {
+        this.pagination.currentPage = 1;
         this.loadMovies();
       }
     },
