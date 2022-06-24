@@ -6,15 +6,10 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedAttributeNode;
 import javax.persistence.NamedEntityGraph;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 
 @NamedEntityGraph(
     name="movie-card",
@@ -102,7 +97,7 @@ public class MovieEntity extends BaseEntity{
         return this;
     }
 
-    @Column(nullable = false , length = 1000)
+    @Column(nullable = false)
     public String getImdbUrl() {
         return imdbUrl;
     }
@@ -112,7 +107,7 @@ public class MovieEntity extends BaseEntity{
         return this;
     }
 
-    @Column(nullable = false , length = 1000)
+    @Column(nullable = false)
     public String getTrailerUrl() {
         return trailerUrl;
     }
@@ -122,7 +117,7 @@ public class MovieEntity extends BaseEntity{
         return this;
     }
 
-    @Column(nullable = false , length = 1000)
+    @Column(nullable = false)
     public String getPosterUrl() {
         return posterUrl;
     }

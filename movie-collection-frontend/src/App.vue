@@ -49,8 +49,10 @@
         <ul class="movies">
           <MovieCard v-for="(movie , id) in moviesToShow" :key="id" :movie="movie" @clickDetails="clickDetails"/>
         </ul>
-        <MyPagination :pagination="this.pagination" @changePerPage="changePerPage"
-                      @changeCurrentPage="changeCurrentPage"/>
+        <MyPagination :pagination="this.pagination"
+                      @changePerPage="changePerPage"
+                      @changeCurrentPage="changeCurrentPage"
+        />
       </section>
     </main>
     <modal class="modalElement"
@@ -105,17 +107,15 @@ export default {
     MyPagination
   },
   mounted() {
-    // this.loadMovies();
+    this.loadMovies()
     this.loadGenres();
     this.fillDurationSlideColor();
     this.fillRatingSlideColor();
-    this.setClock();
   },
   data() {
     return {
       movieService: new MovieService(),
       genreService: new GenreService(),
-      movies: [],
       moviesToShow: [],
       movie: {
         movieId: {
@@ -223,6 +223,13 @@ export default {
         if (resp.status === 'OK') {
           this.mapRespPagToPag(resp.data);
           this.moviesToShow = resp.data.content;
+          if (this.pagination.empty) {
+            this.showWarningModal()
+
+            setTimeout(() => {
+              this.hideWarningModal()
+            } , 4000)
+          }
         } else {
           this.errorMessage = 'Error in loadMovies!';
           this.showErrorModal();
@@ -365,12 +372,11 @@ export default {
       this.pagination.totalPages = data.totalPages;
     },
     changePerPage(value) {
-      console.log('changePerPage')
       this.pagination.perPage = value;
+      this.pagination.currentPage = 1;
       this.loadMovies();
     },
     changeCurrentPage(value) {
-      console.log('changeCurrentPage')
       this.pagination.currentPage = value;
       this.loadMovies();
     },

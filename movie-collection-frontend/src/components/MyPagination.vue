@@ -9,11 +9,14 @@
       </select>
     </div>
     <ul>
+      <li class="paginationElement prev-next" @click="changeCurrentPage('First')">First</li>
       <li class="paginationElement prev-next" @click="changeCurrentPage('Prev')">Prev</li>
-      <!-- ToDo fix css circle reset -->
-      <li class="paginationElement" @click="changeCurrentPage(n)" :class="{currentPageStyle : n === currentPage}"
-          v-for="n in this.pagination.totalPages" :key="n">{{n}}</li>
+      <li class="paginationElement" @click="changeCurrentPage(value)"
+          :class="{currentPageStyle : value === currentPage}"
+          v-for="(value , index) in this.offset" :key="index">{{ value }}
+      </li>
       <li class="paginationElement prev-next" @click="changeCurrentPage('Next')">Next</li>
+      <li class="paginationElement prev-next" @click="changeCurrentPage('Last')">Last</li>
     </ul>
   </div>
 </template>
@@ -23,42 +26,93 @@ export default {
   name: "MyPagination",
   props: {
     pagination: {
-      empty: null,
-      first: null,
-      last: null,
-      currentPage: 1,
-      perPage: 10,
-      totalElements: null,
-      totalPages: null,
+      empty: Boolean,
+      first: Boolean,
+      last: Boolean,
+      currentPage: Number,
+      perPage: Number,
+      totalElements: Number,
+      totalPages: Number,
     },
-  },
-  mounted() {
-    this.currentPage = this.pagination.currentPage;
-    this.perPage = this.pagination.perPage;
   },
   data() {
     return {
-      currentPage: null,
-      perPage: null,
+      currentPage: 1,
+      perPage: 10,
+      offset: [1,2,3,4,5]
     }
   },
   methods: {
     changeCurrentPage(value) {
       if (value === 'Prev' && this.pagination.first === false) {
+
         this.currentPage = this.currentPage - 1;
         this.$emit('changeCurrentPage', this.currentPage);
+
       } else if (value === 'Next' && this.pagination.last === false) {
+
         this.currentPage = this.currentPage + 1;
         this.$emit('changeCurrentPage', this.currentPage);
-      } else if (typeof value === 'number' && value !== this.currentPage && value >= 1 && value <= this.pagination.totalPages){
+
+      } else if (typeof value === 'number' && value !== this.currentPage && value >= 1 && value <= this.pagination.totalPages) {
+
         this.currentPage = value;
         this.$emit('changeCurrentPage', this.currentPage);
+
+      } else if (value === 'First' && !this.pagination.first) {
+
+        this.currentPage = 1;
+        this.$emit('changeCurrentPage', this.currentPage);
+
+      } else if (value === 'Last' && !this.pagination.last) {
+
+        this.currentPage = this.pagination.totalPages;
+        this.$emit('changeCurrentPage', this.currentPage)
       }
+
+      this.setOffset()
     },
+    setOffset(){
+
+      if (this.pagination.totalPages < 5) {
+
+        this.offset = [];
+        let count = 1;
+        for (let i = 0; i < this.pagination.totalPages; i++) {
+          this.offset.push(count++)
+        }
+
+      } else if (this.currentPage < 3) {
+
+        this.offset = [1, 2, 3, 4, 5]
+
+      } else if (this.currentPage >= this.pagination.totalPages - 2) {
+
+        let lastPage = this.pagination.totalPages;
+        this.offset = [lastPage - 4, lastPage - 3, lastPage - 2, lastPage - 1, lastPage]
+
+      } else {
+
+        this.offset = [this.currentPage - 2, this.currentPage - 1, this.currentPage, this.currentPage + 1, this.currentPage + 2]
+      }
+    }
   },
   watch: {
-    perPage(value) {
-      this.$emit('changePerPage', value);
+    perPage(newValue , oldValue) {
+      if (oldValue >= this.pagination.totalElements){
+        return;
+      }
+
+      this.currentPage = 1;
+      this.setOffset();
+      this.$emit('changePerPage', newValue);
+
+    },
+    "pagination.totalElements": {
+      handler() {
+        this.currentPage = 1;
+        this.setOffset();
+      },
     },
   }
 }
