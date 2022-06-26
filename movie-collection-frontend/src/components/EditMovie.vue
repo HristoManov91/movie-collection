@@ -1,5 +1,7 @@
 <template>
   <div class="container">
+    <!-- ToDo fix id -->
+    <router-link :to="{name: 'details'}"> <p class="closeButton" @click="closeEditMovie">X</p></router-link>
     <p class="pageTitle">Edit movie</p>
     <form @submit.prevent="saveEditMovie" class="editForm">
       <div class="row">
@@ -277,6 +279,7 @@ export default {
           if (resp.status === 'OK') {
 
             this.editedMovie = resp.data;
+            this.$router.push({name: 'details' , params: {movieId: this.editedMovie.movieId}})
             this.$emit('editMovie');
 
           } else {
@@ -287,7 +290,11 @@ export default {
           }
         })
       }
-    }
+    },
+    closeEditMovie() {
+      this.$router.push({name: 'details' , params: {movieId: this.editedMovie.movieId}})
+      this.$emit('closeEditMovie');
+    },
   }
 }
 </script>
@@ -298,6 +305,24 @@ div.container {
   background-color: #010340;
   height: 100%;
   width: 100%;
+}
+
+div.container p.closeButton {
+  position: absolute;
+  color: white;
+  background-color: red;
+  padding: 0.3rem 0.7rem;
+  font-size: 2rem;
+  right: 0;
+  top: 0;
+  text-align: center;
+  font-family: "Helvetica",serif;
+  font-weight: bold;
+}
+
+div.container p.closeButton:hover {
+  cursor: pointer;
+  border: 1px solid white;
 }
 
 div p.pageTitle {

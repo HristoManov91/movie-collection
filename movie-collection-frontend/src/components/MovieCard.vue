@@ -4,20 +4,22 @@
         :src="movie.posterUrl"
         class="movie-poster"/>
     <div class="movie-info">
-      <h3 class="title1">{{movie.title1}}</h3>
-      <h5 v-if="movie.title2 != null" class="title2">{{movie.title2}}</h5>
+      <h3 class="title1">{{ movie.title1 }}</h3>
+      <h5 v-if="movie.title2 != null" class="title2">{{ movie.title2 }}</h5>
       <p class="duration">
         <font-awesome-icon icon="fa-clock"/>
         {{ movie.duration }} min.
       </p>
-      <p class="rating"><span class="imdbRating">IMDb</span> {{ movie.rating ? movie.rating : 'N/A'}}/10</p>
+      <p class="rating"><span class="imdbRating">IMDb</span> {{ movie.rating ? movie.rating : 'N/A' }}/10</p>
       <button class="button-trailer" @click="watchTrailer">
         <font-awesome-icon icon="fa-solid fa-circle-play"/>
         TRAILER
       </button>
-      <button class="button-details" @click="clickDetails(movie.id)">
-        DETAILS
-      </button>
+      <router-link :to="{name: 'details'}"> <!-- ToDo id-->
+        <button class="button-details" @click="clickDetails(movie.id)">
+          DETAILS
+        </button>
+      </router-link>
     </div>
   </li>
 </template>
@@ -55,11 +57,12 @@ export default {
     }
   },
   methods: {
-    watchTrailer () {
+    watchTrailer() {
       window.open(this.movie.trailerUrl);
     },
     clickDetails(movieId) {
-      this.$emit('clickDetails' , movieId);
+      this.$router.push({name: 'details', params: {movieId: movieId}});
+      this.$emit('clickDetails', movieId);
     }
   }
 }

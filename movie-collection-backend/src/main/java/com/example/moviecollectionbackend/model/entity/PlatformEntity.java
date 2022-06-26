@@ -8,12 +8,12 @@ import javax.persistence.Table;
 @Table(name = "platforms")
 public class PlatformEntity extends BaseEntity{
 
+    @Column
     private String platform;
 
     public PlatformEntity() {
     }
 
-    @Column
     public String getPlatform() {
         return platform;
     }

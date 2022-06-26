@@ -26,13 +26,21 @@ header nav {
     height: 3rem;
     padding-top: 5px;
     padding-bottom: 5px;
+    display: flex;
+    justify-content: space-between;
+}
+
+header nav ul {
+    /*margin: 1rem;*/
+    display: flex;
+    justify-content: space-around;
 }
 
 header nav li {
     font-size: 1.2rem;
     color: white;
     display: inline-block;
-    margin-left: 25px;
+    margin: 0 0.5rem;
     padding: 0.4rem;
     border-radius: 3px;
     font-weight: bold;
@@ -58,13 +66,14 @@ aside.filter {
     display: inline-block;
 }
 
-aside.filter p {
+aside.filter p.filtersTitle {
     text-align: center;
     font-size: 1.5rem;
     background-color: orange;
     margin: 0.5rem;
     padding: 0.5rem;
     border-radius: 10px;
+    letter-spacing: 1px;
 }
 
 #clearButton {
@@ -99,6 +108,7 @@ aside.filter span.ratingFilterTitle {
     justify-content: center;
     padding: 3px 5px;
     margin: 20px 30px;
+    letter-spacing: 1px;
 }
 
 aside.filter span.ratingFilterTitle {
@@ -303,6 +313,7 @@ div.catalogueHeader select.orderBy:hover {
     border-radius: 10px;
     display: inline-block;
     color: orange;
+    letter-spacing: 1px;
 }
 
 input.searchInput {

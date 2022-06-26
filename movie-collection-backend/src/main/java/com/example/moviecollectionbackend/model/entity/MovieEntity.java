@@ -21,23 +21,34 @@ import javax.persistence.Table;
 @Table(name = "movies")
 public class MovieEntity extends BaseEntity{
 
+    @Column(nullable = false , length = 50)
     private String title1;
+    @Column(length = 50 , unique = true)
     private String title2;
+    @ManyToMany(fetch = FetchType.LAZY , cascade = CascadeType.DETACH)
     private List<GenreEntity> genres;
+    @Column(nullable = false)
     private Integer duration;
+    @Column(nullable = false)
     private Integer year;
+    @Column
     private BigDecimal rating;
+    @Column(nullable = false)
     private String imdbUrl;
+    @Column(nullable = false)
     private String trailerUrl;
+    @Column(nullable = false)
     private String posterUrl;
+    @ManyToMany(fetch = FetchType.LAZY , cascade = CascadeType.DETACH)
     private List<PlatformEntity> platforms;
+    @Column
     private Boolean bulgarianLanguage;
+    @Column
     private String description;
 
     public MovieEntity() {
     }
 
-    @Column(nullable = false , length = 50)
     public String getTitle1() {
         return title1;
     }
@@ -47,7 +58,6 @@ public class MovieEntity extends BaseEntity{
         return this;
     }
 
-    @Column(length = 50 , unique = true)
     public String getTitle2() {
         return title2;
     }
@@ -57,7 +67,6 @@ public class MovieEntity extends BaseEntity{
         return this;
     }
 
-    @ManyToMany(fetch = FetchType.LAZY , cascade = CascadeType.DETACH)
     public List<GenreEntity> getGenres() {
         return genres;
     }
@@ -67,7 +76,6 @@ public class MovieEntity extends BaseEntity{
         return this;
     }
 
-    @Column(nullable = false)
     public Integer getDuration() {
         return duration;
     }
@@ -77,7 +85,6 @@ public class MovieEntity extends BaseEntity{
         return this;
     }
 
-    @Column(nullable = false)
     public Integer getYear() {
         return year;
     }
@@ -87,7 +94,6 @@ public class MovieEntity extends BaseEntity{
         return this;
     }
 
-    @Column
     public BigDecimal getRating() {
         return rating;
     }
@@ -97,7 +103,6 @@ public class MovieEntity extends BaseEntity{
         return this;
     }
 
-    @Column(nullable = false)
     public String getImdbUrl() {
         return imdbUrl;
     }
@@ -107,7 +112,6 @@ public class MovieEntity extends BaseEntity{
         return this;
     }
 
-    @Column(nullable = false)
     public String getTrailerUrl() {
         return trailerUrl;
     }
@@ -117,7 +121,6 @@ public class MovieEntity extends BaseEntity{
         return this;
     }
 
-    @Column(nullable = false)
     public String getPosterUrl() {
         return posterUrl;
     }
@@ -127,7 +130,6 @@ public class MovieEntity extends BaseEntity{
         return this;
     }
 
-    @ManyToMany(fetch = FetchType.LAZY , cascade = CascadeType.DETACH)
     public List<PlatformEntity> getPlatforms() {
         return platforms;
     }
@@ -137,7 +139,6 @@ public class MovieEntity extends BaseEntity{
         return this;
     }
 
-    @Column
     public Boolean getBulgarianLanguage() {
         return bulgarianLanguage;
     }
@@ -147,7 +148,6 @@ public class MovieEntity extends BaseEntity{
         return this;
     }
 
-    @Column
     public String getDescription() {
         return description;
     }

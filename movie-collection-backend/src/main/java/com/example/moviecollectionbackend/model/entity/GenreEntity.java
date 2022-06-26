@@ -8,12 +8,12 @@ import javax.persistence.Table;
 @Table(name = "genres")
 public class GenreEntity extends BaseEntity {
 
+    @Column
     private String genre;
 
     public GenreEntity() {
     }
 
-    @Column
     public String getGenre() {
         return genre;
     }

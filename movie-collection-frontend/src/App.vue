@@ -3,8 +3,13 @@
     <header>
       <nav>
         <ul>
-          <li @click="addMovie">ADD MOVIE</li>
-          <li @click="getStatistics">STATISTICS</li>
+          <router-link :to="{name: 'add'}"><li @click="addMovie">ADD MOVIE</li></router-link>
+          <router-link :to="{name: 'statistics'}"><li @click="getStatistics">STATISTICS</li></router-link>
+        </ul>
+        <ul>
+          <li>LOGIN</li>
+          <li>REGISTER</li>
+          <li>LOGOUT</li>
         </ul>
       </nav>
       <!--      <p>My favorite movies</p>-->
@@ -12,7 +17,7 @@
     </header>
     <main class="container">
       <aside class="filter">
-        <p>Filters</p>
+        <p class="filtersTitle">Filters</p>
         <span class="filterTitle">Genres:</span>
         <div ref="genres" v-for="(genre , i) in genres" :key="i">
           <input type="checkbox" :id="i" :name="genre" :value="genre">
@@ -60,10 +65,13 @@
             </select>
           </div>
           <p class="movies-title">Collection</p>
-          <input class="searchInput" v-model.trim.lazy="filterParams.searchText" type="text" placeholder="Search...">
+          <input class="searchInput" v-model.trim="filterParams.searchText" type="text" placeholder="Search...">
         </div>
         <ul class="movies">
-          <MovieCard v-for="(movie , id) in moviesToShow" :key="id" :movie="movie" @clickDetails="clickDetails"/>
+          <MovieCard v-for="(movie , id) in moviesToShow"
+                     :key="id"
+                     :movie="movie"
+                     @clickDetails="clickDetails"/>
         </ul>
         <MyPagination :pagination="this.pagination"
                       @changePerPage="changePerPage"
@@ -75,9 +83,10 @@
            name="movieDetailsModal"
            :resizable="false"
            :reset="true"
+           :clickToClose="false"
            width="860px"
            height="550px">
-      <DetailsView :movie="this.movie" @deleteMovie="deletedMovie"/>
+      <DetailsView :movie="this.movie" @deleteMovie="deletedMovie" @closeDetails="hideDetailsModal"/>
     </modal>
     <modal name="errorModal" :shiftX="1" :shiftY="0" :height="0" :width="0">
       <ErrorModal :errorMessage="this.errorMessage"/>
@@ -92,13 +101,20 @@
            name="addMovieModal"
            :resizable="false"
            :reset="true"
+           :clickToClose="false"
            width="850px"
            height="auto"
            :scrollable="true">
-      <AddMovie @addMovie="successAddMovie"/>
+      <AddMovie @addMovie="successAddMovie" @closeAddMovie="hideAddMovieModal"/>
     </modal>
-    <modal name="statisticsModal" class="statisticsModal" :resizable="false" :reset="true" width="600px" height="auto" :scrollable="true">
-      <StatisticsView :statistics="this.statistics"/>
+    <modal name="statisticsModal" class="statisticsModal"
+           :resizable="false"
+           :reset="true"
+           :clickToClose="false"
+           width="600px"
+           height="auto"
+           :scrollable="true">
+      <StatisticsView :statistics="this.statistics" @closeStatistics="hideStatisticsModal"/>
     </modal>
   </div>
 </template>
@@ -199,6 +215,7 @@ export default {
       this.$modal.show('addMovieModal');
     },
     hideAddMovieModal() {
+      console.log('hide')
       this.$modal.hide('addMovieModal');
     },
     showDetailsModal() {
@@ -227,6 +244,9 @@ export default {
     },
     showStatisticsModal(){
       this.$modal.show('statisticsModal')
+    },
+    hideStatisticsModal() {
+      this.$modal.hide('statisticsModal');
     },
     fillDurationSlideColor() {
       //ToDo fix % calculate from 30 to 300
@@ -316,6 +336,7 @@ export default {
           this.hideSuccessModal()
         }, 4000)
 
+
         this.loadMovies();
 
       } else {
@@ -362,6 +383,7 @@ export default {
         if (resp.status === 'OK') {
 
           this.statistics = resp.data;
+          this.$router.push({name: 'statistics'})
           this.showStatisticsModal();
 
         } else {
@@ -390,7 +412,7 @@ export default {
       this.filterParams.maxRating = 10;
       this.filterParams.searchText = '';
       this.filterParams.genres = [];
-    }
+    },
   },
   watch: {
     durationFilter: {

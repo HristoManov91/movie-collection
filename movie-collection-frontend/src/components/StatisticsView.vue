@@ -1,5 +1,6 @@
 <template>
   <div class="statsContainer">
+    <router-link to="/movies"> <p class="closeButton" @click="closeStatistics">X</p></router-link>
     <p class="title">Statistics</p>
     <p>Total movies: <span>{{ statistics.totalMovies }} </span> movies.</p>
     <p>Total duration: <span>{{ statistics.totalDurations }}</span> min.</p>
@@ -42,6 +43,11 @@ export default {
       documentaryMovies: Number,
       serialMovies: Number
     }
+  },
+  methods: {
+    closeStatistics(){
+      this.$emit('closeStatistics')
+    }
   }
 }
 </script>
@@ -72,5 +78,23 @@ div.statsContainer p.title {
 
 div.statsContainer span {
   color: #FFDF65;
+}
+
+div.statsContainer p.closeButton {
+  position: absolute;
+  color: white;
+  background-color: red;
+  padding: 0.3rem 0.7rem;
+  font-size: 2rem;
+  right: 0;
+  top: 0;
+  text-align: center;
+  font-family: "Helvetica",serif;
+  font-weight: bold;
+}
+
+div.statsContainer p.closeButton:hover {
+  cursor: pointer;
+  border: 1px solid white;
 }
 </style>

@@ -4,6 +4,7 @@
          :src="movie.posterUrl"
          alt="poster-image">
     <div class="detailsViewInfo">
+      <router-link :to="{name: 'home'}"><p class="closeButton" @click="closeDetails">X</p></router-link>
       <p class="detailsViewTitle1">{{ movie.title1 }}</p>
       <p class="detailsViewTitle2">{{ movie.title2 }}</p>
       <ul class="detailsViewGenres">
@@ -16,7 +17,7 @@
         <font-awesome-icon icon="fa-solid fa-circle-play"/>
         WATCH TRAILER
       </button>
-      <p class="detailsViewIMDb"><span class="imdbRating">IMDb</span> {{movie.rating ? movie.rating : 'N/A'}}/10</p>
+      <p class="detailsViewIMDb"><span class="imdbRating">IMDb</span> {{ movie.rating ? movie.rating : 'N/A' }}/10</p>
       <ul class="yearDurationAudioInfo">
         <li class="year">Year: {{ movie.year }}</li>
         <li class="duration">Duration: {{ movie.duration }}min</li>
@@ -27,19 +28,29 @@
 
       </ul>
       <ul class="detailsViewButtons">
-        <li class="editButton" @click="showEditModal()">
-          <font-awesome-icon icon="fa-solid fa-pen-to-square"/>
-          EDIT
-        </li>
-        <li class="deleteButton" @click="deleteMovie(movie.movieId)">
-          <font-awesome-icon icon="fa-solid fa-trash-can"/>
-          DELETE
-        </li>
+        <router-link :to="{name: 'edit'}">
+          <li class="editButton" @click="showEdit(movie.movieId)">
+            <font-awesome-icon icon="fa-solid fa-pen-to-square"/>
+            EDIT
+          </li>
+        </router-link>
+        <router-link to="/movies">
+          <li class="deleteButton" @click="deleteMovie(movie.movieId)">
+            <font-awesome-icon icon="fa-solid fa-trash-can"/>
+            DELETE
+          </li>
+        </router-link>
+
       </ul>
     </div>
-    <modal class="movieEditModal" name="movieEditModal" :resizable="false" :reset="true" width="900px" height="auto"
+    <modal class="movieEditModal" name="movieEditModal"
+           :resizable="false"
+           :reset="true"
+           :clickToClose="false"
+           width="900px"
+           height="auto"
            :scrollable="true">
-      <EditMovie :movie="movie" @editMovie="editedMovie"/>
+      <EditMovie :movie="movie" @editMovie="editedMovie" @closeEditMovie="hideEditModal"/>
     </modal>
     <modal name="detailsErrorModal" :shiftX="1" :shiftY="0" :height="0" :width="0">
       <ErrorModal :errorMessage="this.errorMessage"/>
@@ -99,13 +110,13 @@ export default {
     showSuccessModal() {
       this.$modal.show('detailsSuccessfulModal');
     },
-    hideSuccessModal(){
+    hideSuccessModal() {
       this.$modal.hide('detailsSuccessfulModal');
     },
     showErrorModal() {
       this.$modal.show('detailsErrorModal');
     },
-    hideErrorModal(){
+    hideErrorModal() {
       this.$modal.hide('detailsErrorModal');
     },
     showEditModal() {
@@ -117,16 +128,20 @@ export default {
     watchTrailer() {
       window.open(this.movie.trailerUrl);
     },
-    deleteMovie(movieId){
+    showEdit(movieId){
+      this.$router.push({name: 'edit' , params: {movieId: movieId}})
+      this.showEditModal();
+    },
+    deleteMovie(movieId) {
 
       this.movieService.deleteMovie(movieId).then((resp) => {
         if (resp.status === 'OK') {
 
-          this.$emit('deleteMovie' , true);
+          this.$emit('deleteMovie', true);
 
         } else {
 
-          this.$emit('deleteMovie' , false);
+          this.$emit('deleteMovie', false);
         }
       })
     },
@@ -134,11 +149,16 @@ export default {
       this.hideEditModal();
       this.successMessage = 'Successful film editing!'
       this.showSuccessModal();
-      setTimeout(() => {this.hideSuccessModal()} , 4000 )
+      setTimeout(() => {
+        this.hideSuccessModal()
+      }, 4000)
     },
+    closeDetails() {
+      this.$emit('closeDetails')
+    }
   },
   computed: {
-    rowsDecl: function() {
+    rowsDecl: function () {
       if (this.movie.description != null) {
         let length = this.movie.description.length;
         return Math.ceil(length / 50);
@@ -174,7 +194,7 @@ export default {
 }
 
 .detailsViewInfo p.detailsViewTitle1 {
-  margin: 1rem;
+  margin: 1rem 2.3rem;
   font-size: 2.5rem;
   font-weight: bold;
   text-transform: uppercase;
@@ -326,8 +346,25 @@ ul.detailsViewButtons li.editButton:hover {
   background: rgb(252, 186, 3, 0.4);
 }
 
-input:focus, textarea:focus, select:focus{
+input:focus, textarea:focus, select:focus {
   outline: none;
 }
 
+div.detailsView p.closeButton {
+  position: absolute;
+  color: white;
+  background-color: red;
+  padding: 0.3rem 0.7rem;
+  font-size: 2rem;
+  right: 0;
+  top: 0;
+  text-align: center;
+  font-family: "Helvetica", serif;
+  font-weight: bold;
+}
+
+div.detailsView p.closeButton:hover {
+  cursor: pointer;
+  border: 1px solid white;
+}
 </style>

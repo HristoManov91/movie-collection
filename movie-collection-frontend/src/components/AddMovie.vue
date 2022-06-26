@@ -1,6 +1,7 @@
 <template>
   <div class="container">
     <p class="pageTitle">Add movie</p>
+    <router-link to="/movies"> <p class="closeButton" @click="closeAddMovie">X</p></router-link>
     <form @submit.prevent="saveMovie" class="addForm">
       <div class="row">
         <div class="col">
@@ -299,6 +300,9 @@ export default {
           }
         })
       // }
+    },
+    closeAddMovie() {
+      this.$emit('closeAddMovie');
     }
   }
 }
@@ -310,6 +314,24 @@ div.container {
   background-color: #010340;
   height: 100%;
   width: 100%;
+}
+
+div.container p.closeButton {
+  position: absolute;
+  color: white;
+  background-color: red;
+  padding: 0.3rem 0.7rem;
+  font-size: 2rem;
+  right: 0;
+  top: 0;
+  text-align: center;
+  font-family: "Helvetica",serif;
+  font-weight: bold;
+}
+
+div.container p.closeButton:hover {
+  cursor: pointer;
+  border: 1px solid white;
 }
 
 div p.pageTitle {
