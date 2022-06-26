@@ -10,7 +10,7 @@
         <font-awesome-icon icon="fa-clock"/>
         {{ movie.duration }} min.
       </p>
-      <p class="rating">IMDb: {{ movie.rating ? movie.rating : 'N/A'}}</p>
+      <p class="rating"><span class="imdbRating">IMDb</span> {{ movie.rating ? movie.rating : 'N/A'}}/10</p>
       <button class="button-trailer" @click="watchTrailer">
         <font-awesome-icon icon="fa-solid fa-circle-play"/>
         TRAILER
@@ -66,5 +66,15 @@ export default {
 </script>
 
 <style scoped>
+
+span.imdbRating {
+  background-color: #ffd52a;
+  background-image: linear-gradient(90deg, #ffd52a 30%, #ffffff 50%, #ffd52a 70%);
+  color: black;
+  font-weight: bold;
+  padding: 2px;
+  border: 2px solid black;
+  border-radius: 10px;
+}
 
 </style>

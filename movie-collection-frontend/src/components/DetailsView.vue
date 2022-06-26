@@ -16,7 +16,7 @@
         <font-awesome-icon icon="fa-solid fa-circle-play"/>
         WATCH TRAILER
       </button>
-      <p class="detailsViewIMDb">IMDb: {{movie.rating ? movie.rating : 'N/A'}}</p>
+      <p class="detailsViewIMDb"><span class="imdbRating">IMDb</span> {{movie.rating ? movie.rating : 'N/A'}}/10</p>
       <ul class="yearDurationAudioInfo">
         <li class="year">Year: {{ movie.year }}</li>
         <li class="duration">Duration: {{ movie.duration }}min</li>
@@ -37,7 +37,7 @@
         </li>
       </ul>
     </div>
-    <modal class="movieEditModal" name="movieEditModal" :resizable="false" :reset="true" width="850px" height="auto"
+    <modal class="movieEditModal" name="movieEditModal" :resizable="false" :reset="true" width="900px" height="auto"
            :scrollable="true">
       <EditMovie :movie="movie" @editMovie="editedMovie"/>
     </modal>
@@ -195,6 +195,7 @@ export default {
   display: flex;
   justify-content: space-around;
   margin: 0 1rem;
+  flex-wrap: wrap;
 }
 
 .detailsViewInfo ul.detailsViewGenres li {
@@ -214,7 +215,7 @@ export default {
   height: auto;
   color: orange;
   /*width: 85%;*/
-  margin: 1.5rem 2rem;
+  margin: 1rem 2rem;
   border: 1px solid orange;
   padding: 0.5rem;
   border-radius: 5px;
@@ -226,7 +227,7 @@ export default {
 }
 
 .detailsViewInfo button.detailsViewButtonTrailer {
-  margin: 0.5rem 3rem;
+  margin: 1rem 2.5rem;
   font-size: 1rem;
   text-transform: uppercase;
   color: orange;
@@ -234,6 +235,7 @@ export default {
   background: rgba(32, 32, 32, 0.9);
   border-radius: 5px;
   display: inline-block;
+  padding: 0.4rem;
 }
 
 .detailsViewInfo button.detailsViewButtonTrailer:hover {
@@ -248,10 +250,21 @@ export default {
   font-size: 1.5rem;
 }
 
+span.imdbRating {
+  background-color: #ffd52a;
+  background-image: linear-gradient(90deg, #ffd52a 30%, #ffffff 50%, #ffd52a 70%);
+
+  color: black;
+  font-weight: bold;
+  padding: 2px 6px;
+  border: 2px solid black;
+  border-radius: 10px;
+}
+
 ul.detailsViewButtons li {
   display: inline-block;
   font-size: 1rem;
-  margin: 2.5rem 2rem;
+  margin: 1.3rem 1rem;
   padding: 0.6rem 1.5rem;
   border-radius: 10px;
   text-align: center;
@@ -272,23 +285,6 @@ ul.detailsViewButtons li.editButton {
   background-image: linear-gradient(43deg, #08AEEA 0%, #2AF598 100%);
 }
 
-/*
-async findAllMovies(currentPage , perPage) {
-        let movies = {};
-        let url = MOVIES_CONTROLLER_BASE_URL + `all?page=${currentPage}&perPage${perPage}`
-
-        await axios.get(url).then((resp) => {
-            movies.status = 'OK'
-            movies.data = resp.data;
-        }).catch((err) => {
-            movies.status = 'ERROR';
-            movies.error = err.response.data;
-        })
-
-        return movies;
-    }
- */
-
 ul.detailsViewButtons li.deleteButton:hover {
   cursor: pointer;
   color: black;
@@ -305,7 +301,7 @@ ul.detailsViewButtons li.editButton:hover {
 }
 
 .detailsViewInfo ul.yearDurationAudioInfo {
-  margin: 1rem 0;
+  margin: 0.5rem 0;
 }
 
 .detailsViewInfo ul.yearDurationAudioInfo li {
@@ -316,7 +312,7 @@ ul.detailsViewButtons li.editButton:hover {
 .detailsViewInfo ul.platforms li {
   display: inline-block;
   font-size: 0.8rem;
-  margin: 0.5rem 2rem;
+  margin: 0.5rem 0.5rem;
   color: #010340;
   background-color: orange;
   padding: 0.2rem 0.7rem;

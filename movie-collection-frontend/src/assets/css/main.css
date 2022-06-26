@@ -28,12 +28,6 @@ header nav {
     padding-bottom: 5px;
 }
 
-#time {
-    display: flex;
-    gap: 0.8rem;
-    color: white;
-}
-
 header nav li {
     font-size: 1.2rem;
     color: white;
@@ -73,25 +67,25 @@ aside.filter p {
     border-radius: 10px;
 }
 
-/*#clearButton {*/
-/*    display: inline-block;*/
-/*    font-size: 1rem;*/
-/*    margin: 3rem 1.7rem;*/
-/*    padding: 0.5rem 0.5rem;*/
-/*    border-radius: 10px;*/
-/*    text-align: center;*/
-/*    text-transform: uppercase;*/
-/*    font-weight: bold;*/
-/*    color: black;*/
-/*    background-color: #FFE53B;*/
-/*    background-image: linear-gradient(225deg, #FFE53B 0%, #FF2525 74%);*/
-/*}*/
+#clearButton {
+    display: inline-block;
+    font-size: 1rem;
+    margin: 3rem 1.7rem;
+    padding: 0.5rem 0.5rem;
+    border-radius: 10px;
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: bold;
+    color: black;
+    background-color: #FFE53B;
+    background-image: linear-gradient(225deg, #FFE53B 0%, #FF2525 74%);
+}
 
-/*#clearButton:hover {*/
-/*    cursor: pointer;*/
-/*    background-color: #FFE53B;*/
-/*    background-image: linear-gradient(45deg, #FFE53B 0%, #FF2525 74%);*/
-/*}*/
+#clearButton:hover {
+    cursor: pointer;
+    background-color: #FFE53B;
+    background-image: linear-gradient(45deg, #FFE53B 0%, #FF2525 74%);
+}
 
 /* Genres Filter */
 
@@ -269,10 +263,42 @@ aside.filter div.values:before {
     gap: 2rem;
 }
 
+div.catalogueHeader {
+    display: flex;
+    justify-content: space-between;
+    margin: 1rem 3rem;
+}
+
+div.catalogueHeader div {
+    background-color: black;
+    border-radius: 10px;
+}
+
+div.catalogueHeader label.selectLabel {
+    color: orange;
+    font-size: 1rem;
+    padding: 0.2rem;
+    margin: 0.7rem 0.1rem;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+div.catalogueHeader select.orderBy {
+    color: white;
+    margin: 0.7rem 0;
+    border: none;
+    background-color: black;
+    text-transform: uppercase;
+}
+
+div.catalogueHeader select.orderBy:hover {
+    cursor: pointer;
+}
+
 .movies-title {
     font-size: 1.5rem;
     background-color: black;
-    margin: 0.5rem 0 0.5rem 42.75%;
+    /*margin: 0.5rem 0 0.5rem 42.75%;*/
     padding: 0.5rem 3rem;
     border-radius: 10px;
     display: inline-block;
@@ -281,21 +307,26 @@ aside.filter div.values:before {
 
 input.searchInput {
     width: 200px;
-    height: 2rem;
+    font-weight: bold;
+    color: orange;
+    height: 2.3rem;
     border: 1px solid black;
-    border-radius: 3px;
+    border-radius: 10px;
     display: inline-block;
     padding: 0.5rem;
-    margin: 0.5rem 1rem 0.5rem 19.5rem;
-    background: white url("../image/search-img.svg") no-repeat scroll 175px 6px;
+    /*margin: 0.5rem 1rem 0.5rem 19.5rem;*/
+    background: black url("../image/search-img.svg") no-repeat scroll 175px 6px;
 }
 
 .movie-card {
     position: relative;
     overflow: hidden;
     border-radius: 10px;
-    min-height: 330px;
-    min-width: 210px;
+    height: 21rem;
+    width: 14rem;
+    /*min-height: 330px;*/
+    /*max-height: 390px;*/
+    /*min-width: 210px;*/
 }
 
 .movie-card:hover {
@@ -315,7 +346,8 @@ input.searchInput {
 }
 
 .movie-poster {
-    width:100%;
+    width: 100%;
+    height: 100%;
 }
 
 .movie-info {
@@ -351,7 +383,11 @@ input.searchInput {
 .movie-info .rating {
     font-size: 1rem;
     display: inline-block;
-    margin: 0.5rem 0.5rem;
+    margin: 0.5rem 0.3rem;
+}
+
+.movie-info .rating {
+
 }
 
 .button-trailer ,
@@ -374,7 +410,8 @@ input.searchInput {
     background-image: linear-gradient(62deg, #FAD961 0%, #F76B1C 100%);
 }
 
-.modalElement {
+.modalElement,
+.statisticsModal {
     background: rgb(1, 3, 64 , 0.4);
 }
 

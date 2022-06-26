@@ -5,6 +5,7 @@ import com.example.moviecollectionbackend.model.binding.AddMovieBindingModel;
 import com.example.moviecollectionbackend.model.binding.EditMovieBindingModel;
 import com.example.moviecollectionbackend.model.dto.MovieCardDto;
 import com.example.moviecollectionbackend.model.dto.MovieDetailsDto;
+import com.example.moviecollectionbackend.model.dto.StatisticsDto;
 import com.example.moviecollectionbackend.model.entity.GenreEntity;
 import com.example.moviecollectionbackend.model.entity.MovieEntity;
 import com.example.moviecollectionbackend.model.entity.PlatformEntity;
@@ -175,6 +176,29 @@ public class MovieServiceImpl implements MovieService {
                 movieRepository.save(movie);
             }
         }
+    }
+
+    @Override
+    public StatisticsDto getStatistics() {
+       StatisticsDto statisticsDto = new StatisticsDto();
+
+        statisticsDto.setTotalMovies(movieRepository.findTotal());
+        statisticsDto.setTotalDurations(movieRepository.findTotalDurations());
+        statisticsDto.setActionMovies(movieRepository.countMoviesByGenre("ACTION"));
+        statisticsDto.setComedyMovies(movieRepository.countMoviesByGenre("COMEDY"));
+        statisticsDto.setDramaMovies(movieRepository.countMoviesByGenre("DRAMA"));
+        statisticsDto.setMysteryMovies(movieRepository.countMoviesByGenre("MYSTERY"));
+        statisticsDto.setSciFiMovies(movieRepository.countMoviesByGenre("SCI-FI"));
+        statisticsDto.setAnimationMovies(movieRepository.countMoviesByGenre("ANIMATION"));
+        statisticsDto.setAdventureMovies(movieRepository.countMoviesByGenre("ADVENTURE"));
+        statisticsDto.setFantasyMovies(movieRepository.countMoviesByGenre("FANTASY"));
+        statisticsDto.setRomanceMovies(movieRepository.countMoviesByGenre("ROMANCE"));
+        statisticsDto.setThrillerMovies(movieRepository.countMoviesByGenre("THRILLER"));
+        statisticsDto.setCrimeMovies(movieRepository.countMoviesByGenre("CRIME"));
+        statisticsDto.setDocumentaryMovies(movieRepository.countMoviesByGenre("DOCUMENTARY"));
+        statisticsDto.setSerialMovies(movieRepository.countMoviesByGenre("SERIAL"));
+
+        return statisticsDto;
     }
 
     private MovieDetailsDto mapEntityToDto(MovieEntity me) {

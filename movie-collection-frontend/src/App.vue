@@ -4,6 +4,7 @@
       <nav>
         <ul>
           <li @click="addMovie">ADD MOVIE</li>
+          <li @click="getStatistics">STATISTICS</li>
         </ul>
       </nav>
       <!--      <p>My favorite movies</p>-->
@@ -13,7 +14,7 @@
       <aside class="filter">
         <p>Filters</p>
         <span class="filterTitle">Genres:</span>
-        <div v-for="(genre , i) in genres" :key="i">
+        <div ref="genres" v-for="(genre , i) in genres" :key="i">
           <input type="checkbox" :id="i" :name="genre" :value="genre">
           <label @click="addOrRemoveInGenresFilter(i)" :for="i">{{ genre }}</label>
         </div>
@@ -41,11 +42,26 @@
                step="0.5">
         <input class="sliderRange" v-model="ratingFilter.maxRating" id="ratingSlider2" type="range" min="0" max="10"
                step="0.5">
-<!--        <p id="clearButton" @click="clearFilters">Clear Filters</p>-->
+        <p id="clearButton" @click="clearFilters">Clear Filters</p>
       </aside>
       <section class="catalogue">
-        <p class="movies-title">Collection</p>
-        <input class="searchInput" v-model.trim="filterParams.searchText" type="text" placeholder="Search...">
+        <div class="catalogueHeader">
+          <div>
+            <label class="selectLabel" for="orderBy">Order by:</label>
+            <select id="orderBy" class="orderBy" v-model="pagination.orderBy">
+              <option class="selectOption" value="title1">Title ASC</option>
+              <option class="selectOption" value="title1,desc">Title DESC</option>
+              <option class="selectOption" value="duration">Duration ASC</option>
+              <option class="selectOption" value="duration,desc">Duration DESC</option>
+              <option class="selectOption" value="rating">Rating ASC</option>
+              <option class="selectOption" value="rating,desc">Rating DESC</option>
+              <option class="selectOption" value="year">Year ASC</option>
+              <option class="selectOption" value="year,desc">Year DESC</option>
+            </select>
+          </div>
+          <p class="movies-title">Collection</p>
+          <input class="searchInput" v-model.trim.lazy="filterParams.searchText" type="text" placeholder="Search...">
+        </div>
         <ul class="movies">
           <MovieCard v-for="(movie , id) in moviesToShow" :key="id" :movie="movie" @clickDetails="clickDetails"/>
         </ul>
@@ -81,6 +97,9 @@
            :scrollable="true">
       <AddMovie @addMovie="successAddMovie"/>
     </modal>
+    <modal name="statisticsModal" class="statisticsModal" :resizable="false" :reset="true" width="600px" height="auto" :scrollable="true">
+      <StatisticsView :statistics="this.statistics"/>
+    </modal>
   </div>
 </template>
 <script>
@@ -94,10 +113,12 @@ import SuccessfulModal from "@/components/messages/SuccessfulModal";
 import WarningModal from "@/components/messages/WarningModal";
 import AddMovie from "@/components/AddMovie";
 import MyPagination from "@/components/MyPagination";
+import StatisticsView from "@/components/StatisticsView";
 
 export default {
   name: 'App',
   components: {
+    StatisticsView,
     DetailsView,
     MovieCard,
     ErrorModal,
@@ -156,6 +177,7 @@ export default {
         last: null,
         currentPage: 1,
         perPage: 10,
+        orderBy: 'year,desc',
         totalElements: null,
         totalPages: null,
       },
@@ -167,6 +189,7 @@ export default {
         searchText: '',
         genres: [],
       },
+      statistics: {},
       errorMessage: null,
       successMessage: null,
     }
@@ -202,6 +225,9 @@ export default {
     hideWarningModal() {
       this.$modal.hide('warningModal');
     },
+    showStatisticsModal(){
+      this.$modal.show('statisticsModal')
+    },
     fillDurationSlideColor() {
       //ToDo fix % calculate from 30 to 300
       let startPercent = (this.durationFilter.minDuration / 300) * 100;
@@ -219,7 +245,7 @@ export default {
     },
     loadMovies() {
 
-      this.movieService.findAllMoviesWithParams(this.pagination.currentPage - 1, this.pagination.perPage, this.filterParams).then((resp) => {
+      this.movieService.findAllMoviesWithParams(this.pagination.currentPage - 1, this.pagination.perPage, this.pagination.orderBy , this.filterParams).then((resp) => {
         if (resp.status === 'OK') {
           this.mapRespPagToPag(resp.data);
           this.moviesToShow = resp.data.content;
@@ -253,11 +279,6 @@ export default {
         }
       })
     },
-    // caseInsensitiveCheck(word1, word2) {
-    //   word1 = word1.toLowerCase();
-    //   word2 = word2.toLowerCase();
-    //   return word1.includes(word2);
-    // },
     addMovie() {
       this.showAddMovieModal();
     },
@@ -284,50 +305,7 @@ export default {
       } else {
         this.filterParams.genres.splice(elementIndex, 1);
       }
-
-      this.pagination.currentPage = 1;
-      this.loadMovies();
     },
-    // filtersMovies()
-    //   this.moviesToShow = [];
-    //
-    //   if (this.genresFilter.length === 0) {
-    //     this.moviesToShow = this.movies;
-    //   } else {
-    //     this.moviesToShow = this.movies.filter(m => {
-    //       for (const genre of this.genresFilter) {
-    //         if (m.genres.includes(genre)) {
-    //           return true;
-    //         }
-    //       }
-    //       return false;
-    //     });
-    //   }
-    //
-    //   this.moviesToShow = this.moviesToShow.filter((m) => {
-    //     return m.duration >= this.filterParams.minDuration && m.duration <= this.filterParams.maxDuration;
-    //   });
-    //
-    //   this.moviesToShow = this.moviesToShow.filter((m) => {
-    //     return m.rating >= this.ratingFilter.minRating && m.rating <= this.ratingFilter.maxRating;
-    //   })
-    //
-    //   this.moviesToShow = this.moviesToShow.filter((m) => {
-    //     if (m.title2 !== null) {
-    //       return this.caseInsensitiveCheck(m.title1, this.searchTextFilter)
-    //           || this.caseInsensitiveCheck(m.title2, this.searchTextFilter);
-    //     } else {
-    //       return this.caseInsensitiveCheck(m.title1, this.searchTextFilter);
-    //     }
-    //   })
-    //
-    //   if (this.moviesToShow.length === 0) {
-    //     this.showWarningModal();
-    //     setTimeout(() => {
-    //       this.hideWarningModal()
-    //     }, 4000)
-    //   }
-    // },
     deletedMovie(isDeleted) {
 
       if (isDeleted) {
@@ -339,7 +317,6 @@ export default {
         }, 4000)
 
         this.loadMovies();
-        // this.filtersMovies();
 
       } else {
 
@@ -360,7 +337,6 @@ export default {
       }, 4000)
 
       this.loadMovies();
-      // this.filtersMovies();
     },
     mapRespPagToPag(data) {
       this.pagination.empty = data.empty;
@@ -380,19 +356,41 @@ export default {
       this.pagination.currentPage = value;
       this.loadMovies();
     },
-    // clearFilters() {
-    //   this.durationFilter.maxDuration = 300;
-    //   this.durationFilter.minDuration = 0;
-    //   this.ratingFilter.minRating = 0;
-    //   this.ratingFilter.maxRating = 10;
-    //
-    //   this.filterParams.minDuration = 0;
-    //   this.filterParams.maxDuration = 0;
-    //   this.filterParams.minRating = 1;
-    //   this.filterParams.maxRating = 10;
-    //   this.filterParams.searchText = '';
-    //   this.filterParams.genres = [];
-    // }
+    getStatistics(){
+      this.movieService.getStatistics().then((resp) => {
+
+        if (resp.status === 'OK') {
+
+          this.statistics = resp.data;
+          this.showStatisticsModal();
+
+        } else {
+
+          this.errorMessage = 'We have problem with server,please try again later!'
+          this.showErrorModal();
+          setTimeout(() => {
+            this.hideErrorModal()
+          }, 4000)
+
+        }
+      })
+    },
+    clearFilters() {
+      this.pagination.orderBy = 'year,desc';
+
+      this.durationFilter.minDuration = 0;
+      this.durationFilter.maxDuration = 300;
+      this.ratingFilter.minRating = 0;
+      this.ratingFilter.maxRating = 10;
+      this.$refs['genres'].forEach(el => console.log(el.childNodes[0].checked = false));
+
+      this.filterParams.minDuration = 0;
+      this.filterParams.maxDuration = 300;
+      this.filterParams.minRating = 1;
+      this.filterParams.maxRating = 10;
+      this.filterParams.searchText = '';
+      this.filterParams.genres = [];
+    }
   },
   watch: {
     durationFilter: {
@@ -443,6 +441,17 @@ export default {
         this.loadMovies();
       }
     },
+    "filterParams.genres": {
+      handler() {
+        this.pagination.currentPage = 1;
+        this.loadMovies();
+      }
+    },
+    "pagination.orderBy": {
+      handler() {
+        this.loadMovies();
+      }
+    }
   }
 }
 </script>

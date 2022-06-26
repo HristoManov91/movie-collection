@@ -38,7 +38,7 @@ public class EditMovieBindingModel {
     }
 
     @NotBlank(message = "Title is required and cannot be empty string!")
-    @Size(max = 50 , min = 2, message = "Title length must be between 2 and 50 characters!")
+    @Size(max = 40 , min = 2, message = "Title length must be between 2 and 40 characters!")
     public String getTitle1() {
         return title1;
     }
@@ -48,7 +48,7 @@ public class EditMovieBindingModel {
         return this;
     }
 
-    @Size(max = 50 , min = 2, message = "Second title length must be between 2 and 50 characters!")
+    @Size(max = 40 , min = 2, message = "Second title length must be between 2 and 40 characters!")
     public String getTitle2() {
         return title2;
     }
@@ -59,6 +59,7 @@ public class EditMovieBindingModel {
     }
 
     @NotEmpty(message = "You must select at least one Genres!")
+    @Size(max = 4 , message = "You can select up to 4 Genres!")
     public List<@NotBlank String> getGenres() {
         return genres;
     }
@@ -83,8 +84,8 @@ public class EditMovieBindingModel {
 
     @NotNull(message = "Field Year is required!")
     @Positive(message = "The value of the Year field must be a positive number!")
-    @Max(value = 2100 , message = "The value of the Year field must be max 2100 min!")
-    @Min(value = 1950 , message = "The value of the Year field must be min 1950 min!")
+    @Max(value = 2100 , message = "The value of the Year field must be max 2100!")
+    @Min(value = 1950 , message = "The value of the Year field must be min 1950!")
     public Integer getYear() {
         return year;
     }

@@ -5,6 +5,7 @@ import com.example.moviecollectionbackend.model.binding.AddMovieBindingModel;
 import com.example.moviecollectionbackend.model.binding.EditMovieBindingModel;
 import com.example.moviecollectionbackend.model.dto.MovieCardDto;
 import com.example.moviecollectionbackend.model.dto.MovieDetailsDto;
+import com.example.moviecollectionbackend.model.dto.StatisticsDto;
 import com.example.moviecollectionbackend.model.entity.MovieEntity;
 import com.example.moviecollectionbackend.service.MovieService;
 import java.net.URISyntaxException;
@@ -69,5 +70,10 @@ public class MovieController {
     @DeleteMapping("/delete")
     private ResponseEntity<Boolean> deleteMovie(@RequestParam(name = "movieId") Long movieId){
         return new ResponseEntity<>(this.movieService.deleteMovieById(movieId) , HttpStatus.OK);
+    }
+
+    @GetMapping("/statistics")
+    private ResponseEntity<StatisticsDto> getStatistics(){
+        return new ResponseEntity<>(this.movieService.getStatistics() , HttpStatus.OK);
     }
 }

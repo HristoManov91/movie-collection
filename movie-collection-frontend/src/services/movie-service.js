@@ -4,23 +4,9 @@ const MOVIES_CONTROLLER_BASE_URL = 'http://localhost:8081/movies/'
 
 export class MovieService {
 
-    async findAllMovies(currentPage , perPage) {
+    async findAllMoviesWithParams(currentPage , perPage , orderBy ,  params) {
         let movies = {};
-
-        await axios.get(MOVIES_CONTROLLER_BASE_URL + `all?page=${currentPage}&size=${perPage}`).then((resp) => {
-            movies.status = 'OK'
-            movies.data = resp.data;
-        }).catch((err) => {
-            movies.status = 'ERROR';
-            movies.error = err.response.data;
-        })
-
-        return movies;
-    }
-
-    async findAllMoviesWithParams(currentPage , perPage , params) {
-        let movies = {};
-        let url = MOVIES_CONTROLLER_BASE_URL + `all?page=${currentPage}&size=${perPage}`
+        let url = MOVIES_CONTROLLER_BASE_URL + `all?page=${currentPage}&size=${perPage}&sort=${orderBy}`
 
         await axios.post(url , params).then((resp) => {
             movies.status = 'OK'
@@ -90,6 +76,20 @@ export class MovieService {
         })
 
         return deleteMovie;
+    }
+
+    async getStatistics(){
+        let statistics = {};
+
+        await axios.get(MOVIES_CONTROLLER_BASE_URL + 'statistics').then((resp) => {
+            statistics.data = resp.data
+            statistics.status = 'OK'
+        }).catch((err) => {
+            statistics.status = 'ERROR'
+            statistics.error = err.message;
+        })
+
+        return statistics;
     }
 }
 

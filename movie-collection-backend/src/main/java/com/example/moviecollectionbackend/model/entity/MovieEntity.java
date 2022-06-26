@@ -26,7 +26,7 @@ public class MovieEntity extends BaseEntity{
     private List<GenreEntity> genres;
     private Integer duration;
     private Integer year;
-    private BigDecimal rating; //ToDo write method get from IMDb
+    private BigDecimal rating;
     private String imdbUrl;
     private String trailerUrl;
     private String posterUrl;

@@ -50,6 +50,7 @@
           <label :for="genre + 'Edit'">{{ genre }}</label>
         </div>
         <span v-if="!$v.editedMovie.genres.required || !$v.editedMovie.genres.minLength" class="errorMessage"><font-awesome-icon icon="fa-solid fa-circle-exclamation" /> {{ this.constants.error.GENRES_REQUIRED }}</span>
+        <span v-if="!$v.editedMovie.genres.maxLength" class="errorMessage"><font-awesome-icon icon="fa-solid fa-circle-exclamation" /> {{ this.constants.error.GENRES_MAX_LENGTH }}</span>
       </div>
       <div class="urlsEdit">
         <label for="imdbUrl">IMDb URL:</label>
@@ -84,6 +85,7 @@
         </div>
       </div>
       <span v-if="!$v.editedMovie.platforms.required || !$v.editedMovie.platforms.minLength" class="errorMessage"><font-awesome-icon icon="fa-solid fa-circle-exclamation" /> {{ this.constants.error.PLATFORMS_REQUIRED }}</span>
+      <span v-if="!$v.editedMovie.platforms.maxLength" class="errorMessage"><font-awesome-icon icon="fa-solid fa-circle-exclamation" /> {{ this.constants.error.PLATFORMS_MAX_LENGTH }}</span>
       <button class="saveButton">
         SAVE MOVIE
       </button>
@@ -173,12 +175,12 @@ export default {
       title1: {
         required,
         minLength: minLength(2),
-        maxLength: maxLength(50),
+        maxLength: maxLength(40),
       },
       title2: {
         // ToDo empty imput validate
         minLength: minLength(2),
-        maxLength: maxLength(50),
+        maxLength: maxLength(40),
       },
       duration: {
         required,
@@ -192,11 +194,13 @@ export default {
       },
       genres: {
         required,
-        minLength: minLength(1)
+        minLength: minLength(1),
+        maxLength: maxLength(4)
       },
       platforms: {
         required,
-        minLength: minLength(1)
+        minLength: minLength(1),
+        maxLength: maxLength(4)
       },
       imdbUrl: {
         // ToDo empty imput validate
