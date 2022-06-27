@@ -7,7 +7,7 @@
           <router-link :to="{name: 'statistics'}"><li @click="getStatistics">STATISTICS</li></router-link>
         </ul>
         <ul>
-          <li>LOGIN</li>
+          <router-link to="/login"><li @click="showLoginForm">LOGIN</li></router-link>
           <li>REGISTER</li>
           <li>LOGOUT</li>
         </ul>
@@ -116,6 +116,15 @@
            :scrollable="true">
       <StatisticsView :statistics="this.statistics" @closeStatistics="hideStatisticsModal"/>
     </modal>
+    <modal class="modalElement"
+           name="loginForm"
+           :resizable="false"
+           :reset="true"
+           :clickToClose="false"
+           width="500px"
+           height="400px">
+      <LoginComponent @closeLoginForm="closeLoginForm"/>
+    </modal>
   </div>
 </template>
 <script>
@@ -130,6 +139,7 @@ import WarningModal from "@/components/messages/WarningModal";
 import AddMovie from "@/components/AddMovie";
 import MyPagination from "@/components/MyPagination";
 import StatisticsView from "@/components/StatisticsView";
+import LoginComponent from "@/components/LoginComponent";
 
 export default {
   name: 'App',
@@ -141,9 +151,11 @@ export default {
     SuccessfulModal,
     WarningModal,
     AddMovie,
-    MyPagination
+    MyPagination,
+    LoginComponent
   },
   mounted() {
+    this.$router.push({name: 'home'});
     this.loadMovies()
     this.loadGenres();
     this.fillDurationSlideColor();
@@ -247,6 +259,12 @@ export default {
     },
     hideStatisticsModal() {
       this.$modal.hide('statisticsModal');
+    },
+    showLoginForm(){
+      this.$modal.show('loginForm')
+    },
+    closeLoginForm() {
+      this.$modal.hide('loginForm');
     },
     fillDurationSlideColor() {
       //ToDo fix % calculate from 30 to 300

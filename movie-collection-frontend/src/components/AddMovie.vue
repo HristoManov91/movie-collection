@@ -287,7 +287,7 @@ export default {
     },
     saveMovie() {
       this.$v.newMovie.$touch();
-      // if (!this.$v.newMovie.$invalid) {
+      if (!this.$v.newMovie.$invalid) {
 
       console.log('ok')
         this.movieService.addMovie(this.newMovie).then((response) => {
@@ -299,7 +299,7 @@ export default {
             setTimeout(() => {this.hideErrorModal()} , 4000 )
           }
         })
-      // }
+      }
     },
     closeAddMovie() {
       this.$emit('closeAddMovie');

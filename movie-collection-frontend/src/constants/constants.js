@@ -22,6 +22,12 @@ export const Constants = {
         TRAILER_URL: 'The value on TrailerURL field is not valid URL!',
         TRAILER_URL_MAX_LENGTH: 'The length of the TrailerURL field must be max 254 characters!',
         DESCRIPTION_MAX_LENGTH: 'The length of the Description field must be max 254 characters!',
-        LANGUAGE_REQUIRED: 'Language is required!'
+        LANGUAGE_REQUIRED: 'Language is required!',
+        USERNAME_REQUIRED: 'Username is required!',
+        USERNAME_BETWEEN: 'Username must be between 6 and 10 symbols!',
+        USERNAME_ALPHA_NUM: 'Username may contain alpha-numeric characters!',
+        PASSWORD_REQUIRED: 'Password is required!',
+        PASSWORD_BETWEEN: 'Password must be between 6 and 10 symbols!',
+        PASSWORD_ALPHA_NUM: 'Password may contain alpha-numeric characters!',
     }
 }
