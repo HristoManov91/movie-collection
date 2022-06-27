@@ -29,5 +29,6 @@ export const Constants = {
         PASSWORD_REQUIRED: 'Password is required!',
         PASSWORD_BETWEEN: 'Password must be between 6 and 10 symbols!',
         PASSWORD_ALPHA_NUM: 'Password may contain alpha-numeric characters!',
+        CONFIRM_PASSWORD: 'Passwords must be the same!'
     }
 }

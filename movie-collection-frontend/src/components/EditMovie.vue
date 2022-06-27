@@ -279,7 +279,8 @@ export default {
           if (resp.status === 'OK') {
 
             this.editedMovie = resp.data;
-            this.$router.push({name: 'details' , params: {movieId: this.editedMovie.movieId}})
+            this.$router.push({name: 'details' , params: {movieId: this.editedMovie.movieId}}).catch((any) => {
+              console.log(any)});
             this.$emit('editMovie');
 
           } else {
@@ -292,7 +293,8 @@ export default {
       }
     },
     closeEditMovie() {
-      this.$router.push({name: 'details' , params: {movieId: this.editedMovie.movieId}})
+      this.$router.push({name: 'details' , params: {movieId: this.editedMovie.movieId}}).catch((any) => {
+        console.log(any)});
       this.$emit('closeEditMovie');
     },
   }

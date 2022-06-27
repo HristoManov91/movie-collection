@@ -8,7 +8,7 @@
         </ul>
         <ul>
           <router-link to="/login"><li @click="showLoginForm">LOGIN</li></router-link>
-          <li>REGISTER</li>
+          <router-link to="/register"><li @click="showRegisterForm">REGISTER</li></router-link>
           <li>LOGOUT</li>
         </ul>
       </nav>
@@ -125,6 +125,15 @@
            height="400px">
       <LoginComponent @closeLoginForm="closeLoginForm"/>
     </modal>
+    <modal class="modalElement"
+           name="registerForm"
+           :resizable="false"
+           :reset="true"
+           :clickToClose="false"
+           width="500px"
+           height="550px">
+      <RegisterComponent @closeRegisterForm="closeRegisterForm"/>
+    </modal>
   </div>
 </template>
 <script>
@@ -140,10 +149,12 @@ import AddMovie from "@/components/AddMovie";
 import MyPagination from "@/components/MyPagination";
 import StatisticsView from "@/components/StatisticsView";
 import LoginComponent from "@/components/LoginComponent";
+import RegisterComponent from "@/components/RegisterComponent";
 
 export default {
   name: 'App',
   components: {
+    RegisterComponent,
     StatisticsView,
     DetailsView,
     MovieCard,
@@ -265,6 +276,12 @@ export default {
     },
     closeLoginForm() {
       this.$modal.hide('loginForm');
+    },
+    showRegisterForm(){
+      this.$modal.show('registerForm')
+    },
+    closeRegisterForm() {
+      this.$modal.hide('registerForm');
     },
     fillDurationSlideColor() {
       //ToDo fix % calculate from 30 to 300

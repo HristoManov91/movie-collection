@@ -15,8 +15,6 @@ public class UserEntity extends BaseEntity {
     private String username;
     @Column(nullable = false , length = 10)
     private String password;
-    @Column(nullable = false , length = 30)
-    private String email;
     @ManyToMany(fetch = FetchType.EAGER)
     private List<UserRoleEntity> roles;
 
@@ -38,15 +36,6 @@ public class UserEntity extends BaseEntity {
 
     public UserEntity setPassword(String password) {
         this.password = password;
-        return this;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public UserEntity setEmail(String email) {
-        this.email = email;
         return this;
     }
 

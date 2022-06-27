@@ -10,12 +10,12 @@
         <font-awesome-icon icon="fa-clock"/>
         {{ movie.duration }} min.
       </p>
-      <p class="rating"><span class="imdbRating">IMDb</span> {{ movie.rating ? movie.rating : 'N/A' }}/10</p>
+      <p class="rating"><span class="imdbRating">IMDb</span> {{ movie.rating ? movie.rating + '/10' : 'N/A' }}</p>
       <button class="button-trailer" @click="watchTrailer">
         <font-awesome-icon icon="fa-solid fa-circle-play"/>
         TRAILER
       </button>
-      <router-link :to="{name: 'details'}"> <!-- ToDo id-->
+      <router-link :to="{name: 'details'}">
         <button class="button-details" @click="clickDetails(movie.id)">
           DETAILS
         </button>
