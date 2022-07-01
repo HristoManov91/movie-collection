@@ -4,7 +4,7 @@
          :src="movie.posterUrl"
          alt="poster-image">
     <div class="detailsViewInfo">
-      <router-link :to="{name: 'home'}"><p class="closeButton" @click="closeDetails">X</p></router-link>
+      <p class="closeButton" @click="closeDetails">X</p>
       <p class="detailsViewTitle1">{{ movie.title1 }}</p>
       <p class="detailsViewTitle2">{{ movie.title2 }}</p>
       <ul class="detailsViewGenres">
@@ -17,7 +17,7 @@
         <font-awesome-icon icon="fa-solid fa-circle-play"/>
         WATCH TRAILER
       </button>
-      <p class="detailsViewIMDb"><span class="imdbRating">IMDb</span> {{ movie.rating ? movie.rating : 'N/A' }}/10</p>
+      <p class="detailsViewIMDb"><span class="imdbRating">IMDb</span> {{ movie.rating ? movie.rating + '/10' : 'N/A' }}</p>
       <ul class="yearDurationAudioInfo">
         <li class="year">Year: {{ movie.year }}</li>
         <li class="duration">Duration: {{ movie.duration }}min</li>
@@ -28,19 +28,14 @@
 
       </ul>
       <ul class="detailsViewButtons">
-        <router-link :to="{name: 'edit'}">
-          <li class="editButton" @click="showEdit(movie.movieId)">
+          <li class="editButton" @click="showEdit()">
             <font-awesome-icon icon="fa-solid fa-pen-to-square"/>
             EDIT
           </li>
-        </router-link>
-        <router-link to="/movies">
           <li class="deleteButton" @click="deleteMovie(movie.movieId)">
             <font-awesome-icon icon="fa-solid fa-trash-can"/>
             DELETE
           </li>
-        </router-link>
-
       </ul>
     </div>
     <modal class="movieEditModal" name="movieEditModal"
@@ -128,8 +123,7 @@ export default {
     watchTrailer() {
       window.open(this.movie.trailerUrl);
     },
-    showEdit(movieId){
-      this.$router.push({name: 'edit' , params: {movieId: movieId}})
+    showEdit(){
       this.showEditModal();
     },
     deleteMovie(movieId) {

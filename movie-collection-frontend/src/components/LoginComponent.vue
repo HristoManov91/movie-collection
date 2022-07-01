@@ -1,6 +1,6 @@
 <template>
   <div class="loginComponent">
-    <router-link to="/movies"><p class="closeButton" @click="closeLoginForm">X</p></router-link>
+    <p class="closeButton" @click="closeLoginForm">X</p>
     <p class="loginFormTitle">Login Form</p>
     <form @submit.prevent="login" class="loginForm">
 
@@ -84,6 +84,7 @@ export default {
 <style scoped>
 
 div.loginComponent {
+  z-index: 100;
   background-color: #010340;
   width: 100%;
   height: 100%;
@@ -117,10 +118,6 @@ div.loginComponent p.loginFormTitle {
   font-weight: bold;
   font-size: 3rem;
   padding: 1rem;
-}
-
-div.loginComponent form.loginForm {
-
 }
 
 div.loginComponent form.loginForm label.loginLabel {

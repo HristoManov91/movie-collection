@@ -15,8 +15,6 @@ import org.springframework.data.domain.Pageable;
 
 public interface MovieService {
 
-    List<MovieCardDto> findAllMovies();
-
     Page<MovieCardDto> findAllMoviesWithPagination(Pageable pageable , Map<String , Object> params);
 
     MovieDetailsDto getMovieDetailsDto(Long movieId) throws UserNotFoundException;

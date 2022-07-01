@@ -3,8 +3,8 @@ USE `movie-collection`;
 INSERT INTO roles(role)
 VALUES ('USER');
 
-INSERT INTO users(email, password, username)
-VALUES ('hristo@gmail.con' , 'hristo123' , 'hristo');
+INSERT INTO users(password , username)
+VALUES ('hristo123' , 'hristo');
 
 INSERT INTO users_roles(user_entity_id, roles_id)
 VALUES (1 , 1);

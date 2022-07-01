@@ -15,11 +15,9 @@
         <font-awesome-icon icon="fa-solid fa-circle-play"/>
         TRAILER
       </button>
-      <router-link :to="{name: 'details'}">
         <button class="button-details" @click="clickDetails(movie.id)">
           DETAILS
         </button>
-      </router-link>
     </div>
   </li>
 </template>
@@ -61,7 +59,6 @@ export default {
       window.open(this.movie.trailerUrl);
     },
     clickDetails(movieId) {
-      this.$router.push({name: 'details', params: {movieId: movieId}});
       this.$emit('clickDetails', movieId);
     }
   }

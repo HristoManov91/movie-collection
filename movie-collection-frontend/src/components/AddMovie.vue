@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <p class="pageTitle">Add movie</p>
-    <router-link to="/movies"> <p class="closeButton" @click="closeAddMovie">X</p></router-link>
+    <p class="closeButton" @click="closeAddMovie">X</p>
     <form @submit.prevent="saveMovie" class="addForm">
       <div class="row">
         <div class="col">

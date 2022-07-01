@@ -3,20 +3,19 @@
     <header>
       <nav>
         <ul>
-          <router-link :to="{name: 'add'}"><li @click="addMovie">ADD MOVIE</li></router-link>
-          <router-link :to="{name: 'statistics'}"><li @click="getStatistics">STATISTICS</li></router-link>
+            <li @click="addMovie">ADD MOVIE</li>
+            <li @click="getStatistics">STATISTICS</li>
         </ul>
         <ul>
-          <router-link to="/login"><li @click="showLoginForm">LOGIN</li></router-link>
-          <router-link to="/register"><li @click="showRegisterForm">REGISTER</li></router-link>
+            <li @click="showLoginForm">LOGIN</li>
+            <li @click="showRegisterForm">REGISTER</li>
           <li>LOGOUT</li>
         </ul>
       </nav>
-      <!--      <p>My favorite movies</p>-->
       <img src="./assets/image/welcome-image.jpg" alt="home-cinema-image">
     </header>
     <main class="container">
-      <aside class="filter">
+      <aside v-if="true" class="filter">
         <p class="filtersTitle">Filters</p>
         <span class="filterTitle">Genres:</span>
         <div ref="genres" v-for="(genre , i) in genres" :key="i">
@@ -30,10 +29,10 @@
           <span id="durationRange2">{{ this.durationFilter.maxDuration }}</span>
         </div>
         <div class="durationSliderTrack"></div>
-        <input class="sliderRange" v-model="durationFilter.minDuration" id="durationSlider1" type="range" min="0"
+        <input class="sliderRange" v-model="durationFilter.minDuration" id="durationSlider1" type="range" min="30"
                max="300"
                step="5">
-        <input class="sliderRange" v-model="durationFilter.maxDuration" id="durationSlider2" type="range" min="0"
+        <input class="sliderRange" v-model="durationFilter.maxDuration" id="durationSlider2" type="range" min="30"
                max="300"
                step="5">
         <span class="ratingFilterTitle">IMDb rating:</span>
@@ -49,7 +48,7 @@
                step="0.5">
         <p id="clearButton" @click="clearFilters">Clear Filters</p>
       </aside>
-      <section class="catalogue">
+      <section v-if="true" class="catalogue">
         <div class="catalogueHeader">
           <div>
             <label class="selectLabel" for="orderBy">Order by:</label>
@@ -107,7 +106,8 @@
            :scrollable="true">
       <AddMovie @addMovie="successAddMovie" @closeAddMovie="hideAddMovieModal"/>
     </modal>
-    <modal name="statisticsModal" class="statisticsModal"
+    <modal name="statisticsModal"
+           class="statisticsModal"
            :resizable="false"
            :reset="true"
            :clickToClose="false"
@@ -134,6 +134,7 @@
            height="550px">
       <RegisterComponent @closeRegisterForm="closeRegisterForm"/>
     </modal>
+
   </div>
 </template>
 <script>
@@ -166,7 +167,6 @@ export default {
     LoginComponent
   },
   mounted() {
-    this.$router.push({name: 'home'});
     this.loadMovies()
     this.loadGenres();
     this.fillDurationSlideColor();
@@ -201,7 +201,7 @@ export default {
       },
       genres: [],
       durationFilter: {
-        minDuration: 0,
+        minDuration: 30,
         maxDuration: 300,
         minGap: 10,
       },
@@ -221,7 +221,7 @@ export default {
         totalPages: null,
       },
       filterParams: {
-        minDuration: 0,
+        minDuration: 30,
         maxDuration: 300,
         minRating: 1,
         maxRating: 10,
@@ -265,19 +265,19 @@ export default {
     hideWarningModal() {
       this.$modal.hide('warningModal');
     },
-    showStatisticsModal(){
+    showStatisticsModal() {
       this.$modal.show('statisticsModal')
     },
     hideStatisticsModal() {
       this.$modal.hide('statisticsModal');
     },
-    showLoginForm(){
+    showLoginForm() {
       this.$modal.show('loginForm')
     },
     closeLoginForm() {
       this.$modal.hide('loginForm');
     },
-    showRegisterForm(){
+    showRegisterForm() {
       this.$modal.show('registerForm')
     },
     closeRegisterForm() {
@@ -285,8 +285,8 @@ export default {
     },
     fillDurationSlideColor() {
       //ToDo fix % calculate from 30 to 300
-      let startPercent = (this.durationFilter.minDuration / 300) * 100;
-      let overPercent = (this.durationFilter.maxDuration / 300) * 100;
+      let startPercent = (this.durationFilter.minDuration / 270) * 100 - (30 * 0.27);
+      let overPercent = (this.durationFilter.maxDuration / 270) * 100 - (30 * 0.27);
 
       let sliderTrackElement = document.querySelector('.durationSliderTrack');
       sliderTrackElement.style.background = `linear-gradient(to right, white ${startPercent}% , orange ${startPercent}% , orange ${overPercent}% , white ${overPercent}%)`;
@@ -300,7 +300,7 @@ export default {
     },
     loadMovies() {
 
-      this.movieService.findAllMoviesWithParams(this.pagination.currentPage - 1, this.pagination.perPage, this.pagination.orderBy , this.filterParams).then((resp) => {
+      this.movieService.findAllMoviesWithParams(this.pagination.currentPage - 1, this.pagination.perPage, this.pagination.orderBy, this.filterParams).then((resp) => {
         if (resp.status === 'OK') {
           this.mapRespPagToPag(resp.data);
           this.moviesToShow = resp.data.content;
@@ -309,7 +309,7 @@ export default {
 
             setTimeout(() => {
               this.hideWarningModal()
-            } , 4000)
+            }, 4000)
           }
         } else {
           this.errorMessage = 'Error in loadMovies!';
@@ -412,13 +412,13 @@ export default {
       this.pagination.currentPage = value;
       this.loadMovies();
     },
-    getStatistics(){
+    getStatistics() {
+      console.log('before')
       this.movieService.getStatistics().then((resp) => {
 
+        console.log('after')
         if (resp.status === 'OK') {
-
           this.statistics = resp.data;
-          this.$router.push({name: 'statistics'})
           this.showStatisticsModal();
 
         } else {
@@ -435,13 +435,13 @@ export default {
     clearFilters() {
       this.pagination.orderBy = 'year,desc';
 
-      this.durationFilter.minDuration = 0;
+      this.durationFilter.minDuration = 30;
       this.durationFilter.maxDuration = 300;
       this.ratingFilter.minRating = 0;
       this.ratingFilter.maxRating = 10;
       this.$refs['genres'].forEach(el => console.log(el.childNodes[0].checked = false));
 
-      this.filterParams.minDuration = 0;
+      this.filterParams.minDuration = 30;
       this.filterParams.maxDuration = 300;
       this.filterParams.minRating = 1;
       this.filterParams.maxRating = 10;

@@ -1,13 +1,13 @@
 <template>
   <div class="registerComponent">
-    <router-link to="/movies"><p class="closeButton" @click="closeRegisterForm">X</p></router-link>
+    <p class="closeButton" @click="closeRegisterForm">X</p>
     <p class="registerFormTitle">Register Form</p>
     <form @submit.prevent="register" class="registerForm">
 
       <label class="registerLabel" for="registerUsername">Username:</label>
       <input v-model.trim="$v.username.$model" class="registerInput" type="text" name="registerUsername" id="registerUsername"
              :class="{invalidFiled: $v.username.$error}">
-      <div class="loginError">
+      <div class="registerError">
         <span v-if="$v.username.$dirty && !$v.username.required" class="errorMessage">
         <font-awesome-icon icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.USERNAME_REQUIRED }}
         </span>
@@ -22,7 +22,7 @@
       <label class="registerLabel" for="registerPassword">Password:</label>
       <input v-model.trim="$v.password.$model" class="registerInput" type="password" name="registerPassword" id="registerPassword"
              :class="{invalidFiled: $v.password.$error}">
-      <div class="loginError">
+      <div class="registerError">
         <span v-if="$v.password.$dirty && !$v.password.required" class="errorMessage">
         <font-awesome-icon icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.PASSWORD_REQUIRED }}
         </span>
@@ -37,7 +37,7 @@
       <label class="registerLabel" for="confirmPassword">Confirm Password:</label>
       <input v-model.trim="$v.confirmPassword.$model" class="registerInput" type="password" name="confirmPassword"
              id="confirmPassword" :class="{invalidFiled: $v.confirmPassword.$error}">
-      <div class="loginError">
+      <div class="registerError">
         <span v-if="$v.confirmPassword.$dirty && !$v.confirmPassword.sameAs" class="errorMessage">
           <font-awesome-icon icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.CONFIRM_PASSWORD }}
         </span>
@@ -117,7 +117,7 @@ div.registerComponent p.closeButton:hover {
   border: 1px solid white;
 }
 
-div.loginError {
+div.registerError {
   height: 20px;
 }
 
@@ -159,7 +159,7 @@ span.errorMessage {
   border: 1px solid #D8000C;
 }
 
-button.registerButton {
+div.registerComponent button.registerButton {
   text-transform: uppercase;
   text-align: center;
   font-weight: bold;
@@ -174,7 +174,7 @@ button.registerButton {
   width: 30%
 }
 
-button.registerButton:hover {
+div.registerComponent button.registerButton:hover {
   background-color: #08AEEA;
   background-image: linear-gradient(223deg, #08AEEA 0%, #2AF598 100%);
   cursor: pointer;

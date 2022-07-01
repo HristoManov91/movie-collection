@@ -1,6 +1,6 @@
 <template>
   <div class="statsContainer">
-    <router-link to="/movies"> <p class="closeButton" @click="closeStatistics">X</p></router-link>
+    <p class="closeButton" @click="closeStatistics">X</p>
     <p class="title">Statistics</p>
     <p>Total movies: <span>{{ statistics.totalMovies }} </span> movies.</p>
     <p>Total duration: <span>{{ statistics.totalDurations }}</span> min.</p>
@@ -43,6 +43,18 @@ export default {
       documentaryMovies: Number,
       serialMovies: Number
     }
+  },
+  created() {
+    console.log('statsCreated')
+  },
+  mounted() {
+    console.log('statsMounted')
+  },
+  updated() {
+    console.log('statsUpdated')
+  },
+  destroyed() {
+    console.log('statsDestroyed')
   },
   methods: {
     closeStatistics(){

@@ -1,7 +1,6 @@
 <template>
   <div class="container">
-    <!-- ToDo fix id -->
-    <router-link :to="{name: 'details'}"> <p class="closeButton" @click="closeEditMovie">X</p></router-link>
+    <p class="closeButton" @click="closeEditMovie">X</p>
     <p class="pageTitle">Edit movie</p>
     <form @submit.prevent="saveEditMovie" class="editForm">
       <div class="row">
@@ -279,8 +278,6 @@ export default {
           if (resp.status === 'OK') {
 
             this.editedMovie = resp.data;
-            this.$router.push({name: 'details' , params: {movieId: this.editedMovie.movieId}}).catch((any) => {
-              console.log(any)});
             this.$emit('editMovie');
 
           } else {
@@ -293,8 +290,6 @@ export default {
       }
     },
     closeEditMovie() {
-      this.$router.push({name: 'details' , params: {movieId: this.editedMovie.movieId}}).catch((any) => {
-        console.log(any)});
       this.$emit('closeEditMovie');
     },
   }

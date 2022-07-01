@@ -16,24 +16,17 @@ import com.example.moviecollectionbackend.service.PlatformService;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 
 @Service
@@ -144,18 +137,6 @@ public class MovieServiceImpl implements MovieService {
         Page<MovieCardDto> map = allMoviesCard.map(m -> modelMapper.map(m, MovieCardDto.class));
 
         return map;
-    }
-
-    @Override
-    public List<MovieCardDto> findAllMovies() {
-//        List<MovieEntity> allMovies = movieRepository.findAllMoviesCard();
-
-//        return allMovies.stream().map(m -> {
-//            MovieCardDto map = modelMapper.map(m, MovieCardDto.class);
-//            return map;
-//        }).toList();
-
-        return null;
     }
 
     @Override
