@@ -65,17 +65,4 @@ public interface MovieRepository extends JpaRepository<MovieEntity, Long> {
         + "where g.genre = ?1",
         nativeQuery = true)
     Integer countMoviesByGenre(String genre);
-
-//    @Query("SELECT COUNT(m.id) FROM MovieEntity m where m.ge")
-//    Integer findTotalMoviesByGenres(String action);
-
-//    @Query(value = "SELECT g.genre , COUNT(mg.movie_entity_id) "
-//        + "FROM `movie-collection`.genres g left join `movie-collection`.movies_genres as mg on g.id = mg.genres_id "
-//        + "group by mg.genres_id",
-//        countQuery = "SELECT COUNT(*) FROM `movie-collection`.genres",
-//        nativeQuery = true)
-//    Map<String , Integer> countAllByGenres();
-
-//    @Query("select count(m.id) from MovieEntity m where ?1 IN (m.genres.genre)")
-//    Integer countMoviesByGenres(String genre);
 }

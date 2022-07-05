@@ -118,7 +118,6 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public Page<MovieCardDto> findAllMoviesWithPagination(Pageable pageable, Map<String, Object> params) {
-        System.out.println();
 
         Page<MovieEntity> allMoviesCard = movieRepository
             .findAllMoviesCard(pageable,

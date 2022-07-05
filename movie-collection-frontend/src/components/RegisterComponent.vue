@@ -81,8 +81,12 @@ export default {
   },
   methods: {
     register() {
-      console.log('register')
-      //ToDo
+      this.$v.$touch();
+
+      if (!this.$v.$invalid) {
+        console.log('register')
+        //ToDo
+      }
     },
     closeRegisterForm(){
       this.$emit('closeRegisterForm')
