@@ -134,7 +134,6 @@
            height="550px">
       <RegisterComponent @closeRegisterForm="closeRegisterForm"/>
     </modal>
-
   </div>
 </template>
 <script>
@@ -168,9 +167,11 @@ export default {
   },
   mounted() {
     this.loadMovies()
-    this.loadGenres();
+    // this.loadGenres();
     this.fillDurationSlideColor();
     this.fillRatingSlideColor();
+    this.$store.dispatch('getGenres')
+    this.$store.dispatch('getPlatforms')
   },
   data() {
     return {
@@ -199,7 +200,7 @@ export default {
         bulgarianLanguage: Boolean,
         description: String,
       },
-      genres: [],
+      // genres: [],
       durationFilter: {
         minDuration: 30,
         maxDuration: 300,
@@ -321,19 +322,19 @@ export default {
       });
       // .finally() ToDo
     },
-    loadGenres() {
-      this.genreService.findAllGenres().then((resp) => {
-        if (resp.status === 'OK') {
-          this.genres = resp.data;
-        } else {
-          this.errorMessage = 'Error in loadGenres!';
-          this.showErrorModal();
-          setTimeout(() => {
-            this.hideErrorModal()
-          }, 4000)
-        }
-      })
-    },
+    // loadGenres() {
+    //   this.genreService.findAllGenres().then((resp) => {
+    //     if (resp.status === 'OK') {
+    //       this.genres = resp.data;
+    //     } else {
+    //       this.errorMessage = 'Error in loadGenres!';
+    //       this.showErrorModal();
+    //       setTimeout(() => {
+    //         this.hideErrorModal()
+    //       }, 4000)
+    //     }
+    //   })
+    // },
     addMovie() {
       this.showAddMovieModal();
     },
@@ -509,6 +510,11 @@ export default {
         this.loadMovies();
       }
     }
+  },
+  computed: {
+    genres() {
+      return this.$store.getters.getGenres;
+    },
   }
 }
 </script>

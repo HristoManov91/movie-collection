@@ -164,8 +164,8 @@ export default {
     SuccessfulModal
   },
   mounted() {
-    this.loadGenres();
-    this.loadPlatforms();
+    // this.loadGenres();
+    // this.loadPlatforms();
   },
   data() {
     return {
@@ -186,8 +186,8 @@ export default {
         bulgarianLanguage: null,
         description: null,
       },
-      genres: {},
-      platforms: {},
+      // genres: {},
+      // platforms: {},
       errorMessage: null,
       successMessage: null,
     }
@@ -259,37 +259,36 @@ export default {
     hideErrorModal() {
       this.$modal.hide('newErrorModal');
     },
-    loadGenres() {
-      this.genreService.findAllGenres().then((resp) => {
-        if (resp.status === 'OK') {
-          this.genres = resp.data;
-        } else {
-          this.errorMessage = 'Fill form genres!';
-          this.showErrorModal();
-          setTimeout(() => {
-            this.hideErrorModal()
-          }, 4000)
-        }
-      })
-    },
-    loadPlatforms() {
-      this.platformService.findAllPlatforms().then((resp) => {
-        if (resp.status === 'OK') {
-          this.platforms = resp.data;
-        } else {
-          this.errorMessage = 'Errors in platforms!';
-          this.showErrorModal();
-          setTimeout(() => {
-            this.hideErrorModal()
-          }, 3000)
-        }
-      })
-    },
+    // loadGenres() {
+    //   this.genreService.findAllGenres().then((resp) => {
+    //     if (resp.status === 'OK') {
+    //       this.genres = resp.data;
+    //     } else {
+    //       this.errorMessage = 'Fill form genres!';
+    //       this.showErrorModal();
+    //       setTimeout(() => {
+    //         this.hideErrorModal()
+    //       }, 4000)
+    //     }
+    //   })
+    // },
+    // loadPlatforms() {
+    //   this.platformService.findAllPlatforms().then((resp) => {
+    //     if (resp.status === 'OK') {
+    //       this.platforms = resp.data;
+    //     } else {
+    //       this.errorMessage = 'Errors in platforms!';
+    //       this.showErrorModal();
+    //       setTimeout(() => {
+    //         this.hideErrorModal()
+    //       }, 3000)
+    //     }
+    //   })
+    // },
     saveMovie() {
       this.$v.newMovie.$touch();
       if (!this.$v.newMovie.$invalid) {
 
-      console.log('ok')
         this.movieService.addMovie(this.newMovie).then((response) => {
           if (response.status === 'OK'){
             this.$emit('addMovie');
@@ -303,6 +302,14 @@ export default {
     },
     closeAddMovie() {
       this.$emit('closeAddMovie');
+    }
+  },
+  computed: {
+    genres() {
+      return this.$store.getters.getGenres;
+    },
+    platforms(){
+      return this.$store.getters.getPlatforms;
     }
   }
 }

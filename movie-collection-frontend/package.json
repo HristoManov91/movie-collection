@@ -21,7 +21,8 @@
     "vue-loader-v15": "^0.0.1-security",
     "vue-router": "^3.5.1",
     "vuejs-paginate": "^2.1.0",
-    "vuelidate": "^0.7.7"
+    "vuelidate": "^0.7.7",
+    "vuex": "^3.6.2"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",

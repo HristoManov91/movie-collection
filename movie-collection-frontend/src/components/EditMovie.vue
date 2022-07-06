@@ -117,8 +117,8 @@ export default {
     SuccessfulModal,
   },
   mounted() {
-    this.loadGenres();
-    this.loadPlatforms();
+    // this.loadGenres();
+    // this.loadPlatforms();
     this.loadMovieData();
   },
   props: {
@@ -165,8 +165,8 @@ export default {
         description: null,
         bulgarianLanguage: null
       },
-      genres: {},
-      platforms: {},
+      // genres: {},
+      // platforms: {},
       errorMessage: null,
       successMessage: null
     }
@@ -237,28 +237,28 @@ export default {
     hideErrorModal(){
       this.$modal.hide('editErrorModal');
     },
-    loadGenres() {
-      this.genreService.findAllGenres().then((resp) => {
-        if (resp.status === 'OK') {
-          this.genres = resp.data;
-        } else {
-          this.errorMessage = 'Fill form genres!';
-          this.showErrorModal();
-          setTimeout(() => {this.hideErrorModal()} , 4000 )
-        }
-      })
-    },
-    loadPlatforms() {
-      this.platformService.findAllPlatforms().then((resp) => {
-        if (resp.status === 'OK') {
-          this.platforms = resp.data;
-        } else {
-          this.errorMessage = 'Errors in platforms!';
-          this.showErrorModal();
-          setTimeout(() => {this.hideErrorModal()} , 3000 )
-        }
-      })
-    },
+    // loadGenres() {
+    //   this.genreService.findAllGenres().then((resp) => {
+    //     if (resp.status === 'OK') {
+    //       this.genres = resp.data;
+    //     } else {
+    //       this.errorMessage = 'Fill form genres!';
+    //       this.showErrorModal();
+    //       setTimeout(() => {this.hideErrorModal()} , 4000 )
+    //     }
+    //   })
+    // },
+    // loadPlatforms() {
+    //   this.platformService.findAllPlatforms().then((resp) => {
+    //     if (resp.status === 'OK') {
+    //       this.platforms = resp.data;
+    //     } else {
+    //       this.errorMessage = 'Errors in platforms!';
+    //       this.showErrorModal();
+    //       setTimeout(() => {this.hideErrorModal()} , 3000 )
+    //     }
+    //   })
+    // },
     loadMovieData() {
       this.editedMovie = this.movie;
     },
@@ -292,6 +292,14 @@ export default {
     closeEditMovie() {
       this.$emit('closeEditMovie');
     },
+  },
+  computed: {
+    genres() {
+      return this.$store.getters.getGenres;
+    },
+    platforms(){
+      return this.$store.getters.getPlatforms;
+    }
   }
 }
 </script>
