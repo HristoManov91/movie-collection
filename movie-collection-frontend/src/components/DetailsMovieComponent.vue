@@ -1,5 +1,5 @@
 <template>
-  <div class="detailsView">
+  <div class="detailsView" v-if="movie">
     <img class="detailsPosterImage"
          :src="movie.posterUrl"
          alt="poster-image">
@@ -28,7 +28,7 @@
 
       </ul>
       <ul class="detailsViewButtons">
-          <li class="editButton" @click="showEdit()">
+          <li class="editButton" @click="showEdit(movie.movieId)">
             <font-awesome-icon icon="fa-solid fa-pen-to-square"/>
             EDIT
           </li>
@@ -38,15 +38,6 @@
           </li>
       </ul>
     </div>
-    <modal class="movieEditModal" name="movieEditModal"
-           :resizable="false"
-           :reset="true"
-           :clickToClose="false"
-           width="900px"
-           height="auto"
-           :scrollable="true">
-      <EditMovie :movie="movie" @editMovie="editedMovie" @closeEditMovie="hideEditModal"/>
-    </modal>
     <modal name="detailsErrorModal" :shiftX="1" :shiftY="0" :height="0" :width="0">
       <ErrorModal :errorMessage="this.errorMessage"/>
     </modal>
@@ -57,7 +48,6 @@
 </template>
 
 <script>
-import EditMovie from "@/components/EditMovie";
 import {MovieService} from "@/services/movie-service";
 import ErrorModal from "@/components/messages/ErrorModal";
 import SuccessfulModal from "@/components/messages/SuccessfulModal";
@@ -65,37 +55,26 @@ import SuccessfulModal from "@/components/messages/SuccessfulModal";
 export default {
   name: "DetailsView",
   components: {
-    EditMovie,
     ErrorModal,
     SuccessfulModal
   },
-  props: {
-    movie: {
-      movieId: {
-        type: Number,
-        required: true
-      },
-      title1: String,
-      title2: String,
-      genres: {
-        type: {},
-      },
-      duration: Number,
-      year: Number,
-      rating: Number,
-      imdbUrl: String,
-      trailerUrl: String,
-      posterUrl: String,
-      platforms: {
-        type: {},
-      },
-      bulgarianLanguage: Boolean,
-      description: String,
-    }
+  created() {
+    this.movieService.findMovieDetail(this.movieId).then((movieDetailsDto) => {
+      if (movieDetailsDto.status === 'OK') {
+        this.movie = movieDetailsDto.data;
+      } else {
+        this.errorMessage = 'Error in clickDetails!';
+        this.showErrorModal();
+        setTimeout(() => {
+          this.hideErrorModal()
+        }, 4000)
+      }
+    })
   },
   data() {
     return {
       movieService: new MovieService(),
+      movie: null,
       descriptionRows: 0,
       errorMessage: null,
       successMessage: null
@@ -114,33 +93,30 @@ export default {
     hideErrorModal() {
       this.$modal.hide('detailsErrorModal');
     },
-    showEditModal() {
-      this.$modal.show('movieEditModal');
-    },
-    hideEditModal() {
-      this.$modal.hide('movieEditModal');
-    },
     watchTrailer() {
       window.open(this.movie.trailerUrl);
     },
-    showEdit(){
-      this.showEditModal();
+    showEdit(movieId){
+      this.$router.push({name: 'edit' , params:{ movieId: movieId}})
     },
     deleteMovie(movieId) {
 
       this.movieService.deleteMovie(movieId).then((resp) => {
         if (resp.status === 'OK') {
 
-          this.$emit('deleteMovie', true);
+          this.$router.push({name: 'movies'})
 
         } else {
 
-          this.$emit('deleteMovie', false);
+          this.errorMessage = 'Error in delete movie!';
+          this.showErrorModal();
+          setTimeout(() => {
+            this.hideErrorModal()
+          }, 4000)
         }
       })
     },
     editedMovie() {
-      this.hideEditModal();
       this.successMessage = 'Successful film editing!'
       this.showSuccessModal();
       setTimeout(() => {
@@ -148,7 +124,7 @@ export default {
       }, 4000)
     },
     closeDetails() {
-      this.$emit('closeDetails')
+      this.$router.push({name: 'movies'})
     }
   },
   computed: {
@@ -158,6 +134,9 @@ export default {
         return Math.ceil(length / 50);
       }
       return 0;
+    },
+    movieId() {
+      return this.$route.params.movieId;
     },
   }
 }

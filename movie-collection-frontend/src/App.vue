@@ -1,21 +1,12 @@
 <template>
   <div id="app">
     <header>
-      <nav>
-        <ul>
-            <li @click="addMovie">ADD MOVIE</li>
-            <li @click="getStatistics">STATISTICS</li>
-        </ul>
-        <ul>
-            <li @click="showLoginForm">LOGIN</li>
-            <li @click="showRegisterForm">REGISTER</li>
-          <li>LOGOUT</li>
-        </ul>
-      </nav>
+      <NavigationComponent />
       <img src="./assets/image/welcome-image.jpg" alt="home-cinema-image">
     </header>
     <main class="container">
-      <aside v-if="true" class="filter">
+      <router-view />
+      <!--      <aside v-if="true" class="filter">
         <p class="filtersTitle">Filters</p>
         <span class="filterTitle">Genres:</span>
         <div ref="genres" v-for="(genre , i) in genres" :key="i">
@@ -76,9 +67,9 @@
                       @changePerPage="changePerPage"
                       @changeCurrentPage="changeCurrentPage"
         />
-      </section>
+      </section>-->
     </main>
-    <modal class="modalElement"
+    <!--    <modal class="modalElement"
            name="movieDetailsModal"
            :resizable="false"
            :reset="true"
@@ -86,11 +77,11 @@
            width="860px"
            height="550px">
       <DetailsView :movie="this.movie" @deleteMovie="deletedMovie" @closeDetails="hideDetailsModal"/>
-    </modal>
-    <modal name="errorModal" :shiftX="1" :shiftY="0" :height="0" :width="0">
+    </modal>-->
+    <!--    <modal name="errorModal" :shiftX="1" :shiftY="0" :height="0" :width="0">
       <ErrorModal :errorMessage="this.errorMessage"/>
-    </modal>
-    <modal name="successfulModal" :shiftX="1" :shiftY="0" :height="0" :width="0">
+    </modal>-->
+    <!--    <modal name="successfulModal" :shiftX="1" :shiftY="0" :height="0" :width="0">
       <SuccessfulModal :success-message="this.successMessage"/>
     </modal>
     <modal name="warningModal" :shiftX="1" :shiftY="0" :height="0" :width="0">
@@ -122,7 +113,7 @@
            :reset="true"
            :clickToClose="false"
            width="500px"
-           height="400px">
+           height="450px">
       <LoginComponent @closeLoginForm="closeLoginForm"/>
     </modal>
     <modal class="modalElement"
@@ -133,173 +124,168 @@
            width="500px"
            height="550px">
       <RegisterComponent @closeRegisterForm="closeRegisterForm"/>
-    </modal>
+    </modal>-->
   </div>
 </template>
 <script>
 
-import {MovieService} from "@/services/movie-service";
-import {GenreService} from "@/services/genre-service";
-import DetailsView from "@/components/DetailsView";
-import MovieCard from "@/components/MovieCard";
-import ErrorModal from "@/components/messages/ErrorModal";
-import SuccessfulModal from "@/components/messages/SuccessfulModal";
-import WarningModal from "@/components/messages/WarningModal";
-import AddMovie from "@/components/AddMovie";
-import MyPagination from "@/components/MyPagination";
-import StatisticsView from "@/components/StatisticsView";
-import LoginComponent from "@/components/LoginComponent";
-import RegisterComponent from "@/components/RegisterComponent";
+// import {MovieService} from "@/services/movie-service";
+// import {GenreService} from "@/services/genre-service";
+// import DetailsView from "@/components/DetailsMovieComponent";
+// import MovieCard from "@/components/MovieCard";
+// import ErrorModal from "@/components/messages/ErrorModal";
+// import SuccessfulModal from "@/components/messages/SuccessfulModal";
+// import WarningModal from "@/components/messages/WarningModal";
+// import MyPagination from "@/components/MyPagination";
+import NavigationComponent from "@/components/NavigationComponent";
+
+
 
 export default {
   name: 'App',
   components: {
-    RegisterComponent,
-    StatisticsView,
-    DetailsView,
-    MovieCard,
-    ErrorModal,
-    SuccessfulModal,
-    WarningModal,
-    AddMovie,
-    MyPagination,
-    LoginComponent
+    NavigationComponent
+    // DetailsView,
+    // MovieCard,
+    // ErrorModal,
+    // SuccessfulModal,
+    // WarningModal,
+    // MyPagination,
   },
   mounted() {
-    this.loadMovies()
+    // this.loadMovies()
     // this.loadGenres();
-    this.fillDurationSlideColor();
-    this.fillRatingSlideColor();
+    // this.fillDurationSlideColor();
+    // this.fillRatingSlideColor();
     this.$store.dispatch('getGenres')
     this.$store.dispatch('getPlatforms')
   },
   data() {
     return {
-      movieService: new MovieService(),
-      genreService: new GenreService(),
-      moviesToShow: [],
-      movie: {
-        movieId: {
-          required: true,
-          type: Number
-        },
-        title1: String,
-        title2: String,
-        genres: {
-          type: {},
-        },
-        duration: Number,
-        year: Number,
-        rating: Number,
-        imdbUrl: String,
-        trailerUrl: String,
-        posterUrl: String,
-        platforms: {
-          type: {},
-        },
-        bulgarianLanguage: Boolean,
-        description: String,
-      },
-      // genres: [],
-      durationFilter: {
-        minDuration: 30,
-        maxDuration: 300,
-        minGap: 10,
-      },
-      ratingFilter: {
-        minRating: 0,
-        maxRating: 10,
-        minGap: 1,
-      },
-      pagination: {
-        empty: null,
-        first: null,
-        last: null,
-        currentPage: 1,
-        perPage: 10,
-        orderBy: 'year,desc',
-        totalElements: null,
-        totalPages: null,
-      },
-      filterParams: {
-        minDuration: 30,
-        maxDuration: 300,
-        minRating: 1,
-        maxRating: 10,
-        searchText: '',
-        genres: [],
-      },
-      statistics: {},
-      errorMessage: null,
-      successMessage: null,
+      // movieService: new MovieService(),
+      // genreService: new GenreService(),
+      // moviesToShow: [],
+      // movie: {
+      //   movieId: {
+      //     required: true,
+      //     type: Number
+      //   },
+      //   title1: String,
+      //   title2: String,
+      //   genres: {
+      //     type: {},
+      //   },
+      //   duration: Number,
+      //   year: Number,
+      //   rating: Number,
+      //   imdbUrl: String,
+      //   trailerUrl: String,
+      //   posterUrl: String,
+      //   platforms: {
+      //     type: {},
+      //   },
+      //   bulgarianLanguage: Boolean,
+      //   description: String,
+      // },
+      // // genres: [],
+      // durationFilter: {
+      //   minDuration: 30,
+      //   maxDuration: 300,
+      //   minGap: 10,
+      // },
+      // ratingFilter: {
+      //   minRating: 0,
+      //   maxRating: 10,
+      //   minGap: 1,
+      // },
+      // pagination: {
+      //   empty: null,
+      //   first: null,
+      //   last: null,
+      //   currentPage: 1,
+      //   perPage: 10,
+      //   orderBy: 'year,desc',
+      //   totalElements: null,
+      //   totalPages: null,
+      // },
+      // filterParams: {
+      //   minDuration: 30,
+      //   maxDuration: 300,
+      //   minRating: 1,
+      //   maxRating: 10,
+      //   searchText: '',
+      //   genres: [],
+      // },
+      // statistics: {},
+      // errorMessage: null,
+      // successMessage: null,
     }
   },
   methods: {
-    showAddMovieModal() {
+  /*  showAddMovieModal() {
       this.$modal.show('addMovieModal');
-    },
-    hideAddMovieModal() {
+    },*/
+   /* hideAddMovieModal() {
       console.log('hide')
       this.$modal.hide('addMovieModal');
-    },
-    showDetailsModal() {
+    },*/
+   /* showDetailsModal() {
       this.$modal.show('movieDetailsModal');
-    },
-    hideDetailsModal() {
+    },*/
+    /*hideDetailsModal() {
       this.$modal.hide('movieDetailsModal');
-    },
-    showSuccessModal() {
+    },*/
+   /* showSuccessModal() {
       this.$modal.show('successfulModal');
-    },
-    hideSuccessModal() {
+    },*/
+   /* hideSuccessModal() {
       this.$modal.hide('successfulModal');
-    },
-    showErrorModal() {
+    },*/
+    /*showErrorModal() {
       this.$modal.show('errorModal');
-    },
-    hideErrorModal() {
+    },*/
+    /*hideErrorModal() {
       this.$modal.hide('errorModal');
-    },
-    showWarningModal() {
+    },*/
+    /*showWarningModal() {
       this.$modal.show('warningModal');
-    },
-    hideWarningModal() {
+    },*/
+   /* hideWarningModal() {
       this.$modal.hide('warningModal');
-    },
-    showStatisticsModal() {
+    },*/
+   /* showStatisticsModal() {
       this.$modal.show('statisticsModal')
-    },
-    hideStatisticsModal() {
+    },*/
+    /*hideStatisticsModal() {
       this.$modal.hide('statisticsModal');
-    },
-    showLoginForm() {
+    },*/
+    /*showLoginForm() {
       this.$modal.show('loginForm')
-    },
-    closeLoginForm() {
+    },*/
+/*    closeLoginForm() {
       this.$modal.hide('loginForm');
-    },
-    showRegisterForm() {
+    },*/
+  /*  showRegisterForm() {
       this.$modal.show('registerForm')
-    },
-    closeRegisterForm() {
+    },*/
+    /*closeRegisterForm() {
       this.$modal.hide('registerForm');
-    },
-    fillDurationSlideColor() {
-      //ToDo fix % calculate from 30 to 300
+    },*/
+/*    fillDurationSlideColor() {
       let startPercent = (this.durationFilter.minDuration / 270) * 100 - (30 * 0.27);
       let overPercent = (this.durationFilter.maxDuration / 270) * 100 - (30 * 0.27);
 
       let sliderTrackElement = document.querySelector('.durationSliderTrack');
       sliderTrackElement.style.background = `linear-gradient(to right, white ${startPercent}% , orange ${startPercent}% , orange ${overPercent}% , white ${overPercent}%)`;
-    },
-    fillRatingSlideColor() {
+    },*/
+/*    fillRatingSlideColor() {
       let startPercent = (this.ratingFilter.minRating / 10) * 100;
       let overPercent = (this.ratingFilter.maxRating / 10) * 100;
 
       let sliderTrackElement = document.querySelector('.ratingSliderTrack');
       sliderTrackElement.style.background = `linear-gradient(to right, white ${startPercent}% , orange ${startPercent}% , orange ${overPercent}% , white ${overPercent}%)`;
-    },
-    loadMovies() {
+    },*/
+/*    loadMovies() {
 
       this.movieService.findAllMoviesWithParams(this.pagination.currentPage - 1, this.pagination.perPage, this.pagination.orderBy, this.filterParams).then((resp) => {
         if (resp.status === 'OK') {
@@ -321,24 +307,24 @@ export default {
         }
       });
       // .finally() ToDo
-    },
-    // loadGenres() {
-    //   this.genreService.findAllGenres().then((resp) => {
-    //     if (resp.status === 'OK') {
-    //       this.genres = resp.data;
-    //     } else {
-    //       this.errorMessage = 'Error in loadGenres!';
-    //       this.showErrorModal();
-    //       setTimeout(() => {
-    //         this.hideErrorModal()
-    //       }, 4000)
-    //     }
-    //   })
-    // },
-    addMovie() {
-      this.showAddMovieModal();
-    },
-    clickDetails(movieId) {
+    },*/
+/*    loadGenres() {
+      this.genreService.findAllGenres().then((resp) => {
+        if (resp.status === 'OK') {
+          this.genres = resp.data;
+        } else {
+          this.errorMessage = 'Error in loadGenres!';
+          this.showErrorModal();
+          setTimeout(() => {
+            this.hideErrorModal()
+          }, 4000)
+        }
+      })
+    },*/
+/*    addMovie() {
+      this.$router.push()
+    },*/
+/*    clickDetails(movieId) {
       this.movieService.findMovieDetail(movieId).then((movieDetailsDto) => {
         if (movieDetailsDto.status === 'OK') {
           this.movie = movieDetailsDto.data;
@@ -351,8 +337,8 @@ export default {
           }, 4000)
         }
       })
-    },
-    addOrRemoveInGenresFilter(index) {
+    },*/
+/*    addOrRemoveInGenresFilter(index) {
       let genre = this.genres[index];
       let elementIndex = this.filterParams.genres.indexOf(genre);
 
@@ -361,8 +347,8 @@ export default {
       } else {
         this.filterParams.genres.splice(elementIndex, 1);
       }
-    },
-    deletedMovie(isDeleted) {
+    },*/
+/*    deletedMovie(isDeleted) {
 
       if (isDeleted) {
         this.hideDetailsModal();
@@ -384,8 +370,8 @@ export default {
         }, 3000)
 
       }
-    },
-    successAddMovie() {
+    },*/
+/*    successAddMovie() {
       this.hideAddMovieModal();
       this.successMessage = 'The movie was successfully added!';
       this.showSuccessModal();
@@ -394,8 +380,8 @@ export default {
       }, 4000)
 
       this.loadMovies();
-    },
-    mapRespPagToPag(data) {
+    },*/
+/*    mapRespPagToPag(data) {
       this.pagination.empty = data.empty;
       this.pagination.first = data.first;
       this.pagination.last = data.last;
@@ -403,17 +389,17 @@ export default {
       this.pagination.perPage = data.size;
       this.pagination.totalElements = data.totalElements;
       this.pagination.totalPages = data.totalPages;
-    },
-    changePerPage(value) {
+    },*/
+/*    changePerPage(value) {
       this.pagination.perPage = value;
       this.pagination.currentPage = 1;
       this.loadMovies();
-    },
-    changeCurrentPage(value) {
+    },*/
+/*    changeCurrentPage(value) {
       this.pagination.currentPage = value;
       this.loadMovies();
-    },
-    getStatistics() {
+    },*/
+/*    getStatistics() {
       console.log('before')
       this.movieService.getStatistics().then((resp) => {
 
@@ -432,8 +418,8 @@ export default {
 
         }
       })
-    },
-    clearFilters() {
+    },*/
+/*    clearFilters() {
       this.pagination.orderBy = 'year,desc';
 
       this.durationFilter.minDuration = 30;
@@ -448,7 +434,7 @@ export default {
       this.filterParams.maxRating = 10;
       this.filterParams.searchText = '';
       this.filterParams.genres = [];
-    },
+    },*/
   },
   watch: {
     durationFilter: {

@@ -116,12 +116,10 @@ export default {
     ErrorModal,
     SuccessfulModal,
   },
-  mounted() {
-    // this.loadGenres();
-    // this.loadPlatforms();
-    this.loadMovieData();
+  created() {
+
   },
-  props: {
+/*  props: {
     movie: {
       movieId: {
         type: Number,
@@ -144,7 +142,7 @@ export default {
       bulgarianLanguage: Boolean,
       description: String,
     }
-  },
+  },*/
   data() {
     return {
       constants: Constants,
@@ -165,8 +163,6 @@ export default {
         description: null,
         bulgarianLanguage: null
       },
-      // genres: {},
-      // platforms: {},
       errorMessage: null,
       successMessage: null
     }
@@ -237,31 +233,6 @@ export default {
     hideErrorModal(){
       this.$modal.hide('editErrorModal');
     },
-    // loadGenres() {
-    //   this.genreService.findAllGenres().then((resp) => {
-    //     if (resp.status === 'OK') {
-    //       this.genres = resp.data;
-    //     } else {
-    //       this.errorMessage = 'Fill form genres!';
-    //       this.showErrorModal();
-    //       setTimeout(() => {this.hideErrorModal()} , 4000 )
-    //     }
-    //   })
-    // },
-    // loadPlatforms() {
-    //   this.platformService.findAllPlatforms().then((resp) => {
-    //     if (resp.status === 'OK') {
-    //       this.platforms = resp.data;
-    //     } else {
-    //       this.errorMessage = 'Errors in platforms!';
-    //       this.showErrorModal();
-    //       setTimeout(() => {this.hideErrorModal()} , 3000 )
-    //     }
-    //   })
-    // },
-    loadMovieData() {
-      this.editedMovie = this.movie;
-    },
     saveEditMovie() {
       if (this.$v.$invalid) {
 
@@ -278,7 +249,7 @@ export default {
           if (resp.status === 'OK') {
 
             this.editedMovie = resp.data;
-            this.$emit('editMovie');
+            this.$router.push({name: 'details' , params: {movieId: this.editedMovie.movieId}})
 
           } else {
 
@@ -290,7 +261,7 @@ export default {
       }
     },
     closeEditMovie() {
-      this.$emit('closeEditMovie');
+      this.$router.push({name: 'details' , params: {movieId: this.editedMovie.movieId}});
     },
   },
   computed: {

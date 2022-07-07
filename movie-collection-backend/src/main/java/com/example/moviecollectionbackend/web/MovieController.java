@@ -60,8 +60,10 @@ public class MovieController {
     }
 
     @DeleteMapping("/delete")
-    private ResponseEntity<Boolean> deleteMovie(@RequestParam(name = "movieId") Long movieId){
-        return new ResponseEntity<>(this.movieService.deleteMovieById(movieId) , HttpStatus.OK);
+    private ResponseEntity<Boolean> deleteMovie(@RequestParam(name = "movieId") Long movieId) {
+        
+        Boolean result = this.movieService.deleteMovieById(movieId);
+        return new ResponseEntity<>( result , result ? HttpStatus.OK : HttpStatus.BAD_REQUEST );
     }
 
     @GetMapping("/statistics")

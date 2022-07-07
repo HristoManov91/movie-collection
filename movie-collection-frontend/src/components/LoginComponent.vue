@@ -33,8 +33,8 @@
         <font-awesome-icon icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.PASSWORD_BETWEEN }}
         </span>
       </div>
-
       <button class="loginButton">LOGIN</button>
+      <p class="smallText">If you don't have account <a href="/movies/register">click here</a></p>
     </form>
   </div>
 </template>
@@ -174,4 +174,15 @@ button.loginButton:hover {
 .invalidFiled {
   border: 3px solid red;
 }
+
+p.smallText {
+  color: white;
+  text-align: center;
+  margin: 1rem;
+}
+
+p.smallText a {
+  color: yellow;
+}
+
 </style>
