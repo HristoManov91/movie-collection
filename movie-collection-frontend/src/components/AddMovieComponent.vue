@@ -163,10 +163,6 @@ export default {
     ErrorModal,
     SuccessfulModal
   },
-  mounted() {
-    // this.loadGenres();
-    // this.loadPlatforms();
-  },
   data() {
     return {
       constants: Constants,
@@ -186,8 +182,6 @@ export default {
         bulgarianLanguage: null,
         description: null,
       },
-      // genres: {},
-      // platforms: {},
       errorMessage: null,
       successMessage: null,
     }
@@ -259,39 +253,13 @@ export default {
     hideErrorModal() {
       this.$modal.hide('newErrorModal');
     },
-    // loadGenres() {
-    //   this.genreService.findAllGenres().then((resp) => {
-    //     if (resp.status === 'OK') {
-    //       this.genres = resp.data;
-    //     } else {
-    //       this.errorMessage = 'Fill form genres!';
-    //       this.showErrorModal();
-    //       setTimeout(() => {
-    //         this.hideErrorModal()
-    //       }, 4000)
-    //     }
-    //   })
-    // },
-    // loadPlatforms() {
-    //   this.platformService.findAllPlatforms().then((resp) => {
-    //     if (resp.status === 'OK') {
-    //       this.platforms = resp.data;
-    //     } else {
-    //       this.errorMessage = 'Errors in platforms!';
-    //       this.showErrorModal();
-    //       setTimeout(() => {
-    //         this.hideErrorModal()
-    //       }, 3000)
-    //     }
-    //   })
-    // },
     saveMovie() {
       this.$v.newMovie.$touch();
       if (!this.$v.newMovie.$invalid) {
 
         this.movieService.addMovie(this.newMovie).then((response) => {
           if (response.status === 'OK'){
-            this.$emit('addMovie');
+            this.$router.push({name: 'movies'})
           } else {
             this.errorMessage = response.error.message;
             this.showErrorModal();
@@ -301,7 +269,7 @@ export default {
       }
     },
     closeAddMovie() {
-      this.$emit('closeAddMovie');
+      this.$router.push({name: 'movies'})
     }
   },
   computed: {
@@ -319,8 +287,10 @@ export default {
 
 div.container {
   background-color: #010340;
-  height: 100%;
-  width: 100%;
+  position: absolute;
+  max-height: 72rem;
+  width: 65rem;
+  z-index: 20;
 }
 
 div.container p.closeButton {
@@ -523,7 +493,7 @@ button.saveButton {
   color: #010340;
   font-size: 1.5rem;
   padding: 0.5rem 1rem;
-  margin: 1rem 35%;
+  margin: 1rem 35% 2rem 35%;
   width: 30%
 }
 

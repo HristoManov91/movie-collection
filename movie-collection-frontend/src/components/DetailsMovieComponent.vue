@@ -1,33 +1,39 @@
 <template>
-  <div class="detailsView" v-if="movie">
-    <img class="detailsPosterImage"
-         :src="movie.posterUrl"
-         alt="poster-image">
-    <div class="detailsViewInfo">
-      <p class="closeButton" @click="closeDetails">X</p>
-      <p class="detailsViewTitle1">{{ movie.title1 }}</p>
-      <p class="detailsViewTitle2">{{ movie.title2 }}</p>
-      <ul class="detailsViewGenres">
-        <li v-for="(genre , index) in movie.genres" :key="index">{{ genre }}</li>
-      </ul>
-      <textarea v-if="movie.description !== null && movie.description.length > 0"
-                :value="movie.description" readonly :rows="rowsDecl" cols="52" class="detailsViewDescription">
-      </textarea>
-      <button class="detailsViewButtonTrailer" @click="watchTrailer()">
-        <font-awesome-icon icon="fa-solid fa-circle-play"/>
-        WATCH TRAILER
-      </button>
-      <p class="detailsViewIMDb"><span class="imdbRating">IMDb</span> {{ movie.rating ? movie.rating + '/10' : 'N/A' }}</p>
-      <ul class="yearDurationAudioInfo">
-        <li class="year">Year: {{ movie.year }}</li>
-        <li class="duration">Duration: {{ movie.duration }}min</li>
-        <li>Audio: {{ movie.bulgarianLanguage ? 'Българско' : 'Английско' }}</li>
-      </ul>
-      <ul class="platforms">
-        <li v-for="(platform , index) in movie.platforms" :key="index">{{ platform }}</li>
+  <div>
+    <div class="overlay">
 
-      </ul>
-      <ul class="detailsViewButtons">
+    </div>
+    <div class="detailsView" v-if="movie">
+      <img class="detailsPosterImage"
+           :src="movie.posterUrl"
+           alt="poster-image">
+      <div class="detailsViewInfo">
+        <p class="closeButton" @click="closeDetails">X</p>
+        <p class="detailsViewTitle1">{{ movie.title1 }}</p>
+        <p class="detailsViewTitle2">{{ movie.title2 }}</p>
+        <ul class="detailsViewGenres">
+          <li v-for="(genre , index) in movie.genres" :key="index">{{ genre }}</li>
+        </ul>
+        <textarea v-if="movie.description !== null && movie.description.length > 0"
+                  :value="movie.description" readonly :rows="rowsDecl" cols="52" class="detailsViewDescription">
+      </textarea>
+        <button class="detailsViewButtonTrailer" @click="watchTrailer()">
+          <font-awesome-icon icon="fa-solid fa-circle-play"/>
+          WATCH TRAILER
+        </button>
+        <p class="detailsViewIMDb"><span class="imdbRating">IMDb</span> {{
+            movie.rating ? movie.rating + '/10' : 'N/A'
+          }}</p>
+        <ul class="yearDurationAudioInfo">
+          <li class="year">Year: {{ movie.year }}</li>
+          <li class="duration">Duration: {{ movie.duration }}min</li>
+          <li>Audio: {{ movie.bulgarianLanguage ? 'Българско' : 'Английско' }}</li>
+        </ul>
+        <ul class="platforms">
+          <li v-for="(platform , index) in movie.platforms" :key="index">{{ platform }}</li>
+
+        </ul>
+        <ul class="detailsViewButtons">
           <li class="editButton" @click="showEdit(movie.movieId)">
             <font-awesome-icon icon="fa-solid fa-pen-to-square"/>
             EDIT
@@ -36,14 +42,15 @@
             <font-awesome-icon icon="fa-solid fa-trash-can"/>
             DELETE
           </li>
-      </ul>
+        </ul>
+      </div>
+      <modal name="detailsErrorModal" :shiftX="1" :shiftY="0" :height="0" :width="0">
+        <ErrorModal :errorMessage="this.errorMessage"/>
+      </modal>
+      <modal name="detailsSuccessfulModal" :shiftX="1" :shiftY="0" :height="0" :width="0">
+        <SuccessfulModal :successMessage="this.successMessage"/>
+      </modal>
     </div>
-    <modal name="detailsErrorModal" :shiftX="1" :shiftY="0" :height="0" :width="0">
-      <ErrorModal :errorMessage="this.errorMessage"/>
-    </modal>
-    <modal name="detailsSuccessfulModal" :shiftX="1" :shiftY="0" :height="0" :width="0">
-      <SuccessfulModal :successMessage="this.successMessage"/>
-    </modal>
   </div>
 </template>
 
@@ -96,8 +103,8 @@ export default {
     watchTrailer() {
       window.open(this.movie.trailerUrl);
     },
-    showEdit(movieId){
-      this.$router.push({name: 'edit' , params:{ movieId: movieId}})
+    showEdit(movieId) {
+      this.$router.push({name: 'edit', params: {movieId: movieId}})
     },
     deleteMovie(movieId) {
 
@@ -144,22 +151,36 @@ export default {
 
 <style scoped>
 
+div.overlay {
+  position: absolute;
+  background-color: #010340;
+  opacity: 0.5;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 30;
+}
+
 .detailsView {
   display: grid;
   grid-template-columns: 23rem 1fr;
   grid-template-areas:
     "img div";
-  width: 100%;
-  height: 100%;
+  width: 55rem;
+  height: 35rem;
   position: absolute;
   background-color: #010229;
+  z-index: 40;
+
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .detailsView img.detailsPosterImage {
   width: 100%;
   height: 100%;
-  position: relative;
-  z-index: 10;
 }
 
 .detailsViewInfo {

@@ -1,5 +1,5 @@
 <template>
-  <div class="statsContainer">
+  <div class="statsContainer" v-if="this.statistics">
     <p class="closeButton" @click="closeStatistics">X</p>
     <p class="title">Statistics</p>
     <p>Total movies: <span>{{ statistics.totalMovies }} </span> movies.</p>
@@ -23,9 +23,29 @@
 
 <script>
 
+import {MovieService} from "@/services/movie-service";
+
 export default {
   name: "StatisticsView",
-  props: {
+  created() {
+
+    this.moviesService.getStatistics().then((resp) => {
+
+      if (resp.status === 'OK') {
+        this.statistics = resp.data;
+
+      } else {
+
+        this.errorMessage = 'We have problem with server,please try again later!'
+        this.showErrorModal();
+        setTimeout(() => {
+          this.hideErrorModal()
+        }, 4000)
+
+      }
+    })
+  },
+/*  props: {
     statistics: {
       totalMovies: Number,
       totalDurations: Number,
@@ -43,22 +63,16 @@ export default {
       documentaryMovies: Number,
       serialMovies: Number
     }
-  },
-  created() {
-    console.log('statsCreated')
-  },
-  mounted() {
-    console.log('statsMounted')
-  },
-  updated() {
-    console.log('statsUpdated')
-  },
-  destroyed() {
-    console.log('statsDestroyed')
+  },*/
+  data(){
+    return {
+      statistics: null,
+      moviesService: new MovieService()
+    }
   },
   methods: {
     closeStatistics(){
-      this.$emit('closeStatistics')
+      this.$router.push({name: 'movies'})
     }
   }
 }
@@ -68,8 +82,10 @@ export default {
 
 div.statsContainer {
   background-color: #0D2082;
-  height: 100%;
-  width: 100%;
+  height: 43rem;
+  width: 35rem;
+  position: absolute;
+  z-index: 40;
 }
 
 div.statsContainer p {

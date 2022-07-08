@@ -6,137 +6,11 @@
     </header>
     <main class="container">
       <router-view />
-      <!--      <aside v-if="true" class="filter">
-        <p class="filtersTitle">Filters</p>
-        <span class="filterTitle">Genres:</span>
-        <div ref="genres" v-for="(genre , i) in genres" :key="i">
-          <input type="checkbox" :id="i" :name="genre" :value="genre">
-          <label @click="addOrRemoveInGenresFilter(i)" :for="i">{{ genre }}</label>
-        </div>
-        <span class="filterTitle">Duration:</span>
-        <div class="values">
-          <span id="durationRange1">{{ this.durationFilter.minDuration }}</span>
-          <span> &dash; </span>
-          <span id="durationRange2">{{ this.durationFilter.maxDuration }}</span>
-        </div>
-        <div class="durationSliderTrack"></div>
-        <input class="sliderRange" v-model="durationFilter.minDuration" id="durationSlider1" type="range" min="30"
-               max="300"
-               step="5">
-        <input class="sliderRange" v-model="durationFilter.maxDuration" id="durationSlider2" type="range" min="30"
-               max="300"
-               step="5">
-        <span class="ratingFilterTitle">IMDb rating:</span>
-        <div class="values">
-          <span id="ratingRange1">{{ this.ratingFilter.minRating }}</span>
-          <span> &dash; </span>
-          <span id="ratingRange2">{{ this.ratingFilter.maxRating }}</span>
-        </div>
-        <div class="ratingSliderTrack"></div>
-        <input class="sliderRange" v-model="ratingFilter.minRating" id="ratingSlider1" type="range" min="0" max="10"
-               step="0.5">
-        <input class="sliderRange" v-model="ratingFilter.maxRating" id="ratingSlider2" type="range" min="0" max="10"
-               step="0.5">
-        <p id="clearButton" @click="clearFilters">Clear Filters</p>
-      </aside>
-      <section v-if="true" class="catalogue">
-        <div class="catalogueHeader">
-          <div>
-            <label class="selectLabel" for="orderBy">Order by:</label>
-            <select id="orderBy" class="orderBy" v-model="pagination.orderBy">
-              <option class="selectOption" value="title1">Title ASC</option>
-              <option class="selectOption" value="title1,desc">Title DESC</option>
-              <option class="selectOption" value="duration">Duration ASC</option>
-              <option class="selectOption" value="duration,desc">Duration DESC</option>
-              <option class="selectOption" value="rating">Rating ASC</option>
-              <option class="selectOption" value="rating,desc">Rating DESC</option>
-              <option class="selectOption" value="year">Year ASC</option>
-              <option class="selectOption" value="year,desc">Year DESC</option>
-            </select>
-          </div>
-          <p class="movies-title">Collection</p>
-          <input class="searchInput" v-model.trim="filterParams.searchText" type="text" placeholder="Search...">
-        </div>
-        <ul class="movies">
-          <MovieCard v-for="(movie , id) in moviesToShow"
-                     :key="id"
-                     :movie="movie"
-                     @clickDetails="clickDetails"/>
-        </ul>
-        <MyPagination :pagination="this.pagination"
-                      @changePerPage="changePerPage"
-                      @changeCurrentPage="changeCurrentPage"
-        />
-      </section>-->
     </main>
-    <!--    <modal class="modalElement"
-           name="movieDetailsModal"
-           :resizable="false"
-           :reset="true"
-           :clickToClose="false"
-           width="860px"
-           height="550px">
-      <DetailsView :movie="this.movie" @deleteMovie="deletedMovie" @closeDetails="hideDetailsModal"/>
-    </modal>-->
-    <!--    <modal name="errorModal" :shiftX="1" :shiftY="0" :height="0" :width="0">
-      <ErrorModal :errorMessage="this.errorMessage"/>
-    </modal>-->
-    <!--    <modal name="successfulModal" :shiftX="1" :shiftY="0" :height="0" :width="0">
-      <SuccessfulModal :success-message="this.successMessage"/>
-    </modal>
-    <modal name="warningModal" :shiftX="1" :shiftY="0" :height="0" :width="0">
-      <WarningModal/>
-    </modal>
-    <modal class="addMovieModal"
-           name="addMovieModal"
-           :resizable="false"
-           :reset="true"
-           :clickToClose="false"
-           width="850px"
-           height="auto"
-           :scrollable="true">
-      <AddMovie @addMovie="successAddMovie" @closeAddMovie="hideAddMovieModal"/>
-    </modal>
-    <modal name="statisticsModal"
-           class="statisticsModal"
-           :resizable="false"
-           :reset="true"
-           :clickToClose="false"
-           width="600px"
-           height="auto"
-           :scrollable="true">
-      <StatisticsView :statistics="this.statistics" @closeStatistics="hideStatisticsModal"/>
-    </modal>
-    <modal class="modalElement"
-           name="loginForm"
-           :resizable="false"
-           :reset="true"
-           :clickToClose="false"
-           width="500px"
-           height="450px">
-      <LoginComponent @closeLoginForm="closeLoginForm"/>
-    </modal>
-    <modal class="modalElement"
-           name="registerForm"
-           :resizable="false"
-           :reset="true"
-           :clickToClose="false"
-           width="500px"
-           height="550px">
-      <RegisterComponent @closeRegisterForm="closeRegisterForm"/>
-    </modal>-->
   </div>
 </template>
 <script>
 
-// import {MovieService} from "@/services/movie-service";
-// import {GenreService} from "@/services/genre-service";
-// import DetailsView from "@/components/DetailsMovieComponent";
-// import MovieCard from "@/components/MovieCard";
-// import ErrorModal from "@/components/messages/ErrorModal";
-// import SuccessfulModal from "@/components/messages/SuccessfulModal";
-// import WarningModal from "@/components/messages/WarningModal";
-// import MyPagination from "@/components/MyPagination";
 import NavigationComponent from "@/components/NavigationComponent";
 
 
@@ -145,18 +19,8 @@ export default {
   name: 'App',
   components: {
     NavigationComponent
-    // DetailsView,
-    // MovieCard,
-    // ErrorModal,
-    // SuccessfulModal,
-    // WarningModal,
-    // MyPagination,
   },
   mounted() {
-    // this.loadMovies()
-    // this.loadGenres();
-    // this.fillDurationSlideColor();
-    // this.fillRatingSlideColor();
     this.$store.dispatch('getGenres')
     this.$store.dispatch('getPlatforms')
   },

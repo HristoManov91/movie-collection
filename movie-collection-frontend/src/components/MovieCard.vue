@@ -83,9 +83,6 @@ li.movie-card {
   border-radius: 10px;
   height: 21rem;
   width: 14rem;
-  /*min-height: 330px;*/
-  /*max-height: 390px;*/
-  /*min-width: 210px;*/
 }
 
 li.movie-card:hover {
@@ -143,10 +140,6 @@ li.movie-card::after {
   font-size: 1rem;
   display: inline-block;
   margin: 0.5rem 0.3rem;
-}
-
-.movie-info .rating {
-
 }
 
 .button-trailer ,

@@ -1,102 +1,129 @@
 <template>
-  <div class="container">
-    <p class="closeButton" @click="closeEditMovie">X</p>
-    <p class="pageTitle">Edit movie</p>
-    <form @submit.prevent="saveEditMovie" class="editForm">
-      <div class="row">
-        <div class="col">
-          <label for="title1">Title:</label>
-          <input id="title1" v-model.trim="$v.editedMovie.title1.$model" type="text"/>
+  <div>
+    <div class="overlay">
+
+    </div>
+    <div class="container">
+      <p class="closeButton" @click="closeEditMovie">X</p>
+      <p class="pageTitle">Edit movie</p>
+      <form @submit.prevent="saveEditMovie" class="editForm">
+        <div class="row">
+          <div class="col">
+            <label for="title1">Title:</label>
+            <input id="title1" v-model.trim="$v.editedMovie.title1.$model" type="text"/>
+          </div>
+          <div class="col">
+            <label for="title2">Second Title:</label>
+            <input id="title2" v-model.trim="$v.editedMovie.title2.$model" type="text"/>
+          </div>
         </div>
-        <div class="col">
-          <label for="title2">Second Title:</label>
-          <input id="title2" v-model.trim="$v.editedMovie.title2.$model" type="text"/>
+        <div class="rowError">
+          <div class="colError">
+            <span v-if="!$v.editedMovie.title1.required" class="errorMessage"><font-awesome-icon
+                icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.TITLE1_REQUIRED }}</span>
+            <span v-else-if="!$v.editedMovie.title1.minLength || !$v.editedMovie.title1.maxLength" class="errorMessage"><font-awesome-icon
+                icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.TITLE1_LENGTH }}</span>
+          </div>
+          <div class="colError">
+            <span v-if="!$v.editedMovie.title2.minLength || !$v.editedMovie.title2.maxLength" class="errorMessage"><font-awesome-icon
+                icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.TITLE2_LENGTH }}</span>
+          </div>
         </div>
-      </div>
-      <div class="rowError">
-        <div class="colError">
-          <span v-if="!$v.editedMovie.title1.required" class="errorMessage"><font-awesome-icon icon="fa-solid fa-circle-exclamation" /> {{ this.constants.error.TITLE1_REQUIRED }}</span>
-          <span v-else-if="!$v.editedMovie.title1.minLength || !$v.editedMovie.title1.maxLength" class="errorMessage"><font-awesome-icon icon="fa-solid fa-circle-exclamation" /> {{ this.constants.error.TITLE1_LENGTH }}</span>
+        <div class="row">
+          <div class="col">
+            <label for="duration">Duration:</label>
+            <input id="duration" v-model.number="$v.editedMovie.duration.$model" type="number"/>
+          </div>
+          <div class="col">
+            <label for="year">Year:</label>
+            <input id="year" v-model.number="$v.editedMovie.year.$model" type="number"/>
+          </div>
         </div>
-        <div class="colError">
-          <span v-if="!$v.editedMovie.title2.minLength || !$v.editedMovie.title2.maxLength" class="errorMessage"><font-awesome-icon icon="fa-solid fa-circle-exclamation" /> {{ this.constants.error.TITLE2_LENGTH }}</span>
+        <div class="rowError">
+          <div class="colError">
+            <span v-if="!$v.editedMovie.duration.required" class="errorMessage"><font-awesome-icon
+                icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.DURATION_REQUIRED }}</span>
+            <span v-else-if="!$v.editedMovie.duration.numeric" class="errorMessage"><font-awesome-icon
+                icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.DURATION_NUMERIC }}</span>
+            <span v-else-if="!$v.editedMovie.duration.between" class="errorMessage"><font-awesome-icon
+                icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.DURATION_BETWEEN }}</span>
+          </div>
+          <div class="colError">
+            <span v-if="!$v.editedMovie.year.required" class="errorMessage"><font-awesome-icon
+                icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.YEAR_REQUIRED }}</span>
+            <span v-else-if="!$v.editedMovie.year.numeric" class="errorMessage"><font-awesome-icon
+                icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.YEAR_NUMERIC }}</span>
+            <span v-else-if="!$v.editedMovie.year.between" class="errorMessage"><font-awesome-icon
+                icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.YEAR_BETWEEN }}</span>
+          </div>
         </div>
-      </div>
-      <div class="row">
-        <div class="col">
-          <label for="duration">Duration:</label>
-          <input id="duration" v-model.number="$v.editedMovie.duration.$model" type="number"/>
+        <div class="genresEdit">
+          <div v-for="(genre , i) in genres" :key="i">
+            <input type="checkbox" :id="genre + 'Edit'" :name="genre + 'Edit'" :value="genre"
+                   v-model="$v.editedMovie.genres.$model">
+            <label :for="genre + 'Edit'">{{ genre }}</label>
+          </div>
+          <span v-if="!$v.editedMovie.genres.required || !$v.editedMovie.genres.minLength" class="errorMessage"><font-awesome-icon
+              icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.GENRES_REQUIRED }}</span>
+          <span v-if="!$v.editedMovie.genres.maxLength" class="errorMessage"><font-awesome-icon
+              icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.GENRES_MAX_LENGTH }}</span>
         </div>
-        <div class="col">
-          <label for="year">Year:</label>
-          <input id="year" v-model.number="$v.editedMovie.year.$model" type="number"/>
+        <div class="urlsEdit">
+          <label for="imdbUrl">IMDb URL:</label>
+          <input id="imdbUrl" type="text" v-model.trim="$v.editedMovie.imdbUrl.$model"/>
+          <span v-if="!$v.editedMovie.imdbUrl.url" class="errorMessage"><font-awesome-icon
+              icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.IMDB_URL }}</span>
+          <span v-else-if="!$v.editedMovie.imdbUrl.maxLength" class="errorMessage"><font-awesome-icon
+              icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.IMDB_URL_MAX_LENGTH }}</span>
+          <label for="trailerUrl">Trailer URL:</label>
+          <input id="trailerUrl" type="text" v-model.trim="$v.editedMovie.trailerUrl.$model"/>
+          <span v-if="!$v.editedMovie.trailerUrl.required" class="errorMessage"><font-awesome-icon
+              icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.TRAILER_URL_REQUIRED }}</span>
+          <span v-else-if="!$v.editedMovie.trailerUrl.url" class="errorMessage"><font-awesome-icon
+              icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.TRAILER_URL }}</span>
+          <span v-else-if="!$v.editedMovie.trailerUrl.maxLength" class="errorMessage"><font-awesome-icon
+              icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.TRAILER_URL_MAX_LENGTH }}</span>
+          <label for="posterUrl">Poster URL:</label>
+          <input id="posterUrl" type="text" v-model.trim="$v.editedMovie.posterUrl.$model"/>
+          <span v-if="!$v.editedMovie.posterUrl.required" class="errorMessage"><font-awesome-icon
+              icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.POSTER_URL_REQUIRED }}</span>
+          <span v-else-if="!$v.editedMovie.posterUrl.url" class="errorMessage"><font-awesome-icon
+              icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.POSTER_URL }}</span>
+          <span v-else-if="!$v.editedMovie.posterUrl.maxLength" class="errorMessage"><font-awesome-icon
+              icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.POSTER_URL_MAX_LENGTH }}</span>
         </div>
-      </div>
-      <div class="rowError">
-        <div class="colError">
-          <span v-if="!$v.editedMovie.duration.required" class="errorMessage"><font-awesome-icon icon="fa-solid fa-circle-exclamation" /> {{ this.constants.error.DURATION_REQUIRED }}</span>
-          <span v-else-if="!$v.editedMovie.duration.numeric" class="errorMessage"><font-awesome-icon icon="fa-solid fa-circle-exclamation" /> {{ this.constants.error.DURATION_NUMERIC }}</span>
-          <span v-else-if="!$v.editedMovie.duration.between" class="errorMessage"><font-awesome-icon icon="fa-solid fa-circle-exclamation" /> {{ this.constants.error.DURATION_BETWEEN }}</span>
+        <div class="audioEdit">
+          <input id="english" type="radio" v-model="editedMovie.bulgarianLanguage" :value="false"/>
+          <label for="english">English Audio</label>
+          <input id="bulgarian" type="radio" v-model="editedMovie.bulgarianLanguage" :value="true"/>
+          <label for="bulgarian">Bulgarian Audio</label>
         </div>
-        <div class="colError">
-          <span v-if="!$v.editedMovie.year.required" class="errorMessage"><font-awesome-icon icon="fa-solid fa-circle-exclamation" /> {{ this.constants.error.YEAR_REQUIRED }}</span>
-          <span v-else-if="!$v.editedMovie.year.numeric" class="errorMessage"><font-awesome-icon icon="fa-solid fa-circle-exclamation" /> {{ this.constants.error.YEAR_NUMERIC }}</span>
-          <span v-else-if="!$v.editedMovie.year.between" class="errorMessage"><font-awesome-icon icon="fa-solid fa-circle-exclamation" /> {{ this.constants.error.YEAR_BETWEEN }}</span>
+        <span class="description">Description:</span>
+        <textarea class="editMovieTextarea" v-model.trim="$v.editedMovie.description.$model"></textarea>
+        <span v-if="!$v.editedMovie.description.maxLength" class="errorMessage"><font-awesome-icon
+            icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.DESCRIPTION_MAX_LENGTH }}</span>
+        <div class="platformsEdit">
+          <div v-for="(platform , i) in platforms" :key="i">
+            <input type="checkbox" :id="platform + 'Edit'" :name="platform + 'Edit'" :value="platform"
+                   v-model="$v.editedMovie.platforms.$model">
+            <label :for="platform + 'Edit'">{{ platform }}</label>
+          </div>
         </div>
-      </div>
-      <div class="genresEdit" >
-        <div v-for="(genre , i) in genres" :key="i">
-          <input type="checkbox" :id="genre + 'Edit'" :name="genre + 'Edit'" :value="genre"
-                 v-model="$v.editedMovie.genres.$model">
-          <label :for="genre + 'Edit'">{{ genre }}</label>
-        </div>
-        <span v-if="!$v.editedMovie.genres.required || !$v.editedMovie.genres.minLength" class="errorMessage"><font-awesome-icon icon="fa-solid fa-circle-exclamation" /> {{ this.constants.error.GENRES_REQUIRED }}</span>
-        <span v-if="!$v.editedMovie.genres.maxLength" class="errorMessage"><font-awesome-icon icon="fa-solid fa-circle-exclamation" /> {{ this.constants.error.GENRES_MAX_LENGTH }}</span>
-      </div>
-      <div class="urlsEdit">
-        <label for="imdbUrl">IMDb URL:</label>
-        <input id="imdbUrl" type="text" v-model.trim="$v.editedMovie.imdbUrl.$model"/>
-        <span v-if="!$v.editedMovie.imdbUrl.url" class="errorMessage"><font-awesome-icon icon="fa-solid fa-circle-exclamation" /> {{ this.constants.error.IMDB_URL }}</span>
-        <span v-else-if="!$v.editedMovie.imdbUrl.maxLength" class="errorMessage"><font-awesome-icon icon="fa-solid fa-circle-exclamation" /> {{ this.constants.error.IMDB_URL_MAX_LENGTH }}</span>
-        <label for="trailerUrl">Trailer URL:</label>
-        <input id="trailerUrl" type="text" v-model.trim="$v.editedMovie.trailerUrl.$model"/>
-        <span v-if="!$v.editedMovie.trailerUrl.required" class="errorMessage"><font-awesome-icon icon="fa-solid fa-circle-exclamation" /> {{ this.constants.error.TRAILER_URL_REQUIRED }}</span>
-        <span v-else-if="!$v.editedMovie.trailerUrl.url" class="errorMessage"><font-awesome-icon icon="fa-solid fa-circle-exclamation" /> {{ this.constants.error.TRAILER_URL }}</span>
-        <span v-else-if="!$v.editedMovie.trailerUrl.maxLength" class="errorMessage"><font-awesome-icon icon="fa-solid fa-circle-exclamation" /> {{ this.constants.error.TRAILER_URL_MAX_LENGTH }}</span>
-        <label for="posterUrl">Poster URL:</label>
-        <input id="posterUrl" type="text" v-model.trim="$v.editedMovie.posterUrl.$model"/>
-        <span v-if="!$v.editedMovie.posterUrl.required" class="errorMessage"><font-awesome-icon icon="fa-solid fa-circle-exclamation" /> {{ this.constants.error.POSTER_URL_REQUIRED }}</span>
-        <span v-else-if="!$v.editedMovie.posterUrl.url" class="errorMessage"><font-awesome-icon icon="fa-solid fa-circle-exclamation" /> {{ this.constants.error.POSTER_URL }}</span>
-        <span v-else-if="!$v.editedMovie.posterUrl.maxLength" class="errorMessage"><font-awesome-icon icon="fa-solid fa-circle-exclamation" /> {{ this.constants.error.POSTER_URL_MAX_LENGTH }}</span>
-      </div>
-      <div class="audioEdit">
-        <input id="english" type="radio" v-model="editedMovie.bulgarianLanguage" :value="false"/>
-        <label for="english">English Audio</label>
-        <input id="bulgarian" type="radio" v-model="editedMovie.bulgarianLanguage" :value="true"/>
-        <label for="bulgarian">Bulgarian Audio</label>
-      </div>
-      <span class="description">Description:</span>
-      <textarea class="editMovieTextarea" v-model.trim="$v.editedMovie.description.$model"></textarea>
-      <span v-if="!$v.editedMovie.description.maxLength" class="errorMessage"><font-awesome-icon icon="fa-solid fa-circle-exclamation" /> {{ this.constants.error.DESCRIPTION_MAX_LENGTH }}</span>
-      <div class="platformsEdit">
-        <div v-for="(platform , i) in platforms" :key="i">
-          <input type="checkbox" :id="platform + 'Edit'" :name="platform + 'Edit'" :value="platform"
-                 v-model="$v.editedMovie.platforms.$model">
-          <label :for="platform + 'Edit'">{{ platform }}</label>
-        </div>
-      </div>
-      <span v-if="!$v.editedMovie.platforms.required || !$v.editedMovie.platforms.minLength" class="errorMessage"><font-awesome-icon icon="fa-solid fa-circle-exclamation" /> {{ this.constants.error.PLATFORMS_REQUIRED }}</span>
-      <span v-if="!$v.editedMovie.platforms.maxLength" class="errorMessage"><font-awesome-icon icon="fa-solid fa-circle-exclamation" /> {{ this.constants.error.PLATFORMS_MAX_LENGTH }}</span>
-      <button class="saveButton">
-        SAVE MOVIE
-      </button>
-    </form>
-    <modal name="editErrorModal" :shiftX="1" :shiftY="0" :height="0" :width="0">
-      <ErrorModal :errorMessage="this.errorMessage"/>
-    </modal>
-    <modal name="editSuccessfulModal" :shiftX="1" :shiftY="0" :height="0" :width="0">
-      <SuccessfulModal :success-message="this.successMessage"/>
-    </modal>
+        <span v-if="!$v.editedMovie.platforms.required || !$v.editedMovie.platforms.minLength" class="errorMessage"><font-awesome-icon
+            icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.PLATFORMS_REQUIRED }}</span>
+        <span v-if="!$v.editedMovie.platforms.maxLength" class="errorMessage"><font-awesome-icon
+            icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.PLATFORMS_MAX_LENGTH }}</span>
+        <button class="saveButton">
+          SAVE MOVIE
+        </button>
+      </form>
+      <modal name="editErrorModal" :shiftX="1" :shiftY="0" :height="0" :width="0">
+        <ErrorModal :errorMessage="this.errorMessage"/>
+      </modal>
+      <modal name="editSuccessfulModal" :shiftX="1" :shiftY="0" :height="0" :width="0">
+        <SuccessfulModal :success-message="this.successMessage"/>
+      </modal>
+    </div>
   </div>
 </template>
 
@@ -119,30 +146,30 @@ export default {
   created() {
 
   },
-/*  props: {
-    movie: {
-      movieId: {
-        type: Number,
-        required: true
-      },
-      title1: String,
-      title2: String,
-      genres: {
-        type: {},
-      },
-      duration: Number,
-      year: Number,
-      rating: Number,
-      imdbUrl: String,
-      trailerUrl: String,
-      posterUrl: String,
-      platforms: {
-        type: {},
-      },
-      bulgarianLanguage: Boolean,
-      description: String,
-    }
-  },*/
+  /*  props: {
+      movie: {
+        movieId: {
+          type: Number,
+          required: true
+        },
+        title1: String,
+        title2: String,
+        genres: {
+          type: {},
+        },
+        duration: Number,
+        year: Number,
+        rating: Number,
+        imdbUrl: String,
+        trailerUrl: String,
+        posterUrl: String,
+        platforms: {
+          type: {},
+        },
+        bulgarianLanguage: Boolean,
+        description: String,
+      }
+    },*/
   data() {
     return {
       constants: Constants,
@@ -182,12 +209,12 @@ export default {
       duration: {
         required,
         numeric,
-        between: between(30 , 300)
+        between: between(30, 300)
       },
       year: {
         required,
         numeric,
-        between: between(1950 , 2100)
+        between: between(1950, 2100)
       },
       genres: {
         required,
@@ -224,13 +251,13 @@ export default {
     showSuccessModal() {
       this.$modal.show('editSuccessfulModal');
     },
-    hideSuccessModal(){
+    hideSuccessModal() {
       this.$modal.hide('editSuccessfulModal');
     },
     showErrorModal() {
       this.$modal.show('editErrorModal');
     },
-    hideErrorModal(){
+    hideErrorModal() {
       this.$modal.hide('editErrorModal');
     },
     saveEditMovie() {
@@ -238,7 +265,9 @@ export default {
 
         this.errorMessage = 'Fill in the form correctly!'
         this.showErrorModal();
-        setTimeout(() => {this.hideErrorModal()} , 3000 )
+        setTimeout(() => {
+          this.hideErrorModal()
+        }, 3000)
 
       } else {
 
@@ -249,26 +278,28 @@ export default {
           if (resp.status === 'OK') {
 
             this.editedMovie = resp.data;
-            this.$router.push({name: 'details' , params: {movieId: this.editedMovie.movieId}})
+            this.$router.push({name: 'details', params: {movieId: this.editedMovie.movieId}})
 
           } else {
 
             this.errorMessage = resp.error.message;
             this.showErrorModal();
-            setTimeout(() => {this.hideErrorModal()} , 4000 )
+            setTimeout(() => {
+              this.hideErrorModal()
+            }, 4000)
           }
         })
       }
     },
     closeEditMovie() {
-      this.$router.push({name: 'details' , params: {movieId: this.editedMovie.movieId}});
+      this.$router.push({name: 'details', params: {movieId: this.editedMovie.movieId}});
     },
   },
   computed: {
     genres() {
       return this.$store.getters.getGenres;
     },
-    platforms(){
+    platforms() {
       return this.$store.getters.getPlatforms;
     }
   }
@@ -277,10 +308,27 @@ export default {
 
 <style scoped>
 
+div.overlay {
+  position: absolute;
+  background-color: #010340;
+  opacity: 0.5;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 30;
+}
+
 div.container {
   background-color: #010340;
-  height: 100%;
-  width: 100%;
+  max-height: 71rem;
+  width: 65rem;
+  position: absolute;
+  z-index: 40;
+
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 div.container p.closeButton {
@@ -292,7 +340,7 @@ div.container p.closeButton {
   right: 0;
   top: 0;
   text-align: center;
-  font-family: "Helvetica",serif;
+  font-family: "Helvetica", serif;
   font-weight: bold;
 }
 
@@ -357,7 +405,7 @@ form.editForm div.audioEdit {
 }
 
 form.editForm div.genresEdit div {
-  display:inline-block;
+  display: inline-block;
   margin: 0 0.5rem;
 }
 
@@ -507,7 +555,7 @@ span.errorMessage {
   border: 1px solid #D8000C;
 }
 
-input:focus, textarea:focus, select:focus{
+input:focus, textarea:focus, select:focus {
   outline: none;
 }
 </style>

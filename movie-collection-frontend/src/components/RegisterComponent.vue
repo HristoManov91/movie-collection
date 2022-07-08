@@ -42,8 +42,8 @@
           <font-awesome-icon icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.CONFIRM_PASSWORD }}
         </span>
       </div>
-
       <button class="registerButton">Register</button>
+      <p class="smallText">If you have account <router-link tag="span" :to="{name: 'login'}">click here</router-link></p>
     </form>
   </div>
 </template>
@@ -89,7 +89,7 @@ export default {
       }
     },
     closeRegisterForm(){
-      this.$emit('closeRegisterForm')
+      this.$router.push({name: 'home'})
     }
   }
 }
@@ -99,8 +99,10 @@ export default {
 
 div.registerComponent {
   background-color: #010340;
-  width: 100%;
-  height: 100%;
+  position: absolute;
+  width: 28rem;
+  height: 36rem;
+  z-index: 40;
 }
 
 div.registerComponent p.closeButton {
@@ -137,14 +139,14 @@ div.registerComponent form.registerForm label.registerLabel {
   font-size: 1.2rem;
   display: block;
   color: #FFDF65;
-  margin: 1rem 18%;
+  margin: 1rem 4rem;
 }
 
 div.registerComponent form.registerForm input.registerInput {
   font-size: 1.2rem;
   width: 20rem;
   display: block;
-  margin: 1rem 18%;
+  margin: 1rem 4rem;
   background-color: #4158D0;
   background-image: linear-gradient(270deg, #4158D0 0%, #C850C0 39%, #FFCC70 83%);
 }
@@ -173,9 +175,9 @@ div.registerComponent button.registerButton {
   background-image: linear-gradient(43deg, #08AEEA 0%, #2AF598 100%);
   color: #010340;
   font-size: 1.5rem;
-  padding: 0.5rem 1rem;
-  margin: 1rem 35%;
-  width: 30%
+  padding: 0.5rem 0.5rem;
+  margin: 1rem 32%;
+  width: 10rem
 }
 
 div.registerComponent button.registerButton:hover {
@@ -188,4 +190,18 @@ div.registerComponent button.registerButton:hover {
   border: 3px solid red;
 }
 
+p.smallText {
+  color: white;
+  text-align: center;
+  margin: 1rem;
+}
+
+p.smallText span {
+  color: #2AF598;
+}
+
+p.smallText span:hover {
+  cursor: pointer;
+  color: #e6fa29;
+}
 </style>

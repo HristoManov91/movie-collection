@@ -1,5 +1,8 @@
 <template>
   <div class="movieContainer">
+<!--    <div class="overlay">-->
+
+<!--    </div>-->
     <aside v-if="true" class="filter">
       <p class="filtersTitle">Filters</p>
       <span class="filterTitle">Genres:</span>
@@ -61,6 +64,7 @@
                     @changeCurrentPage="changeCurrentPage"
       />
     </section>
+    <router-view />
   </div>
 </template>
 
@@ -140,19 +144,6 @@ export default {
     }
   },
   methods: {
-    showAddMovieModal() {
-      this.$modal.show('addMovieModal');
-    },
-    hideAddMovieModal() {
-      console.log('hide')
-      this.$modal.hide('addMovieModal');
-    },
-    showDetailsModal() {
-      this.$modal.show('movieDetailsModal');
-    },
-    hideDetailsModal() {
-      this.$modal.hide('movieDetailsModal');
-    },
     showSuccessModal() {
       this.$modal.show('successfulModal');
     },
@@ -170,24 +161,6 @@ export default {
     },
     hideWarningModal() {
       this.$modal.hide('warningModal');
-    },
-    showStatisticsModal() {
-      this.$modal.show('statisticsModal')
-    },
-    hideStatisticsModal() {
-      this.$modal.hide('statisticsModal');
-    },
-    showLoginForm() {
-      this.$modal.show('loginForm')
-    },
-    closeLoginForm() {
-      this.$modal.hide('loginForm');
-    },
-    showRegisterForm() {
-      this.$modal.show('registerForm')
-    },
-    closeRegisterForm() {
-      this.$modal.hide('registerForm');
     },
     fillDurationSlideColor() {
       let startPercent = (this.durationFilter.minDuration / 270) * 100 - (30 * 0.27);
@@ -226,26 +199,6 @@ export default {
       });
       // .finally() ToDo
     },
-    getStatistics() {
-      console.log('before')
-      this.movieService.getStatistics().then((resp) => {
-
-        console.log('after')
-        if (resp.status === 'OK') {
-          this.statistics = resp.data;
-          this.showStatisticsModal();
-
-        } else {
-
-          this.errorMessage = 'We have problem with server,please try again later!'
-          this.showErrorModal();
-          setTimeout(() => {
-            this.hideErrorModal()
-          }, 4000)
-
-        }
-      })
-    },
     addOrRemoveInGenresFilter(index) {
       let genre = this.genres[index];
       let elementIndex = this.filterParams.genres.indexOf(genre);
@@ -259,7 +212,6 @@ export default {
     deletedMovie(isDeleted) {
 
       if (isDeleted) {
-        this.hideDetailsModal();
         this.successMessage = 'The movie was successfully deleted!';
         this.showSuccessModal();
         setTimeout(() => {
@@ -280,7 +232,6 @@ export default {
       }
     },
     successAddMovie() {
-      this.hideAddMovieModal();
       this.successMessage = 'The movie was successfully added!';
       this.showSuccessModal();
       setTimeout(() => {
@@ -401,7 +352,19 @@ div.movieContainer {
   grid-template-columns: 200px 1fr;
   grid-template-areas:
     "aside section";
+  position: relative;
 }
+
+/*div.overlay {*/
+/*  position: absolute;*/
+/*  background-color: #010340;*/
+/*  opacity: 0.5;*/
+/*  top: 0;*/
+/*  left: 0;*/
+/*  width: 100%;*/
+/*  height: 100%;*/
+/*  z-index: 30;*/
+/*}*/
 
 aside.filter {
   display: inline-block;

@@ -34,7 +34,7 @@
         </span>
       </div>
       <button class="loginButton">LOGIN</button>
-      <p class="smallText">If you don't have account <a href="/movies/register">click here</a></p>
+      <p class="smallText">If you don't have account <router-link tag="span" :to="{name: 'register'}">click here</router-link></p>
     </form>
   </div>
 </template>
@@ -75,7 +75,7 @@ export default {
       }
     },
     closeLoginForm() {
-      this.$emit('closeLoginForm');
+      this.$router.push({name: 'home'})
     }
   },
 }
@@ -84,10 +84,11 @@ export default {
 <style scoped>
 
 div.loginComponent {
-  z-index: 100;
+  position: absolute;
+  z-index: 40;
   background-color: #010340;
-  width: 100%;
-  height: 100%;
+  width: 28rem;
+  height: 28rem;
 }
 
 div.loginComponent p.closeButton {
@@ -124,14 +125,14 @@ div.loginComponent form.loginForm label.loginLabel {
   font-size: 1.2rem;
   display: block;
   color: #FFDF65;
-  margin: 1rem 18%;
+  margin: 1rem 4rem;
 }
 
 div.loginComponent form.loginForm input.loginInput {
   font-size: 1.2rem;
   width: 20rem;
   display: block;
-  margin: 1rem 18%;
+  margin: 1rem 4rem;
   background-color: #74EBD5;
   background-image: linear-gradient(212deg, #74EBD5 0%, #f5f564 100%);
 }
@@ -181,8 +182,13 @@ p.smallText {
   margin: 1rem;
 }
 
-p.smallText a {
-  color: yellow;
+p.smallText span {
+  color: #2AF598;
+}
+
+p.smallText span:hover {
+  cursor: pointer;
+  color: #e6fa29;
 }
 
 </style>
