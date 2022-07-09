@@ -18,6 +18,7 @@ const moviesRoutes = [
             {
                 path: "edit/:movieId",
                 name: 'edit',
+                props: true,
                 component: () => import(/* webpackChunkName: "edit" */ "@/components/EditMovieComponent")
             },
             {

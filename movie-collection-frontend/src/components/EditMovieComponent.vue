@@ -143,33 +143,25 @@ export default {
     ErrorModal,
     SuccessfulModal,
   },
-  created() {
-
+  props: {
+    movieId: {
+      type: Number,
+      required: true
+    }
   },
-  /*  props: {
-      movie: {
-        movieId: {
-          type: Number,
-          required: true
-        },
-        title1: String,
-        title2: String,
-        genres: {
-          type: {},
-        },
-        duration: Number,
-        year: Number,
-        rating: Number,
-        imdbUrl: String,
-        trailerUrl: String,
-        posterUrl: String,
-        platforms: {
-          type: {},
-        },
-        bulgarianLanguage: Boolean,
-        description: String,
+  created() {
+    this.movieService.findMovieDetail(this.movieId).then((movieDetailsDto) => {
+      if (movieDetailsDto.status === 'OK') {
+        this.editedMovie = movieDetailsDto.data;
+      } else {
+        this.errorMessage = 'Error in clickDetails!';
+        this.showErrorModal();
+        setTimeout(() => {
+          this.hideErrorModal()
+        }, 4000)
       }
-    },*/
+    })
+  },
   data() {
     return {
       constants: Constants,
@@ -292,6 +284,7 @@ export default {
       }
     },
     closeEditMovie() {
+      console.log(this.editedMovie.movieId)
       this.$router.push({name: 'details', params: {movieId: this.editedMovie.movieId}});
     },
   },
@@ -301,7 +294,10 @@ export default {
     },
     platforms() {
       return this.$store.getters.getPlatforms;
-    }
+    },
+/*    movieId() {
+      return this.$route.params.movieId;
+    },*/
   }
 }
 </script>
@@ -309,7 +305,7 @@ export default {
 <style scoped>
 
 div.overlay {
-  position: absolute;
+  position: fixed;
   background-color: #010340;
   opacity: 0.5;
   top: 0;
@@ -321,10 +317,12 @@ div.overlay {
 
 div.container {
   background-color: #010340;
-  max-height: 71rem;
-  width: 65rem;
-  position: absolute;
+  height: 40rem;
+  width: 70rem;
+  position: fixed;
   z-index: 40;
+  overflow-y: scroll;
+  overflow-x: hidden;
 
   top: 50%;
   left: 50%;

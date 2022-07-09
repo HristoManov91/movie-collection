@@ -1,149 +1,155 @@
 <template>
-  <div class="container">
-    <p class="pageTitle">Add movie</p>
-    <p class="closeButton" @click="closeAddMovie">X</p>
-    <form @submit.prevent="saveMovie" class="addForm">
-      <div class="row">
-        <div class="col">
-          <label for="title1">Title:</label>
-          <input id="title1" v-model.trim="$v.newMovie.title1.$model" type="text"
-                 :class="{invalidFiled: $v.newMovie.title1.$error}"/>
+  <div>
+    <div class="overlay">
+
+    </div>
+    <div class="container">
+      <p class="pageTitle">Add movie</p>
+      <p class="closeButton" @click="closeAddMovie">X</p>
+      <form @submit.prevent="saveMovie" class="addForm">
+        <div class="row">
+          <div class="col">
+            <label for="title1">Title:</label>
+            <input id="title1" v-model.trim="$v.newMovie.title1.$model" type="text"
+                   :class="{invalidFiled: $v.newMovie.title1.$error}"/>
+          </div>
+          <div class="col">
+            <label for="title2">Second Title:</label>
+            <input id="title2" v-model.trim="$v.newMovie.title2.$model" type="text"
+                   :class="{invalidFiled: $v.newMovie.title2.$error}"/>
+          </div>
         </div>
-        <div class="col">
-          <label for="title2">Second Title:</label>
-          <input id="title2" v-model.trim="$v.newMovie.title2.$model" type="text"
-                 :class="{invalidFiled: $v.newMovie.title2.$error}"/>
-        </div>
-      </div>
-      <div class="rowError">
-        <div class="colError">
+        <div class="rowError">
+          <div class="colError">
           <span v-if="$v.newMovie.title1.$dirty && !$v.newMovie.title1.required" class="errorMessage">
             <font-awesome-icon icon="fa-solid fa-circle-exclamation"/>{{ this.constants.error.TITLE1_REQUIRED }}
           </span>
-          <span v-else-if="!$v.newMovie.title1.minLength || !$v.newMovie.title1.maxLength" class="errorMessage">
+            <span v-else-if="!$v.newMovie.title1.minLength || !$v.newMovie.title1.maxLength" class="errorMessage">
             <font-awesome-icon
                 icon="fa-solid fa-circle-exclamation"/>
             {{ this.constants.error.TITLE1_LENGTH }}
           </span>
-        </div>
-        <div class="colError">
-          <div v-if="!$v.newMovie.title2.minLength || !$v.newMovie.title2.maxLength" class="errorMessage">
-            <font-awesome-icon
-                icon="fa-solid fa-circle-exclamation"/>
-            {{ this.constants.error.TITLE2_LENGTH }}
+          </div>
+          <div class="colError">
+            <div v-if="!$v.newMovie.title2.minLength || !$v.newMovie.title2.maxLength" class="errorMessage">
+              <font-awesome-icon
+                  icon="fa-solid fa-circle-exclamation"/>
+              {{ this.constants.error.TITLE2_LENGTH }}
+            </div>
           </div>
         </div>
-      </div>
-      <div class="row">
-        <div class="col">
-          <label for="duration">Duration:</label>
-          <input id="duration" v-model.number="$v.newMovie.duration.$model" type="number"
-                 :class="{invalidFiled: $v.newMovie.duration.$error}"/>
+        <div class="row">
+          <div class="col">
+            <label for="duration">Duration:</label>
+            <input id="duration" v-model.number="$v.newMovie.duration.$model" type="number"
+                   :class="{invalidFiled: $v.newMovie.duration.$error}"/>
+          </div>
+          <div class="col">
+            <label for="year">Year:</label>
+            <input id="year" v-model.number="$v.newMovie.year.$model" type="number"
+                   :class="{invalidFiled: $v.newMovie.year.$error}"/>
+          </div>
         </div>
-        <div class="col">
-          <label for="year">Year:</label>
-          <input id="year" v-model.number="$v.newMovie.year.$model" type="number"
-                 :class="{invalidFiled: $v.newMovie.year.$error}"/>
-        </div>
-      </div>
-      <div class="rowError">
-        <div class="colError">
+        <div class="rowError">
+          <div class="colError">
           <span v-if="$v.newMovie.duration.$dirty && !$v.newMovie.duration.required" class="errorMessage">
             <font-awesome-icon
                 icon="fa-solid fa-circle-exclamation"/>
             {{ this.constants.error.DURATION_REQUIRED }}
           </span>
-          <span v-else-if="!$v.newMovie.duration.numeric" class="errorMessage">
+            <span v-else-if="!$v.newMovie.duration.numeric" class="errorMessage">
             <font-awesome-icon
                 icon="fa-solid fa-circle-exclamation"/>
             {{ this.constants.error.DURATION_NUMERIC }}
           </span>
-          <span v-else-if="!$v.newMovie.duration.between" class="errorMessage">
+            <span v-else-if="!$v.newMovie.duration.between" class="errorMessage">
             <font-awesome-icon
                 icon="fa-solid fa-circle-exclamation"/>
             {{ this.constants.error.DURATION_BETWEEN }}
           </span>
-        </div>
-        <div class="colError">
+          </div>
+          <div class="colError">
           <span v-if="$v.newMovie.year.$dirty && !$v.newMovie.year.required" class="errorMessage"><font-awesome-icon
               icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.YEAR_REQUIRED }}</span>
-          <span v-else-if="!$v.newMovie.year.numeric" class="errorMessage"><font-awesome-icon
-              icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.YEAR_NUMERIC }}</span>
-          <span v-else-if="!$v.newMovie.year.between" class="errorMessage"><font-awesome-icon
-              icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.YEAR_BETWEEN }}</span>
+            <span v-else-if="!$v.newMovie.year.numeric" class="errorMessage"><font-awesome-icon
+                icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.YEAR_NUMERIC }}</span>
+            <span v-else-if="!$v.newMovie.year.between" class="errorMessage"><font-awesome-icon
+                icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.YEAR_BETWEEN }}</span>
+          </div>
         </div>
-      </div>
-      <div class="genresAdd">
-        <div v-for="(genre , i) in genres" :key="i" >
-          <input type="checkbox" :id="genre + 'Edit'" :name="genre + 'Edit'" :value="genre"
-                 v-model="$v.newMovie.genres.$model" >
-          <label :for="genre + 'Edit'">{{ genre }}</label>
+        <div class="genresAdd">
+          <div v-for="(genre , i) in genres" :key="i">
+            <input type="checkbox" :id="genre + 'Edit'" :name="genre + 'Edit'" :value="genre"
+                   v-model="$v.newMovie.genres.$model">
+            <label :for="genre + 'Edit'">{{ genre }}</label>
+          </div>
+          <span v-if="$v.newMovie.genres.$dirty && (!$v.newMovie.genres.required || !$v.newMovie.genres.minLength)"
+                class="errorMessage"><font-awesome-icon
+              icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.GENRES_REQUIRED }}</span>
         </div>
-        <span v-if="$v.newMovie.genres.$dirty && (!$v.newMovie.genres.required || !$v.newMovie.genres.minLength)"
-              class="errorMessage"><font-awesome-icon
-            icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.GENRES_REQUIRED }}</span>
-      </div>
-      <div class="urlsAdd">
-        <label for="imdbUrl">IMDb URL:</label>
-        <input id="imdbUrl" type="text" v-model.trim="$v.newMovie.imdbUrl.$model"
-               :class="{invalidFiled: $v.newMovie.imdbUrl.$error}"/>
-        <span v-if="!$v.newMovie.imdbUrl.url" class="errorMessage"><font-awesome-icon
-            icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.IMDB_URL }}</span>
-        <span v-else-if="!$v.newMovie.imdbUrl.maxLength" class="errorMessage"><font-awesome-icon
-            icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.IMDB_URL_MAX_LENGTH }}</span>
-        <label for="trailerUrl">Trailer URL:</label>
-        <input id="trailerUrl" type="text" v-model.trim="$v.newMovie.trailerUrl.$model"
-               :class="{invalidFiled: $v.newMovie.trailerUrl.$error}"/>
-        <span v-if="$v.newMovie.trailerUrl.$dirty && !$v.newMovie.trailerUrl.required" class="errorMessage"><font-awesome-icon
-            icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.TRAILER_URL_REQUIRED }}</span>
-        <span v-else-if="!$v.newMovie.trailerUrl.url" class="errorMessage"><font-awesome-icon
-            icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.TRAILER_URL }}</span>
-        <span v-else-if="!$v.newMovie.trailerUrl.maxLength" class="errorMessage"><font-awesome-icon
-            icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.TRAILER_URL_MAX_LENGTH }}</span>
-        <label for="posterUrl">Poster URL:</label>
-        <input id="posterUrl" type="text" v-model.trim="$v.newMovie.posterUrl.$model"
-               :class="{invalidFiled: $v.newMovie.posterUrl.$error}"/>
-        <span v-if="$v.newMovie.posterUrl.$dirty && !$v.newMovie.posterUrl.required" class="errorMessage"><font-awesome-icon
-            icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.POSTER_URL_REQUIRED }}</span>
-        <span v-else-if="!$v.newMovie.posterUrl.url" class="errorMessage"><font-awesome-icon
-            icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.POSTER_URL }}</span>
-        <span v-else-if="!$v.newMovie.posterUrl.maxLength" class="errorMessage"><font-awesome-icon
-            icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.POSTER_URL_MAX_LENGTH }}</span>
-      </div>
-      <div class="audioAdd">
-        <input id="english" type="radio" v-model="$v.newMovie.bulgarianLanguage.$model" :value="false"/>
-        <label for="english">English Audio</label>
-        <input id="bulgarian" type="radio" v-model="$v.newMovie.bulgarianLanguage.$model" :value="true"/>
-        <label for="bulgarian">Bulgarian Audio</label>
-        <span v-if="$v.newMovie.bulgarianLanguage.$dirty && !$v.newMovie.bulgarianLanguage.required"
-              class="errorMessage"><font-awesome-icon
-            icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.LANGUAGE_REQUIRED }} </span>
-      </div>
-      <span class="description">Description:</span>
-      <textarea class="addMovieTextarea" v-model.trim="$v.newMovie.description.$model"
-                :class="{invalidFiled: $v.newMovie.description.$error}"></textarea>
-      <span v-if="!$v.newMovie.description.maxLength" class="errorMessage"><font-awesome-icon
-          icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.DESCRIPTION_MAX_LENGTH }}</span>
-      <div class="platformsAdd">
-        <div v-for="(platform , i) in platforms" :key="i">
-          <input type="checkbox" :id="platform + 'Edit'" :name="platform + 'Edit'" :value="platform"
-                 v-model="$v.newMovie.platforms.$model">
-          <label :for="platform + 'Edit'">{{ platform }}</label>
+        <div class="urlsAdd">
+          <label for="imdbUrl">IMDb URL:</label>
+          <input id="imdbUrl" type="text" v-model.trim="$v.newMovie.imdbUrl.$model"
+                 :class="{invalidFiled: $v.newMovie.imdbUrl.$error}"/>
+          <span v-if="!$v.newMovie.imdbUrl.url" class="errorMessage"><font-awesome-icon
+              icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.IMDB_URL }}</span>
+          <span v-else-if="!$v.newMovie.imdbUrl.maxLength" class="errorMessage"><font-awesome-icon
+              icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.IMDB_URL_MAX_LENGTH }}</span>
+          <label for="trailerUrl">Trailer URL:</label>
+          <input id="trailerUrl" type="text" v-model.trim="$v.newMovie.trailerUrl.$model"
+                 :class="{invalidFiled: $v.newMovie.trailerUrl.$error}"/>
+          <span v-if="$v.newMovie.trailerUrl.$dirty && !$v.newMovie.trailerUrl.required" class="errorMessage"><font-awesome-icon
+              icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.TRAILER_URL_REQUIRED }}</span>
+          <span v-else-if="!$v.newMovie.trailerUrl.url" class="errorMessage"><font-awesome-icon
+              icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.TRAILER_URL }}</span>
+          <span v-else-if="!$v.newMovie.trailerUrl.maxLength" class="errorMessage"><font-awesome-icon
+              icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.TRAILER_URL_MAX_LENGTH }}</span>
+          <label for="posterUrl">Poster URL:</label>
+          <input id="posterUrl" type="text" v-model.trim="$v.newMovie.posterUrl.$model"
+                 :class="{invalidFiled: $v.newMovie.posterUrl.$error}"/>
+          <span v-if="$v.newMovie.posterUrl.$dirty && !$v.newMovie.posterUrl.required" class="errorMessage"><font-awesome-icon
+              icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.POSTER_URL_REQUIRED }}</span>
+          <span v-else-if="!$v.newMovie.posterUrl.url" class="errorMessage"><font-awesome-icon
+              icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.POSTER_URL }}</span>
+          <span v-else-if="!$v.newMovie.posterUrl.maxLength" class="errorMessage"><font-awesome-icon
+              icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.POSTER_URL_MAX_LENGTH }}</span>
         </div>
-      </div>
-      <span v-if="$v.newMovie.platforms.$dirty && (!$v.newMovie.platforms.required || !$v.newMovie.platforms.minLength)"
+        <div class="audioAdd">
+          <input id="english" type="radio" v-model="$v.newMovie.bulgarianLanguage.$model" :value="false"/>
+          <label for="english">English Audio</label>
+          <input id="bulgarian" type="radio" v-model="$v.newMovie.bulgarianLanguage.$model" :value="true"/>
+          <label for="bulgarian">Bulgarian Audio</label>
+          <span v-if="$v.newMovie.bulgarianLanguage.$dirty && !$v.newMovie.bulgarianLanguage.required"
+                class="errorMessage"><font-awesome-icon
+              icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.LANGUAGE_REQUIRED }} </span>
+        </div>
+        <span class="description">Description:</span>
+        <textarea class="addMovieTextarea" v-model.trim="$v.newMovie.description.$model"
+                  :class="{invalidFiled: $v.newMovie.description.$error}"></textarea>
+        <span v-if="!$v.newMovie.description.maxLength" class="errorMessage"><font-awesome-icon
+            icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.DESCRIPTION_MAX_LENGTH }}</span>
+        <div class="platformsAdd">
+          <div v-for="(platform , i) in platforms" :key="i">
+            <input type="checkbox" :id="platform + 'Edit'" :name="platform + 'Edit'" :value="platform"
+                   v-model="$v.newMovie.platforms.$model">
+            <label :for="platform + 'Edit'">{{ platform }}</label>
+          </div>
+        </div>
+        <span
+            v-if="$v.newMovie.platforms.$dirty && (!$v.newMovie.platforms.required || !$v.newMovie.platforms.minLength)"
             class="errorMessage"><font-awesome-icon
-          icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.PLATFORMS_REQUIRED }}</span>
-      <button class="saveButton">
-        SAVE MOVIE
-      </button>
-    </form>
-    <modal name="newErrorModal" :shiftX="1" :shiftY="0" :height="0" :width="0">
-      <ErrorModal :errorMessage="this.errorMessage"/>
-    </modal>
-    <modal name="newSuccessfulModal" :shiftX="1" :shiftY="0" :height="0" :width="0">
-      <SuccessfulModal :success-message="this.successMessage"/>
-    </modal>
+            icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.PLATFORMS_REQUIRED }}</span>
+        <button class="saveButton">
+          SAVE MOVIE
+        </button>
+      </form>
+      <modal name="newErrorModal" :shiftX="1" :shiftY="0" :height="0" :width="0">
+        <ErrorModal :errorMessage="this.errorMessage"/>
+      </modal>
+      <modal name="newSuccessfulModal" :shiftX="1" :shiftY="0" :height="0" :width="0">
+        <SuccessfulModal :success-message="this.successMessage"/>
+      </modal>
+    </div>
   </div>
 </template>
 
@@ -258,12 +264,14 @@ export default {
       if (!this.$v.newMovie.$invalid) {
 
         this.movieService.addMovie(this.newMovie).then((response) => {
-          if (response.status === 'OK'){
+          if (response.status === 'OK') {
             this.$router.push({name: 'movies'})
           } else {
             this.errorMessage = response.error.message;
             this.showErrorModal();
-            setTimeout(() => {this.hideErrorModal()} , 4000 )
+            setTimeout(() => {
+              this.hideErrorModal()
+            }, 4000)
           }
         })
       }
@@ -276,7 +284,7 @@ export default {
     genres() {
       return this.$store.getters.getGenres;
     },
-    platforms(){
+    platforms() {
       return this.$store.getters.getPlatforms;
     }
   }
@@ -285,12 +293,29 @@ export default {
 
 <style scoped>
 
+div.overlay {
+  position: fixed;
+  background-color: #010340;
+  opacity: 0.5;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 30;
+}
+
 div.container {
   background-color: #010340;
-  position: absolute;
-  max-height: 72rem;
-  width: 65rem;
-  z-index: 20;
+  position: fixed;
+  height: 40rem;
+  width: 70rem;
+  z-index: 40;
+  overflow-y: scroll;
+  overflow-x: hidden;
+
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 div.container p.closeButton {
@@ -302,7 +327,7 @@ div.container p.closeButton {
   right: 0;
   top: 0;
   text-align: center;
-  font-family: "Helvetica",serif;
+  font-family: "Helvetica", serif;
   font-weight: bold;
 }
 

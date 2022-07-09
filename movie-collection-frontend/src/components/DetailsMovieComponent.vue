@@ -152,7 +152,7 @@ export default {
 <style scoped>
 
 div.overlay {
-  position: absolute;
+  position: fixed;
   background-color: #010340;
   opacity: 0.5;
   top: 0;
@@ -169,7 +169,7 @@ div.overlay {
     "img div";
   width: 55rem;
   height: 35rem;
-  position: absolute;
+  position: fixed;
   background-color: #010229;
   z-index: 40;
 

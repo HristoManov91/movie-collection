@@ -1,23 +1,28 @@
 <template>
-  <div class="statsContainer" v-if="this.statistics">
-    <p class="closeButton" @click="closeStatistics">X</p>
-    <p class="title">Statistics</p>
-    <p>Total movies: <span>{{ statistics.totalMovies }} </span> movies.</p>
-    <p>Total duration: <span>{{ statistics.totalDurations }}</span> min.</p>
-    <p class="title">By Genres</p>
-    <p>Action: <span>{{ statistics.actionMovies }}</span> movies.</p>
-    <p>Comedy: <span>{{ statistics.comedyMovies }}</span> movies.</p>
-    <p>Drama: <span>{{ statistics.dramaMovies }}</span> movies.</p>
-    <p>Mystery: <span>{{ statistics.mysteryMovies }}</span> movies.</p>
-    <p>Sci-Fi: <span>{{ statistics.sciFiMovies }}</span> movies.</p>
-    <p>Animation: <span>{{ statistics.animationMovies }}</span> movies.</p>
-    <p>Adventure: <span>{{ statistics.adventureMovies }}</span> movies.</p>
-    <p>Fantasy: <span>{{ statistics.fantasyMovies }}</span> movies.</p>
-    <p>Romance: <span>{{ statistics.romanceMovies }}</span> movies.</p>
-    <p>Thriller: <span>{{ statistics.thrillerMovies }}</span> movies.</p>
-    <p>Crime: <span>{{ statistics.crimeMovies }}</span> movies.</p>
-    <p>Documentary: <span>{{ statistics.documentaryMovies }}</span> movies.</p>
-    <p>Serial: <span>{{ statistics.serialMovies }}</span> movies.</p>
+  <div>
+    <div class="overlay">
+
+    </div>
+    <div class="statsContainer" v-if="this.statistics">
+      <p class="closeButton" @click="closeStatistics">X</p>
+      <p class="title">Statistics</p>
+      <p>Total movies: <span>{{ statistics.totalMovies }} </span> movies.</p>
+      <p>Total duration: <span>{{ statistics.totalDurations }}</span> min.</p>
+      <p class="title">By Genres</p>
+      <p>Action: <span>{{ statistics.actionMovies }}</span> movies.</p>
+      <p>Comedy: <span>{{ statistics.comedyMovies }}</span> movies.</p>
+      <p>Drama: <span>{{ statistics.dramaMovies }}</span> movies.</p>
+      <p>Mystery: <span>{{ statistics.mysteryMovies }}</span> movies.</p>
+      <p>Sci-Fi: <span>{{ statistics.sciFiMovies }}</span> movies.</p>
+      <p>Animation: <span>{{ statistics.animationMovies }}</span> movies.</p>
+      <p>Adventure: <span>{{ statistics.adventureMovies }}</span> movies.</p>
+      <p>Fantasy: <span>{{ statistics.fantasyMovies }}</span> movies.</p>
+      <p>Romance: <span>{{ statistics.romanceMovies }}</span> movies.</p>
+      <p>Thriller: <span>{{ statistics.thrillerMovies }}</span> movies.</p>
+      <p>Crime: <span>{{ statistics.crimeMovies }}</span> movies.</p>
+      <p>Documentary: <span>{{ statistics.documentaryMovies }}</span> movies.</p>
+      <p>Serial: <span>{{ statistics.serialMovies }}</span> movies.</p>
+    </div>
   </div>
 </template>
 
@@ -45,33 +50,33 @@ export default {
       }
     })
   },
-/*  props: {
-    statistics: {
-      totalMovies: Number,
-      totalDurations: Number,
-      actionMovies: Number,
-      comedyMovies: Number,
-      dramaMovies: Number,
-      mysteryMovies: Number,
-      sciFiMovies: Number,
-      animationMovies: Number,
-      adventureMovies: Number,
-      fantasyMovies: Number,
-      romanceMovies: Number,
-      thrillerMovies: Number,
-      crimeMovies: Number,
-      documentaryMovies: Number,
-      serialMovies: Number
-    }
-  },*/
-  data(){
+  /*  props: {
+      statistics: {
+        totalMovies: Number,
+        totalDurations: Number,
+        actionMovies: Number,
+        comedyMovies: Number,
+        dramaMovies: Number,
+        mysteryMovies: Number,
+        sciFiMovies: Number,
+        animationMovies: Number,
+        adventureMovies: Number,
+        fantasyMovies: Number,
+        romanceMovies: Number,
+        thrillerMovies: Number,
+        crimeMovies: Number,
+        documentaryMovies: Number,
+        serialMovies: Number
+      }
+    },*/
+  data() {
     return {
       statistics: null,
       moviesService: new MovieService()
     }
   },
   methods: {
-    closeStatistics(){
+    closeStatistics() {
       this.$router.push({name: 'movies'})
     }
   }
@@ -80,12 +85,27 @@ export default {
 
 <style scoped>
 
+div.overlay {
+  position: fixed;
+  background-color: #010340;
+  opacity: 0.5;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 30;
+}
+
 div.statsContainer {
   background-color: #0D2082;
   height: 43rem;
   width: 35rem;
-  position: absolute;
+  position: fixed;
   z-index: 40;
+
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 div.statsContainer p {
@@ -117,7 +137,7 @@ div.statsContainer p.closeButton {
   right: 0;
   top: 0;
   text-align: center;
-  font-family: "Helvetica",serif;
+  font-family: "Helvetica", serif;
   font-weight: bold;
 }
 

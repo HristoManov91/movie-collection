@@ -1,8 +1,5 @@
 <template>
   <div class="movieContainer">
-<!--    <div class="overlay">-->
-
-<!--    </div>-->
     <aside v-if="true" class="filter">
       <p class="filtersTitle">Filters</p>
       <span class="filterTitle">Genres:</span>
@@ -354,17 +351,6 @@ div.movieContainer {
     "aside section";
   position: relative;
 }
-
-/*div.overlay {*/
-/*  position: absolute;*/
-/*  background-color: #010340;*/
-/*  opacity: 0.5;*/
-/*  top: 0;*/
-/*  left: 0;*/
-/*  width: 100%;*/
-/*  height: 100%;*/
-/*  z-index: 30;*/
-/*}*/
 
 aside.filter {
   display: inline-block;

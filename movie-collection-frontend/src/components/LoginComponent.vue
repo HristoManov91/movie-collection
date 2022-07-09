@@ -1,41 +1,47 @@
 <template>
-  <div class="loginComponent">
-    <p class="closeButton" @click="closeLoginForm">X</p>
-    <p class="loginFormTitle">Login Form</p>
-    <form @submit.prevent="login" class="loginForm">
+  <div>
+    <div class="overlay"></div>
+    <div class="loginComponent">
+      <p class="closeButton" @click="closeLoginForm">X</p>
+      <p class="loginFormTitle">Login Form</p>
+      <form @submit.prevent="login" class="loginForm">
 
-      <label class="loginLabel" for="loginUsername">Username:</label>
-      <input v-model.trim="$v.username.$model" class="loginInput" type="text" name="loginUsername" id="loginUsername"
-             :class="{invalidFiled: $v.username.$error}">
-      <div class="loginError">
+        <label class="loginLabel" for="loginUsername">Username:</label>
+        <input v-model.trim="$v.username.$model" class="loginInput" type="text" name="loginUsername" id="loginUsername"
+               :class="{invalidFiled: $v.username.$error}">
+        <div class="loginError">
         <span v-if="$v.username.$dirty && !$v.username.required" class="errorMessage">
         <font-awesome-icon icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.USERNAME_REQUIRED }}
         </span>
-        <span v-else-if="!$v.username.alphaNum" class="errorMessage">
+          <span v-else-if="!$v.username.alphaNum" class="errorMessage">
           <font-awesome-icon icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.USERNAME_ALPHA_NUM }}
         </span>
-        <span v-else-if="!$v.username.minLength || !$v.username.maxLength" class="errorMessage">
+          <span v-else-if="!$v.username.minLength || !$v.username.maxLength" class="errorMessage">
         <font-awesome-icon icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.USERNAME_BETWEEN }}
         </span>
-      </div>
+        </div>
 
-      <label class="loginLabel" for="loginPassword">Password:</label>
-      <input v-model.trim="$v.password.$model" class="loginInput" type="password" name="loginPassword" id="loginPassword"
-             :class="{invalidFiled: $v.password.$error}">
-      <div class="loginError">
+        <label class="loginLabel" for="loginPassword">Password:</label>
+        <input v-model.trim="$v.password.$model" class="loginInput" type="password" name="loginPassword"
+               id="loginPassword"
+               :class="{invalidFiled: $v.password.$error}">
+        <div class="loginError">
         <span v-if="$v.password.$dirty && !$v.password.required" class="errorMessage">
         <font-awesome-icon icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.PASSWORD_REQUIRED }}
         </span>
-        <span v-else-if="!$v.password.alphaNum" class="errorMessage">
+          <span v-else-if="!$v.password.alphaNum" class="errorMessage">
           <font-awesome-icon icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.PASSWORD_ALPHA_NUM }}
         </span>
-        <span v-else-if="!$v.password.minLength || !$v.password.maxLength" class="errorMessage">
+          <span v-else-if="!$v.password.minLength || !$v.password.maxLength" class="errorMessage">
         <font-awesome-icon icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.PASSWORD_BETWEEN }}
         </span>
-      </div>
-      <button class="loginButton">LOGIN</button>
-      <p class="smallText">If you don't have account <router-link tag="span" :to="{name: 'register'}">click here</router-link></p>
-    </form>
+        </div>
+        <button class="loginButton">LOGIN</button>
+        <p class="smallText">If you don't have account
+          <router-link tag="span" :to="{name: 'register'}">click here</router-link>
+        </p>
+      </form>
+    </div>
   </div>
 </template>
 
@@ -83,12 +89,27 @@ export default {
 
 <style scoped>
 
+div.overlay {
+  position: fixed;
+  background-color: #010340;
+  opacity: 0.5;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 30;
+}
+
 div.loginComponent {
-  position: absolute;
+  position: fixed;
   z-index: 40;
   background-color: #010340;
   width: 28rem;
   height: 28rem;
+
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 div.loginComponent p.closeButton {

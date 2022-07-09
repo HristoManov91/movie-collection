@@ -1,50 +1,59 @@
 <template>
-  <div class="registerComponent">
-    <p class="closeButton" @click="closeRegisterForm">X</p>
-    <p class="registerFormTitle">Register Form</p>
-    <form @submit.prevent="register" class="registerForm">
+  <div>
+    <div class="overlay">
 
-      <label class="registerLabel" for="registerUsername">Username:</label>
-      <input v-model.trim="$v.username.$model" class="registerInput" type="text" name="registerUsername" id="registerUsername"
-             :class="{invalidFiled: $v.username.$error}">
-      <div class="registerError">
+    </div>
+    <div class="registerComponent">
+      <p class="closeButton" @click="closeRegisterForm">X</p>
+      <p class="registerFormTitle">Register Form</p>
+      <form @submit.prevent="register" class="registerForm">
+
+        <label class="registerLabel" for="registerUsername">Username:</label>
+        <input v-model.trim="$v.username.$model" class="registerInput" type="text" name="registerUsername"
+               id="registerUsername"
+               :class="{invalidFiled: $v.username.$error}">
+        <div class="registerError">
         <span v-if="$v.username.$dirty && !$v.username.required" class="errorMessage">
         <font-awesome-icon icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.USERNAME_REQUIRED }}
         </span>
-        <span v-else-if="!$v.username.alphaNum" class="errorMessage">
+          <span v-else-if="!$v.username.alphaNum" class="errorMessage">
           <font-awesome-icon icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.USERNAME_ALPHA_NUM }}
         </span>
-        <span v-else-if="!$v.username.minLength || !$v.username.maxLength" class="errorMessage">
+          <span v-else-if="!$v.username.minLength || !$v.username.maxLength" class="errorMessage">
         <font-awesome-icon icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.USERNAME_BETWEEN }}
         </span>
-      </div>
+        </div>
 
-      <label class="registerLabel" for="registerPassword">Password:</label>
-      <input v-model.trim="$v.password.$model" class="registerInput" type="password" name="registerPassword" id="registerPassword"
-             :class="{invalidFiled: $v.password.$error}">
-      <div class="registerError">
+        <label class="registerLabel" for="registerPassword">Password:</label>
+        <input v-model.trim="$v.password.$model" class="registerInput" type="password" name="registerPassword"
+               id="registerPassword"
+               :class="{invalidFiled: $v.password.$error}">
+        <div class="registerError">
         <span v-if="$v.password.$dirty && !$v.password.required" class="errorMessage">
         <font-awesome-icon icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.PASSWORD_REQUIRED }}
         </span>
-        <span v-else-if="!$v.password.alphaNum" class="errorMessage">
+          <span v-else-if="!$v.password.alphaNum" class="errorMessage">
           <font-awesome-icon icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.PASSWORD_ALPHA_NUM }}
         </span>
-        <span v-else-if="!$v.password.minLength || !$v.password.maxLength" class="errorMessage">
+          <span v-else-if="!$v.password.minLength || !$v.password.maxLength" class="errorMessage">
         <font-awesome-icon icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.PASSWORD_BETWEEN }}
         </span>
-      </div>
+        </div>
 
-      <label class="registerLabel" for="confirmPassword">Confirm Password:</label>
-      <input v-model.trim="$v.confirmPassword.$model" class="registerInput" type="password" name="confirmPassword"
-             id="confirmPassword" :class="{invalidFiled: $v.confirmPassword.$error}">
-      <div class="registerError">
+        <label class="registerLabel" for="confirmPassword">Confirm Password:</label>
+        <input v-model.trim="$v.confirmPassword.$model" class="registerInput" type="password" name="confirmPassword"
+               id="confirmPassword" :class="{invalidFiled: $v.confirmPassword.$error}">
+        <div class="registerError">
         <span v-if="$v.confirmPassword.$dirty && !$v.confirmPassword.sameAs" class="errorMessage">
           <font-awesome-icon icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.CONFIRM_PASSWORD }}
         </span>
-      </div>
-      <button class="registerButton">Register</button>
-      <p class="smallText">If you have account <router-link tag="span" :to="{name: 'login'}">click here</router-link></p>
-    </form>
+        </div>
+        <button class="registerButton">Register</button>
+        <p class="smallText">If you have account
+          <router-link tag="span" :to="{name: 'login'}">click here</router-link>
+        </p>
+      </form>
+    </div>
   </div>
 </template>
 
@@ -88,7 +97,7 @@ export default {
         //ToDo
       }
     },
-    closeRegisterForm(){
+    closeRegisterForm() {
       this.$router.push({name: 'home'})
     }
   }
@@ -97,12 +106,27 @@ export default {
 
 <style scoped>
 
+div.overlay {
+  position: fixed;
+  background-color: #010340;
+  opacity: 0.5;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 30;
+}
+
 div.registerComponent {
   background-color: #010340;
-  position: absolute;
+  position: fixed;
   width: 28rem;
   height: 36rem;
   z-index: 40;
+
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 div.registerComponent p.closeButton {
