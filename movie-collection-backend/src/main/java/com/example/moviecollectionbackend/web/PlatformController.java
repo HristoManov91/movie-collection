@@ -21,6 +21,7 @@ public class PlatformController {
     }
 
     @GetMapping("/all")
+//    @PreAuthorize("hasRole('USER')")
     private ResponseEntity<List<String>> findAllPlatformsNames(){
         return new ResponseEntity<>(platformService.findAllPlatformsNames() , HttpStatus.OK);
     }

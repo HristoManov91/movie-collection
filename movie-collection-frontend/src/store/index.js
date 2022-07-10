@@ -6,8 +6,8 @@ Vue.use(Vuex)
 
 export default new Vuex.Store ({
     state: {
-        genres: ['ACTION' , 'COMEDY'],
-        platforms: ['HBOMAX' , 'NETFLIX']
+        genres: [],
+        platforms: []
     },
     getters: {
         getGenres(state) {

@@ -1,7 +1,6 @@
 <template>
   <li class="movie-card">
-    <img
-        :src="movie.posterUrl"
+    <img :src="movie.posterUrl"
         class="movie-poster"/>
     <div class="movie-info">
       <h3 class="title1">{{ movie.title1 }}</h3>
@@ -111,7 +110,7 @@ li.movie-card::after {
   position: absolute;
   bottom: -68px;
   left: 0;
-  z-index: 10;
+  z-index: 1;
   color: orange;
   padding: 0.5rem 0.8rem;
   transition: bottom 300ms ease-in-out;

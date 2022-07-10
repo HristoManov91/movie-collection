@@ -12,10 +12,6 @@ header img {
 }
 
 main {
-    /*display: grid;*/
-    /*grid-template-columns: 200px 1fr;*/
-    /*grid-template-areas:*/
-    /*"aside section";*/
     background-color: #4158D0;
     background-image: linear-gradient(118deg, #4158D0 0%, #C850C0 34%, #FFCC70 74%);
     min-height: 50rem;

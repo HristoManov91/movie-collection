@@ -3,12 +3,6 @@ USE `movie-collection`;
 INSERT INTO roles(role)
 VALUES ('USER');
 
-INSERT INTO users(password , username)
-VALUES ('hristo123' , 'hristo');
-
-INSERT INTO users_roles(user_entity_id, roles_id)
-VALUES (1 , 1);
-
 INSERT INTO genres(genre)
 VALUES ('ACTION');
 

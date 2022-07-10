@@ -155,8 +155,9 @@ div.overlay {
   position: fixed;
   background-color: #010340;
   opacity: 0.5;
-  top: 0;
-  left: 0;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   width: 100%;
   height: 100%;
   z-index: 30;
@@ -228,14 +229,10 @@ div.overlay {
 .detailsViewInfo textarea.detailsViewDescription {
   height: auto;
   color: orange;
-  /*width: 85%;*/
   margin: 1rem 2rem;
   border: 1px solid orange;
   padding: 0.5rem;
   border-radius: 5px;
-  /*box-sizing: border-box;*/
-  /*font-size: inherit;*/
-  /*outline: none;*/
   background-color: #010229;
   resize: none;
 }
@@ -275,7 +272,8 @@ span.imdbRating {
   border-radius: 10px;
 }
 
-ul.detailsViewButtons li {
+ul.detailsViewButtons li.deleteButton,
+ul.detailsViewButtons li.editButton {
   display: inline-block;
   font-size: 1rem;
   margin: 1.3rem 1rem;
@@ -334,10 +332,6 @@ ul.detailsViewButtons li.editButton:hover {
   text-align: center;
   text-transform: uppercase;
   font-weight: bold;
-}
-
-.movieEditModal {
-  background: rgb(252, 186, 3, 0.4);
 }
 
 input:focus, textarea:focus, select:focus {

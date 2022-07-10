@@ -1,14 +1,12 @@
 package com.example.moviecollectionbackend.service;
 
 import com.example.moviecollectionbackend.exception.UserNotFoundException;
-import com.example.moviecollectionbackend.model.binding.AddMovieBindingModel;
-import com.example.moviecollectionbackend.model.binding.EditMovieBindingModel;
+import com.example.moviecollectionbackend.model.dto.AddMovieDTO;
+import com.example.moviecollectionbackend.model.dto.EditMovieDTO;
 import com.example.moviecollectionbackend.model.dto.MovieCardDto;
 import com.example.moviecollectionbackend.model.dto.MovieDetailsDto;
 import com.example.moviecollectionbackend.model.dto.StatisticsDto;
-import com.example.moviecollectionbackend.model.entity.MovieEntity;
 import java.net.URISyntaxException;
-import java.util.List;
 import java.util.Map;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,9 +17,9 @@ public interface MovieService {
 
     MovieDetailsDto getMovieDetailsDto(Long movieId) throws UserNotFoundException;
 
-    MovieDetailsDto addMovie(AddMovieBindingModel addMovieBindingModel) throws URISyntaxException;
+    MovieDetailsDto addMovie(AddMovieDTO addMovieDTO) throws URISyntaxException;
 
-    MovieDetailsDto editMovie(EditMovieBindingModel editMovieBindingModel);
+    MovieDetailsDto editMovie(EditMovieDTO editMovieDTO);
 
     Boolean deleteMovieById(Long movieId);
 

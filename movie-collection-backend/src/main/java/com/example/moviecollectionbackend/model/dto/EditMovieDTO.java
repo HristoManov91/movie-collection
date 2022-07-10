@@ -1,4 +1,4 @@
-package com.example.moviecollectionbackend.model.binding;
+package com.example.moviecollectionbackend.model.dto;
 
 import java.util.List;
 import javax.validation.constraints.Max;
@@ -10,8 +10,9 @@ import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.Length;
 
-public class AddMovieBindingModel {
+public class EditMovieDTO {
 
+    private Long movieId;
     private String title1;
     private String title2;
     private List<String> genres;
@@ -24,36 +25,46 @@ public class AddMovieBindingModel {
     private Boolean bulgarianLanguage;
     private String description;
 
-    public AddMovieBindingModel() {
+    public EditMovieDTO() {
+    }
+
+    public Long getMovieId() {
+        return movieId;
+    }
+
+    public EditMovieDTO setMovieId(Long movieId) {
+        this.movieId = movieId;
+        return this;
     }
 
     @NotBlank(message = "Title is required and cannot be empty string!")
-    @Size(max = 50 , min = 2, message = "Title length must be between 2 and 50 characters!")
+    @Size(max = 40 , min = 2, message = "Title length must be between 2 and 40 characters!")
     public String getTitle1() {
         return title1;
     }
 
-    public AddMovieBindingModel setTitle1(String title1) {
+    public EditMovieDTO setTitle1(String title1) {
         this.title1 = title1;
         return this;
     }
 
-    @Size(max = 50 , min = 2, message = "Second title length must be between 2 and 50 characters!")
+    @Size(max = 40 , min = 2, message = "Second title length must be between 2 and 40 characters!")
     public String getTitle2() {
         return title2;
     }
 
-    public AddMovieBindingModel setTitle2(String title2) {
+    public EditMovieDTO setTitle2(String title2) {
         this.title2 = title2;
         return this;
     }
 
     @NotEmpty(message = "You must select at least one Genres!")
+    @Size(max = 4 , message = "You can select up to 4 Genres!")
     public List<@NotBlank String> getGenres() {
         return genres;
     }
 
-    public AddMovieBindingModel setGenres(List<String> genres) {
+    public EditMovieDTO setGenres(List<String> genres) {
         this.genres = genres;
         return this;
     }
@@ -66,20 +77,20 @@ public class AddMovieBindingModel {
         return duration;
     }
 
-    public AddMovieBindingModel setDuration(Integer duration) {
+    public EditMovieDTO setDuration(Integer duration) {
         this.duration = duration;
         return this;
     }
 
     @NotNull(message = "Field Year is required!")
     @Positive(message = "The value of the Year field must be a positive number!")
-    @Max(value = 2100 , message = "The value of the Year field must be max 2100 min!")
-    @Min(value = 1950 , message = "The value of the Year field must be min 1950 min!")
+    @Max(value = 2100 , message = "The value of the Year field must be max 2100!")
+    @Min(value = 1950 , message = "The value of the Year field must be min 1950!")
     public Integer getYear() {
         return year;
     }
 
-    public AddMovieBindingModel setYear(Integer year) {
+    public EditMovieDTO setYear(Integer year) {
         this.year = year;
         return this;
     }
@@ -90,29 +101,29 @@ public class AddMovieBindingModel {
         return imdbUrl;
     }
 
-    public AddMovieBindingModel setImdbUrl(String imdbUrl) {
+    public EditMovieDTO setImdbUrl(String imdbUrl) {
         this.imdbUrl = imdbUrl;
         return this;
     }
 
-    @NotBlank(message = "TrailerURL is required and cannot be empty string!")
+    @NotBlank(message = "TrailerURL cannot be empty string!")
     @Length(max = 254 , message = "The length of the TrailerURL field must be max 254 characters!")
     public String getTrailerUrl() {
         return trailerUrl;
     }
 
-    public AddMovieBindingModel setTrailerUrl(String trailerUrl) {
+    public EditMovieDTO setTrailerUrl(String trailerUrl) {
         this.trailerUrl = trailerUrl;
         return this;
     }
 
-    @NotBlank(message = "PosterURL is required and cannot be empty string!")
+    @NotBlank(message = "PosterURL cannot be empty string!")
     @Length(max = 254 , message = "The length of the PosterURL field must be max 254 characters!")
     public String getPosterUrl() {
         return posterUrl;
     }
 
-    public AddMovieBindingModel setPosterUrl(String posterUrl) {
+    public EditMovieDTO setPosterUrl(String posterUrl) {
         this.posterUrl = posterUrl;
         return this;
     }
@@ -122,7 +133,7 @@ public class AddMovieBindingModel {
         return platforms;
     }
 
-    public AddMovieBindingModel setPlatforms(List<String> platforms) {
+    public EditMovieDTO setPlatforms(List<String> platforms) {
         this.platforms = platforms;
         return this;
     }
@@ -132,7 +143,7 @@ public class AddMovieBindingModel {
         return bulgarianLanguage;
     }
 
-    public AddMovieBindingModel setBulgarianLanguage(Boolean bulgarianLanguage) {
+    public EditMovieDTO setBulgarianLanguage(Boolean bulgarianLanguage) {
         this.bulgarianLanguage = bulgarianLanguage;
         return this;
     }
@@ -142,7 +153,7 @@ public class AddMovieBindingModel {
         return description;
     }
 
-    public AddMovieBindingModel setDescription(String description) {
+    public EditMovieDTO setDescription(String description) {
         this.description = description;
         return this;
     }

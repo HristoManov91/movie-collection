@@ -33,7 +33,7 @@
              step="0.5">
       <p id="clearButton" @click="clearFilters">Clear Filters</p>
     </aside>
-    <section v-if="true" class="catalogue">
+    <section class="catalogue">
       <div class="catalogueHeader">
         <div>
           <label class="selectLabel" for="orderBy">Order by:</label>
@@ -51,6 +51,9 @@
         <p class="movies-title">Collection</p>
         <input class="searchInput" v-model.trim="filterParams.searchText" type="text" placeholder="Search...">
       </div>
+      <div class="spinner" v-if="isLoading">
+        <img src="../assets/image/Spinner.svg" alt="Spinner">
+      </div>
       <ul class="movies">
         <MovieCard v-for="(movie , id) in moviesToShow"
                    :key="id"
@@ -61,7 +64,9 @@
                     @changeCurrentPage="changeCurrentPage"
       />
     </section>
-    <router-view />
+    <transition :name="transitionName" mode="out-in">
+      <router-view/>
+    </transition>
   </div>
 </template>
 
@@ -138,6 +143,10 @@ export default {
       statistics: {},
       errorMessage: null,
       successMessage: null,
+      spinner: {
+        isLoading: false
+      },
+      transitionName: ''
     }
   },
   methods: {
@@ -194,7 +203,6 @@ export default {
           }, 4000)
         }
       });
-      // .finally() ToDo
     },
     addOrRemoveInGenresFilter(index) {
       let genre = this.genres[index];
@@ -331,18 +339,45 @@ export default {
       handler() {
         this.loadMovies();
       }
+    },
+    '$route'(to) {
+      const address = to.name;
+      console.log(address)
+      switch (address) {
+        case 'addMovie':
+          this.transitionName = 'fade'
+          break;
+        case 'details':
+          this.transitionName = 'bounce';
+          break;
+        case 'edit':
+          this.transitionName = 'bounce';
+          break;
+        case 'statistics':
+          this.transitionName = 'fade'
+          break;
+      }
     }
   },
   computed: {
     genres() {
       return this.$store.getters.getGenres;
     },
+    isLoading() {
+      //ToDo
+      return this.spinner.isLoading;
+    }
   }
 }
 </script>
 
 <style scoped>
 @import url("../assets/css/main.css");
+
+div.spinner {
+  margin-top: 20%;
+  margin-left: 25%;
+}
 
 div.movieContainer {
   display: grid;
@@ -617,5 +652,43 @@ input.searchInput {
   background: black url("../assets/image/search-img.svg") no-repeat scroll 175px 6px;
 }
 
+.fade-enter , .fade-leave-to {
+  z-index: 10;
+  opacity: 0;
+}
 
+.fade-enter-active , .fade-leave.active {
+  z-index: 10;
+  transition: all .5s ease-in-out;
+}
+
+.bounce-enter-active {
+  z-index: 10;
+  animation: bounce-in 0.5s;
+
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.bounce-leave-active {
+  z-index: 10;
+  animation: bounce-in 0.5s reverse;
+
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+@keyframes bounce-in {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.25);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
 </style>

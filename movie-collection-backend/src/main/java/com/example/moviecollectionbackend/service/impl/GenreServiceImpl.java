@@ -12,11 +12,9 @@ import org.springframework.stereotype.Service;
 public class GenreServiceImpl implements GenreService {
 
     private final GenreRepository genreRepository;
-    private final ModelMapper modelMapper;
 
-    public GenreServiceImpl(GenreRepository genreRepository, ModelMapper modelMapper) {
+    public GenreServiceImpl(GenreRepository genreRepository) {
         this.genreRepository = genreRepository;
-        this.modelMapper = modelMapper;
     }
 
     @Override

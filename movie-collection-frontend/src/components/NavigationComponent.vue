@@ -2,6 +2,7 @@
   <div>
     <nav>
       <ul>
+        <router-link tag="li" :to="{name: 'home'}">HOME</router-link>
         <router-link tag="li" :to="{name: 'movies'}">MOVIES</router-link>
         <router-link tag="li" :to="{name: 'addMovie'}">ADD MOVIE</router-link>
         <router-link tag="li" :to="{name: 'statistics'}">STATISTICS</router-link>
@@ -46,6 +47,7 @@ header nav li {
   padding: 0.4rem;
   border-radius: 3px;
   font-weight: bold;
+  letter-spacing: 1px;
 }
 
 header nav li:hover {

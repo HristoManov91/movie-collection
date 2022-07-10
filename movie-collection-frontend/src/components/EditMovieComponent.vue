@@ -295,9 +295,6 @@ export default {
     platforms() {
       return this.$store.getters.getPlatforms;
     },
-/*    movieId() {
-      return this.$route.params.movieId;
-    },*/
   }
 }
 </script>

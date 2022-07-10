@@ -50,25 +50,6 @@ export default {
       }
     })
   },
-  /*  props: {
-      statistics: {
-        totalMovies: Number,
-        totalDurations: Number,
-        actionMovies: Number,
-        comedyMovies: Number,
-        dramaMovies: Number,
-        mysteryMovies: Number,
-        sciFiMovies: Number,
-        animationMovies: Number,
-        adventureMovies: Number,
-        fantasyMovies: Number,
-        romanceMovies: Number,
-        thrillerMovies: Number,
-        crimeMovies: Number,
-        documentaryMovies: Number,
-        serialMovies: Number
-      }
-    },*/
   data() {
     return {
       statistics: null,

@@ -1,8 +1,8 @@
 package com.example.moviecollectionbackend.service.impl;
 
 import com.example.moviecollectionbackend.exception.UserNotFoundException;
-import com.example.moviecollectionbackend.model.binding.AddMovieBindingModel;
-import com.example.moviecollectionbackend.model.binding.EditMovieBindingModel;
+import com.example.moviecollectionbackend.model.dto.AddMovieDTO;
+import com.example.moviecollectionbackend.model.dto.EditMovieDTO;
 import com.example.moviecollectionbackend.model.dto.MovieCardDto;
 import com.example.moviecollectionbackend.model.dto.MovieDetailsDto;
 import com.example.moviecollectionbackend.model.dto.StatisticsDto;
@@ -45,18 +45,18 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public MovieDetailsDto addMovie(AddMovieBindingModel addMovieBindingModel) throws URISyntaxException {
+    public MovieDetailsDto addMovie(AddMovieDTO addMovieDTO) throws URISyntaxException {
 
-        MovieEntity movieEntity = mapDtoToEntity(addMovieBindingModel);
+        MovieEntity movieEntity = mapDtoToEntity(addMovieDTO);
 
-        List<GenreEntity> genres = genreService.findAllByNames(addMovieBindingModel.getGenres());
+        List<GenreEntity> genres = genreService.findAllByNames(addMovieDTO.getGenres());
         movieEntity.setGenres(genres);
 
-        List<PlatformEntity> platforms = platformService.findAllByNames(addMovieBindingModel.getPlatforms());
+        List<PlatformEntity> platforms = platformService.findAllByNames(addMovieDTO.getPlatforms());
         movieEntity.setPlatforms(platforms);
 
-        if (addMovieBindingModel.getImdbUrl() != null) {
-            movieEntity.setRating(getIMDbRating(addMovieBindingModel.getImdbUrl()));
+        if (addMovieDTO.getImdbUrl() != null) {
+            movieEntity.setRating(getIMDbRating(addMovieDTO.getImdbUrl()));
         }
 
         MovieEntity save = movieRepository.save(movieEntity);
@@ -66,38 +66,38 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public MovieDetailsDto editMovie(EditMovieBindingModel editMovieBindingModel) {
-        MovieEntity movieEntity = movieRepository.findById(editMovieBindingModel.getMovieId()).orElseThrow();
+    public MovieDetailsDto editMovie(EditMovieDTO editMovieDTO) {
+        MovieEntity movieEntity = movieRepository.findById(editMovieDTO.getMovieId()).orElseThrow();
 
-        if (!editMovieBindingModel.getTitle1().equals(movieEntity.getTitle1())) {
-            movieEntity.setTitle1(editMovieBindingModel.getTitle1());
+        if (!editMovieDTO.getTitle1().equals(movieEntity.getTitle1())) {
+            movieEntity.setTitle1(editMovieDTO.getTitle1());
         }
 
-        if (!Objects.equals(editMovieBindingModel.getDuration(), movieEntity.getDuration())) {
-            movieEntity.setDuration(editMovieBindingModel.getDuration());
+        if (!Objects.equals(editMovieDTO.getDuration(), movieEntity.getDuration())) {
+            movieEntity.setDuration(editMovieDTO.getDuration());
         }
 
-        if (!Objects.equals(editMovieBindingModel.getYear(), movieEntity.getYear())) {
-            movieEntity.setYear(editMovieBindingModel.getYear());
+        if (!Objects.equals(editMovieDTO.getYear(), movieEntity.getYear())) {
+            movieEntity.setYear(editMovieDTO.getYear());
         }
 
-        if (!editMovieBindingModel.getTrailerUrl().equals(movieEntity.getTrailerUrl())) {
-            movieEntity.setTrailerUrl(editMovieBindingModel.getTrailerUrl());
+        if (!editMovieDTO.getTrailerUrl().equals(movieEntity.getTrailerUrl())) {
+            movieEntity.setTrailerUrl(editMovieDTO.getTrailerUrl());
         }
 
-        if (!editMovieBindingModel.getPosterUrl().equals(movieEntity.getPosterUrl())) {
-            movieEntity.setPosterUrl(editMovieBindingModel.getPosterUrl());
+        if (!editMovieDTO.getPosterUrl().equals(movieEntity.getPosterUrl())) {
+            movieEntity.setPosterUrl(editMovieDTO.getPosterUrl());
         }
 
-        movieEntity.setTitle2(editMovieBindingModel.getTitle2());
-        movieEntity.setImdbUrl(editMovieBindingModel.getImdbUrl());
-        movieEntity.setDescription(editMovieBindingModel.getDescription());
-        movieEntity.setBulgarianLanguage(editMovieBindingModel.getBulgarianLanguage());
+        movieEntity.setTitle2(editMovieDTO.getTitle2());
+        movieEntity.setImdbUrl(editMovieDTO.getImdbUrl());
+        movieEntity.setDescription(editMovieDTO.getDescription());
+        movieEntity.setBulgarianLanguage(editMovieDTO.getBulgarianLanguage());
 
-        List<GenreEntity> genres = genreService.findAllByNames(editMovieBindingModel.getGenres());
+        List<GenreEntity> genres = genreService.findAllByNames(editMovieDTO.getGenres());
         movieEntity.setGenres(genres);
 
-        List<PlatformEntity> platforms = platformService.findAllByNames(editMovieBindingModel.getPlatforms());
+        List<PlatformEntity> platforms = platformService.findAllByNames(editMovieDTO.getPlatforms());
         movieEntity.setPlatforms(platforms);
 
         MovieEntity save = movieRepository.save(movieEntity);
@@ -204,7 +204,7 @@ public class MovieServiceImpl implements MovieService {
         return movieDetailsDto;
     }
 
-    private MovieEntity mapDtoToEntity(AddMovieBindingModel bindingModel) {
+    private MovieEntity mapDtoToEntity(AddMovieDTO bindingModel) {
         return new MovieEntity()
             .setTitle1(bindingModel.getTitle1() != null ? bindingModel.getTitle1() : null)
             .setTitle2(bindingModel.getTitle2() != null ? bindingModel.getTitle2() : null)
