@@ -11,16 +11,19 @@ import javax.persistence.Table;
 @Table(name = "users")
 public class UserEntity extends BaseEntity {
 
-    @Column(nullable = false , length = 10)
+    @Column(nullable = false , length = 20 , unique = true)
     private String username;
+
     @Column(nullable = false)
     private String password;
+
     @ManyToMany(fetch = FetchType.EAGER)
     private List<UserRoleEntity> roles;
 
     public UserEntity() {
     }
 
+//    @Override ToDo
     public String getUsername() {
         return username;
     }
