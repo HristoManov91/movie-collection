@@ -48,11 +48,15 @@
 <script>
 import {alphaNum, maxLength, minLength, required} from "vuelidate/lib/validators";
 import {Constants} from "@/constants/constants";
+import User from "../models/user";
 
 export default {
   name: "LoginComponent",
   data() {
     return {
+      user: new User('' , ''),
+      // loading: false,
+      message: '',
       constants: Constants,
       username: null,
       password: null
@@ -76,12 +80,36 @@ export default {
     login() {
       this.$v.$touch();
 
-      if (!this.$v.$invalid) {
-        //ToDo
+      if (this.$v.$invalid) {
+        return;
+      } else {
+        if (this.user.username && this.user.password) {
+          this.$store.dispatch('auth/login', this.user).then(
+              () => {
+                this.$router.push({name: 'movies'});
+              },
+              error => {
+                this.message =
+                    (error.response && error.response.data) ||
+                    error.message ||
+                    error.toString();
+              }
+          );
+        }
       }
     },
     closeLoginForm() {
       this.$router.push({name: 'home'})
+    }
+  },
+  computed: {
+    loggedIn() {
+      return this.$store.state.auth.status.loggedIn;
+    }
+  },
+  created() {
+    if (this.loggedIn) {
+      this.$router.push({name: 'movies'})
     }
   },
 }

@@ -8,6 +8,7 @@ import com.example.moviecollectionbackend.repository.UserRepository;
 import com.example.moviecollectionbackend.repository.UserRoleRepository;
 import com.example.moviecollectionbackend.service.UserService;
 import java.util.List;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,10 +16,13 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final UserRoleRepository userRoleRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository, UserRoleRepository userRoleRepository) {
+    public UserServiceImpl(UserRepository userRepository, UserRoleRepository userRoleRepository,
+        PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.userRoleRepository = userRoleRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -31,8 +35,7 @@ public class UserServiceImpl implements UserService {
         UserEntity user =
             new UserEntity()
                 .setUsername("hristo")
-//                .setPassword(passwordEncoder.encode("topsecret"))
-                .setPassword("topsecret")
+                .setPassword(passwordEncoder.encode("topsecret"))
                 .setRoles(userRoleRepository.findAll());
 
         userRepository.save(user);
@@ -49,8 +52,8 @@ public class UserServiceImpl implements UserService {
             UserEntity user =
                 new UserEntity()
                     .setUsername(userRegisterDto.getUsername())
-                    .setPassword(userRegisterDto.getPassword())
-                    .setRoles(List.of(userRoleRepository.findByRole(UserRole.USER.name()).get()));
+                    .setPassword(passwordEncoder.encode(userRegisterDto.getPassword()))
+                    .setRoles(List.of(userRoleRepository.findByRole(UserRole.USER).get()));
 
             userRepository.save(user);
 

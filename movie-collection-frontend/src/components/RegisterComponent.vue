@@ -60,11 +60,13 @@
 <script>
 import {alphaNum, maxLength, minLength, required, sameAs} from "vuelidate/lib/validators";
 import {Constants} from "@/constants/constants";
+import User from '../models/user';
 
 export default {
   name: "RegisterComponent",
   data() {
     return {
+      user: new User('' , '' , ''),
       constants: Constants,
       username: null,
       password: null,
@@ -91,16 +93,38 @@ export default {
   methods: {
     register() {
       this.$v.$touch();
-
-      if (!this.$v.$invalid) {
-        console.log('register')
-        //ToDo
+      if (this.$v.$invalid) {
+        return;
+      } else {
+        this.$store.dispatch('auth/register', this.user).then(
+            data => {
+              this.message = data.message;
+              // this.successful = true;
+            },
+            error => {
+              this.message =
+                  (error.response && error.response.data) ||
+                  error.message ||
+                  error.toString();
+              // this.successful = false;
+            }
+        );
       }
     },
     closeRegisterForm() {
       this.$router.push({name: 'home'})
     }
-  }
+  },
+  computed: {
+    loggedIn() {
+      return this.$store.state.auth.status.loggedIn;
+    }
+  },
+  mounted() {
+    if (this.loggedIn) {
+      this.$router.push({name: 'register'});
+    }
+  },
 }
 </script>
 
