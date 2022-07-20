@@ -2,6 +2,7 @@ package com.example.moviecollectionbackend.config.jwt;
 
 import com.example.moviecollectionbackend.model.user.AppUserDetails;
 import java.io.IOException;
+import java.util.Enumeration;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -41,6 +42,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     }
 
     private boolean hasAuthorizationBearer(HttpServletRequest request) {
+        Enumeration<String> headerNames = request.getHeaderNames();
         String header = request.getHeader("Authorization");
         if (ObjectUtils.isEmpty(header) || !header.startsWith("Bearer")) {
             return false;

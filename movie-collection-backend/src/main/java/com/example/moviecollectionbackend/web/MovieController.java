@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/movies")
-@CrossOrigin(origins = "http://localhost:8080/")
+@CrossOrigin(origins = "http://localhost:8080/" , allowedHeaders = {"Authorization"} , maxAge = 600)
 public class MovieController {
 
     private final MovieService movieService;

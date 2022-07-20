@@ -7,32 +7,32 @@
       <form @submit.prevent="login" class="loginForm">
 
         <label class="loginLabel" for="loginUsername">Username:</label>
-        <input v-model.trim="$v.username.$model" class="loginInput" type="text" name="loginUsername" id="loginUsername"
-               :class="{invalidFiled: $v.username.$error}">
+        <input v-model.trim="$v.user.username.$model" class="loginInput" type="text" name="loginUsername" id="loginUsername"
+               :class="{invalidFiled: $v.user.username.$error}">
         <div class="loginError">
-        <span v-if="$v.username.$dirty && !$v.username.required" class="errorMessage">
+        <span v-if="$v.user.username.$dirty && !$v.user.username.required" class="errorMessage">
         <font-awesome-icon icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.USERNAME_REQUIRED }}
         </span>
-          <span v-else-if="!$v.username.alphaNum" class="errorMessage">
+          <span v-else-if="!$v.user.username.alphaNum" class="errorMessage">
           <font-awesome-icon icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.USERNAME_ALPHA_NUM }}
         </span>
-          <span v-else-if="!$v.username.minLength || !$v.username.maxLength" class="errorMessage">
+          <span v-else-if="!$v.user.username.minLength || !$v.user.username.maxLength" class="errorMessage">
         <font-awesome-icon icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.USERNAME_BETWEEN }}
         </span>
         </div>
 
         <label class="loginLabel" for="loginPassword">Password:</label>
-        <input v-model.trim="$v.password.$model" class="loginInput" type="password" name="loginPassword"
+        <input v-model.trim="$v.user.password.$model" class="loginInput" type="password" name="loginPassword"
                id="loginPassword"
-               :class="{invalidFiled: $v.password.$error}">
+               :class="{invalidFiled: $v.user.password.$error}">
         <div class="loginError">
-        <span v-if="$v.password.$dirty && !$v.password.required" class="errorMessage">
+        <span v-if="$v.user.password.$dirty && !$v.user.password.required" class="errorMessage">
         <font-awesome-icon icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.PASSWORD_REQUIRED }}
         </span>
-          <span v-else-if="!$v.password.alphaNum" class="errorMessage">
+          <span v-else-if="!$v.user.password.alphaNum" class="errorMessage">
           <font-awesome-icon icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.PASSWORD_ALPHA_NUM }}
         </span>
-          <span v-else-if="!$v.password.minLength || !$v.password.maxLength" class="errorMessage">
+          <span v-else-if="!$v.user.password.minLength || !$v.user.password.maxLength" class="errorMessage">
         <font-awesome-icon icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.PASSWORD_BETWEEN }}
         </span>
         </div>
@@ -48,32 +48,34 @@
 <script>
 import {alphaNum, maxLength, minLength, required} from "vuelidate/lib/validators";
 import {Constants} from "@/constants/constants";
-import User from "../models/user";
 
 export default {
   name: "LoginComponent",
   data() {
     return {
-      user: new User('' , ''),
       // loading: false,
       message: '',
       constants: Constants,
-      username: null,
-      password: null
+      user: {
+        username: null,
+        password: null
+      }
     }
   },
   validations: {
-    username: {
-      required,
-      minLength: minLength(6),
-      maxLength: maxLength(10),
-      alphaNum
-    },
-    password: {
-      required,
-      minLength: minLength(6),
-      maxLength: maxLength(10),
-      alphaNum
+    user: {
+      username: {
+        required,
+        minLength: minLength(6),
+        maxLength: maxLength(10),
+        alphaNum
+      },
+      password: {
+        required,
+        minLength: minLength(6),
+        maxLength: maxLength(10),
+        alphaNum
+      }
     }
   },
   methods: {
@@ -81,21 +83,22 @@ export default {
       this.$v.$touch();
 
       if (this.$v.$invalid) {
+
         return;
+
       } else {
-        if (this.user.username && this.user.password) {
-          this.$store.dispatch('auth/login', this.user).then(
-              () => {
-                this.$router.push({name: 'movies'});
-              },
-              error => {
-                this.message =
-                    (error.response && error.response.data) ||
-                    error.message ||
-                    error.toString();
-              }
-          );
-        }
+        console.log('ok')
+        this.$store.dispatch('auth/login', this.user).then(
+            () => {
+              this.$router.push({name: 'movies'});
+            },
+            error => {
+              this.message =
+                  (error.response && error.response.data) ||
+                  error.message ||
+                  error.toString();
+            }
+        );
       }
     },
     closeLoginForm() {

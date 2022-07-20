@@ -82,6 +82,7 @@ export default {
     MovieCard
   },
   mounted() {
+    console.log('in mounted')
     this.loadMovies()
     this.fillDurationSlideColor();
     this.fillRatingSlideColor();
@@ -184,8 +185,10 @@ export default {
     },
     loadMovies() {
 
+      console.log('in load')
       this.movieService.findAllMoviesWithParams(this.pagination.currentPage - 1, this.pagination.perPage, this.pagination.orderBy, this.filterParams).then((resp) => {
         if (resp.status === 'OK') {
+          console.log('ok')
           this.mapRespPagToPag(resp.data);
           this.moviesToShow = resp.data.content;
           if (this.pagination.empty) {
@@ -196,6 +199,7 @@ export default {
             }, 4000)
           }
         } else {
+          console.log('resp' , resp)
           this.errorMessage = 'Error in loadMovies!';
           this.showErrorModal();
           setTimeout(() => {
@@ -342,7 +346,6 @@ export default {
     },
     '$route'(to) {
       const address = to.name;
-      console.log(address)
       switch (address) {
         case 'addMovie':
           this.transitionName = 'fade'
@@ -361,6 +364,7 @@ export default {
   },
   computed: {
     genres() {
+      console.log('g' , this.$store.getters.getGenres)
       return this.$store.getters.getGenres;
     },
     isLoading() {

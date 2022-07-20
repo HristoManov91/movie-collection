@@ -13,18 +13,20 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@CrossOrigin("http://localhost:8080/")
 @RequestMapping("/users")
 public class UserController {
 
     private final UserService userService;
-    private AuthenticationManager authManager;
-    private JwtTokenUtil jwtUtil;
+    private final AuthenticationManager authManager;
+    private final JwtTokenUtil jwtUtil;
 
     public UserController(UserService userService, AuthenticationManager authenticationManager,
         JwtTokenUtil jwtUtil) {
@@ -58,7 +60,6 @@ public class UserController {
 
         }
     }
-
 
     @PostMapping("/logout")
     public Boolean logout(){

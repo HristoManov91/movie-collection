@@ -9,42 +9,42 @@
       <form @submit.prevent="register" class="registerForm">
 
         <label class="registerLabel" for="registerUsername">Username:</label>
-        <input v-model.trim="$v.username.$model" class="registerInput" type="text" name="registerUsername"
+        <input v-model.trim="$v.user.username.$model" class="registerInput" type="text" name="registerUsername"
                id="registerUsername"
-               :class="{invalidFiled: $v.username.$error}">
+               :class="{invalidFiled: $v.user.username.$error}">
         <div class="registerError">
-        <span v-if="$v.username.$dirty && !$v.username.required" class="errorMessage">
+        <span v-if="$v.user.username.$dirty && !$v.user.username.required" class="errorMessage">
         <font-awesome-icon icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.USERNAME_REQUIRED }}
         </span>
-          <span v-else-if="!$v.username.alphaNum" class="errorMessage">
+          <span v-else-if="!$v.user.username.alphaNum" class="errorMessage">
           <font-awesome-icon icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.USERNAME_ALPHA_NUM }}
         </span>
-          <span v-else-if="!$v.username.minLength || !$v.username.maxLength" class="errorMessage">
+          <span v-else-if="!$v.user.username.minLength || !$v.user.username.maxLength" class="errorMessage">
         <font-awesome-icon icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.USERNAME_BETWEEN }}
         </span>
         </div>
 
         <label class="registerLabel" for="registerPassword">Password:</label>
-        <input v-model.trim="$v.password.$model" class="registerInput" type="password" name="registerPassword"
+        <input v-model.trim="$v.user.password.$model" class="registerInput" type="password" name="registerPassword"
                id="registerPassword"
-               :class="{invalidFiled: $v.password.$error}">
+               :class="{invalidFiled: $v.user.password.$error}">
         <div class="registerError">
-        <span v-if="$v.password.$dirty && !$v.password.required" class="errorMessage">
+        <span v-if="$v.user.password.$dirty && !$v.user.password.required" class="errorMessage">
         <font-awesome-icon icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.PASSWORD_REQUIRED }}
         </span>
-          <span v-else-if="!$v.password.alphaNum" class="errorMessage">
+          <span v-else-if="!$v.user.password.alphaNum" class="errorMessage">
           <font-awesome-icon icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.PASSWORD_ALPHA_NUM }}
         </span>
-          <span v-else-if="!$v.password.minLength || !$v.password.maxLength" class="errorMessage">
+          <span v-else-if="!$v.user.password.minLength || !$v.user.password.maxLength" class="errorMessage">
         <font-awesome-icon icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.PASSWORD_BETWEEN }}
         </span>
         </div>
 
         <label class="registerLabel" for="confirmPassword">Confirm Password:</label>
-        <input v-model.trim="$v.confirmPassword.$model" class="registerInput" type="password" name="confirmPassword"
-               id="confirmPassword" :class="{invalidFiled: $v.confirmPassword.$error}">
+        <input v-model.trim="$v.user.confirmPassword.$model" class="registerInput" type="password" name="confirmPassword"
+               id="confirmPassword" :class="{invalidFiled: $v.user.confirmPassword.$error}">
         <div class="registerError">
-        <span v-if="$v.confirmPassword.$dirty && !$v.confirmPassword.sameAs" class="errorMessage">
+        <span v-if="$v.user.confirmPassword.$dirty && !$v.user.confirmPassword.sameAs" class="errorMessage">
           <font-awesome-icon icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.CONFIRM_PASSWORD }}
         </span>
         </div>
@@ -60,48 +60,60 @@
 <script>
 import {alphaNum, maxLength, minLength, required, sameAs} from "vuelidate/lib/validators";
 import {Constants} from "@/constants/constants";
-import User from '../models/user';
+// import User from '../models/user';
 
 export default {
   name: "RegisterComponent",
   data() {
     return {
-      user: new User('' , '' , ''),
+      // user: new User('' , '' , ''),
       constants: Constants,
-      username: null,
-      password: null,
-      confirmPassword: null,
+      submitted: false,
+      successful: false,
+      user: {
+        username: null,
+        password: null,
+        confirmPassword: null,
+      }
     }
   },
   validations: {
-    username: {
-      required,
-      minLength: minLength(6),
-      maxLength: maxLength(10),
-      alphaNum
-    },
-    password: {
-      required,
-      minLength: minLength(6),
-      maxLength: maxLength(10),
-      alphaNum
-    },
-    confirmPassword: {
-      sameAs: sameAs('password')
+    user: {
+      username: {
+        required,
+        minLength: minLength(6),
+        maxLength: maxLength(10),
+        alphaNum
+      },
+      password: {
+        required,
+        minLength: minLength(6),
+        maxLength: maxLength(10),
+        alphaNum
+      },
+      confirmPassword: {
+        sameAs: sameAs('password')
+      }
     }
   },
   methods: {
     register() {
       this.$v.$touch();
+      console.log('in register')
       if (this.$v.$invalid) {
+        console.log('invalid')
         return;
+
       } else {
+        console.log('ok')
         this.$store.dispatch('auth/register', this.user).then(
             data => {
               this.message = data.message;
+              console.log('register success')
               // this.successful = true;
             },
             error => {
+              console.log('register failed')
               this.message =
                   (error.response && error.response.data) ||
                   error.message ||
@@ -122,7 +134,7 @@ export default {
   },
   mounted() {
     if (this.loggedIn) {
-      this.$router.push({name: 'register'});
+      this.$router.push({name: 'movies'});
     }
   },
 }

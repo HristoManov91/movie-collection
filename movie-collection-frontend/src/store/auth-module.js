@@ -13,10 +13,12 @@ export const auth = {
         login({ commit }, user) {
             return AuthService.login(user).then(
                 user => {
+                    console.log('loginSuccess', user)
                     commit('loginSuccess', user);
                     return Promise.resolve(user);
                 },
                 error => {
+                    console.log('loginFailure' , error)
                     commit('loginFailure');
                     return Promise.reject(error);
                 }
@@ -29,10 +31,14 @@ export const auth = {
         register({ commit }, user) {
             return AuthService.register(user).then(
                 response => {
+                    console.log('registerSuccess')
+                    console.log(Promise.resolve(response.data))
                     commit('registerSuccess');
                     return Promise.resolve(response.data);
                 },
                 error => {
+                    console.log('registerFailure')
+                    console.log(Promise.reject(error))
                     commit('registerFailure');
                     return Promise.reject(error);
                 }
@@ -53,10 +59,14 @@ export const auth = {
             state.user = null;
         },
         registerSuccess(state) {
+            console.log('regStaBefore1: ' , state)
             state.status.loggedIn = false;
+            console.log('regStaAfter1: ' , state)
         },
         registerFailure(state) {
+            console.log('regStaBefore2: ' , state)
             state.status.loggedIn = false;
+            console.log('regStaAfter2: ' , state)
         }
     }
 };

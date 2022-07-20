@@ -3,15 +3,15 @@
     <nav>
       <ul>
         <router-link tag="li" :to="{name: 'home'}">HOME</router-link>
-        <router-link tag="li" :to="{name: 'movies'}">MOVIES</router-link>
-        <router-link tag="li" :to="{name: 'addMovie'}">ADD MOVIE</router-link>
-        <router-link tag="li" :to="{name: 'statistics'}">STATISTICS</router-link>
+        <router-link v-if="currentUser" tag="li" :to="{name: 'movies'}">MOVIES</router-link>
+        <router-link v-if="currentUser" tag="li" :to="{name: 'addMovie'}">ADD MOVIE</router-link>
+        <router-link v-if="currentUser" tag="li" :to="{name: 'statistics'}">STATISTICS</router-link>
       </ul>
       <ul>
-        <router-link tag="li" :to="{name: 'login'}">LOGIN</router-link>
-        <router-link tag="li" :to="{name: 'register'}">REGISTER</router-link>
+        <router-link v-if="!currentUser" tag="li" :to="{name: 'login'}">LOGIN</router-link>
+        <router-link v-if="!currentUser" tag="li" :to="{name: 'register'}">REGISTER</router-link>
         <!-- ToDo -->
-        <li>LOGOUT</li>
+        <li v-if="currentUser" @click="logOut">LOGOUT</li>
       </ul>
     </nav>
   </div>
@@ -19,7 +19,18 @@
 
 <script>
 export default {
-  name: "NavigationComponent"
+  name: "NavigationComponent",
+  methods: {
+    logOut() {
+      this.$store.dispatch('auth/logout');
+      this.$router.push('/login');
+    }
+  },
+  computed: {
+    currentUser() {
+      return this.$store.state.auth.user;
+    },
+  }
 }
 </script>
 
