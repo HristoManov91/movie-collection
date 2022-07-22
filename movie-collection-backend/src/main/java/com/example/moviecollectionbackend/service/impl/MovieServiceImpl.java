@@ -1,6 +1,6 @@
 package com.example.moviecollectionbackend.service.impl;
 
-import com.example.moviecollectionbackend.exception.UserNotFoundException;
+import com.example.moviecollectionbackend.exception.MovieNotFoundException;
 import com.example.moviecollectionbackend.model.dto.AddMovieDTO;
 import com.example.moviecollectionbackend.model.dto.EditMovieDTO;
 import com.example.moviecollectionbackend.model.dto.MovieCardDto;
@@ -139,9 +139,10 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public MovieDetailsDto getMovieDetailsDto(Long movieId) throws UserNotFoundException {
+    public MovieDetailsDto getMovieDetailsDto(Long movieId) throws MovieNotFoundException {
+        //ToDo
         MovieEntity movieEntity = movieRepository.findById(movieId)
-            .orElseThrow(() -> new UserNotFoundException("User with this id " + movieId + " not found!"));
+            .orElseThrow(() -> new MovieNotFoundException("Movie with this id " + movieId + " not found!"));
 
         return mapEntityToDto(movieEntity);
     }

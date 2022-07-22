@@ -40,7 +40,7 @@ export default {
         this.statistics = resp.data;
 
       } else {
-
+        // ToDo fix error
         this.errorMessage = 'We have problem with server,please try again later!'
         this.showErrorModal();
         setTimeout(() => {

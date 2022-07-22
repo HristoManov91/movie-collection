@@ -1,6 +1,6 @@
 package com.example.moviecollectionbackend.service;
 
-import com.example.moviecollectionbackend.exception.UserNotFoundException;
+import com.example.moviecollectionbackend.exception.MovieNotFoundException;
 import com.example.moviecollectionbackend.model.dto.AddMovieDTO;
 import com.example.moviecollectionbackend.model.dto.EditMovieDTO;
 import com.example.moviecollectionbackend.model.dto.MovieCardDto;
@@ -15,7 +15,7 @@ public interface MovieService {
 
     Page<MovieCardDto> findAllMoviesWithPagination(Pageable pageable , Map<String , Object> params);
 
-    MovieDetailsDto getMovieDetailsDto(Long movieId) throws UserNotFoundException;
+    MovieDetailsDto getMovieDetailsDto(Long movieId) throws MovieNotFoundException;
 
     MovieDetailsDto addMovie(AddMovieDTO addMovieDTO) throws URISyntaxException;
 

@@ -67,6 +67,12 @@
     <transition :name="transitionName" mode="out-in">
       <router-view/>
     </transition>
+    <modal name="errorModal" :shiftX="1" :shiftY="0" :height="0" :width="0">
+      <ErrorModal :errorMessage="this.errorMessage"/>
+    </modal>
+    <modal name="successfulModal" :shiftX="1" :shiftY="0" :height="0" :width="0">
+      <SuccessfulModal :success-message="this.successMessage"/>
+    </modal>
   </div>
 </template>
 
@@ -74,18 +80,38 @@
 import {MovieService} from "@/services/movie-service";
 import MyPagination from "@/components/MyPagination";
 import MovieCard from "@/components/MovieCard";
+import ErrorModal from "@/components/messages/ErrorModal";
+import SuccessfulModal from "@/components/messages/SuccessfulModal";
 
 export default {
   name: "MoviesComponent",
   components: {
     MyPagination,
-    MovieCard
+    MovieCard,
+    ErrorModal,
+    SuccessfulModal,
+  },
+  created() {
+    console.log('created')
+    // this.successMessage = 'You login successfully!';
+    // this.showSuccessModal();
+    // setTimeout(() => {
+    //   this.hideSuccessModal()
+    // }, 4000)
   },
   mounted() {
-    console.log('in mounted')
     this.loadMovies()
     this.fillDurationSlideColor();
     this.fillRatingSlideColor();
+  },
+  updated() {
+    console.log('update')
+
+    // this.successMessage = 'You login successfully!';
+    // this.showSuccessModal();
+    // setTimeout(() => {
+    //   this.hideSuccessModal()
+    // }, 4000)
   },
   data() {
     return {
@@ -145,6 +171,7 @@ export default {
       errorMessage: null,
       successMessage: null,
       spinner: {
+        // ToDo
         isLoading: false
       },
       transitionName: ''
@@ -152,6 +179,7 @@ export default {
   },
   methods: {
     showSuccessModal() {
+      console.log('show modal')
       this.$modal.show('successfulModal');
     },
     hideSuccessModal() {
@@ -185,10 +213,9 @@ export default {
     },
     loadMovies() {
 
-      console.log('in load')
       this.movieService.findAllMoviesWithParams(this.pagination.currentPage - 1, this.pagination.perPage, this.pagination.orderBy, this.filterParams).then((resp) => {
         if (resp.status === 'OK') {
-          console.log('ok')
+
           this.mapRespPagToPag(resp.data);
           this.moviesToShow = resp.data.content;
           if (this.pagination.empty) {
@@ -199,7 +226,7 @@ export default {
             }, 4000)
           }
         } else {
-          console.log('resp' , resp)
+
           this.errorMessage = 'Error in loadMovies!';
           this.showErrorModal();
           setTimeout(() => {
@@ -274,7 +301,7 @@ export default {
       this.durationFilter.maxDuration = 300;
       this.ratingFilter.minRating = 0;
       this.ratingFilter.maxRating = 10;
-      this.$refs['genres'].forEach(el => console.log(el.childNodes[0].checked = false));
+      this.$refs['genres'].forEach(el => el.childNodes[0].checked = false);
 
       this.filterParams.minDuration = 30;
       this.filterParams.maxDuration = 300;
@@ -364,7 +391,6 @@ export default {
   },
   computed: {
     genres() {
-      console.log('g' , this.$store.getters.getGenres)
       return this.$store.getters.getGenres;
     },
     isLoading() {

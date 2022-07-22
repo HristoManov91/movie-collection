@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@CrossOrigin("http://localhost:8080/")
+@CrossOrigin(origins = "http://localhost:8080/")
 @RequestMapping("/users")
 public class UserController {
 
@@ -36,33 +36,32 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Boolean> registerUser(@RequestBody @Valid UserRegisterDto userRegisterDto){
+    public ResponseEntity<Boolean> registerUser(@RequestBody @Valid UserRegisterDto userRegisterDto) {
         boolean result = userService.registerUser(userRegisterDto);
 
-        return new ResponseEntity<>(result , result ? HttpStatus.CREATED : HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(result, result ? HttpStatus.CREATED : HttpStatus.BAD_REQUEST);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> loginUser(@RequestBody UserLoginDto userLoginDto){//ToDo validate
+    public ResponseEntity<?> loginUser(@RequestBody @Valid UserLoginDto userLoginDto) {//ToDo validate
         try {
             Authentication authenticate = authManager.authenticate(
                 new UsernamePasswordAuthenticationToken(userLoginDto.getUsername(), userLoginDto.getPassword()));
 
             AppUserDetails user = (AppUserDetails) authenticate.getPrincipal();
             String accessToken = jwtUtil.generateAccessToken(user);
-            AuthResponse response = new AuthResponse(user.getUsername() , accessToken);
+            AuthResponse response = new AuthResponse(user.getUsername(), accessToken);
 
             return ResponseEntity.ok().body(response);
 
-        } catch (BadCredentialsException Ex){
+        } catch (BadCredentialsException Ex) {
 
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-
+            return new ResponseEntity<>("Username or Password don't match!", HttpStatus.BAD_REQUEST);
         }
     }
 
     @PostMapping("/logout")
-    public Boolean logout(){
+    public Boolean logout() {
         return true;
     }
 

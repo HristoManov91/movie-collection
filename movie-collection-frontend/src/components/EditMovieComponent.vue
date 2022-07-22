@@ -20,13 +20,13 @@
         <div class="rowError">
           <div class="colError">
             <span v-if="!$v.editedMovie.title1.required" class="errorMessage"><font-awesome-icon
-                icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.TITLE1_REQUIRED }}</span>
+                icon="fa-solid fa-circle-exclamation"/> {{ this.constants.ERROR.TITLE1_REQUIRED }}</span>
             <span v-else-if="!$v.editedMovie.title1.minLength || !$v.editedMovie.title1.maxLength" class="errorMessage"><font-awesome-icon
-                icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.TITLE1_LENGTH }}</span>
+                icon="fa-solid fa-circle-exclamation"/> {{ this.constants.ERROR.TITLE1_LENGTH }}</span>
           </div>
           <div class="colError">
             <span v-if="!$v.editedMovie.title2.minLength || !$v.editedMovie.title2.maxLength" class="errorMessage"><font-awesome-icon
-                icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.TITLE2_LENGTH }}</span>
+                icon="fa-solid fa-circle-exclamation"/> {{ this.constants.ERROR.TITLE2_LENGTH }}</span>
           </div>
         </div>
         <div class="row">
@@ -42,19 +42,19 @@
         <div class="rowError">
           <div class="colError">
             <span v-if="!$v.editedMovie.duration.required" class="errorMessage"><font-awesome-icon
-                icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.DURATION_REQUIRED }}</span>
+                icon="fa-solid fa-circle-exclamation"/> {{ this.constants.ERROR.DURATION_REQUIRED }}</span>
             <span v-else-if="!$v.editedMovie.duration.numeric" class="errorMessage"><font-awesome-icon
-                icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.DURATION_NUMERIC }}</span>
+                icon="fa-solid fa-circle-exclamation"/> {{ this.constants.ERROR.DURATION_NUMERIC }}</span>
             <span v-else-if="!$v.editedMovie.duration.between" class="errorMessage"><font-awesome-icon
-                icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.DURATION_BETWEEN }}</span>
+                icon="fa-solid fa-circle-exclamation"/> {{ this.constants.ERROR.DURATION_BETWEEN }}</span>
           </div>
           <div class="colError">
             <span v-if="!$v.editedMovie.year.required" class="errorMessage"><font-awesome-icon
-                icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.YEAR_REQUIRED }}</span>
+                icon="fa-solid fa-circle-exclamation"/> {{ this.constants.ERROR.YEAR_REQUIRED }}</span>
             <span v-else-if="!$v.editedMovie.year.numeric" class="errorMessage"><font-awesome-icon
-                icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.YEAR_NUMERIC }}</span>
+                icon="fa-solid fa-circle-exclamation"/> {{ this.constants.ERROR.YEAR_NUMERIC }}</span>
             <span v-else-if="!$v.editedMovie.year.between" class="errorMessage"><font-awesome-icon
-                icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.YEAR_BETWEEN }}</span>
+                icon="fa-solid fa-circle-exclamation"/> {{ this.constants.ERROR.YEAR_BETWEEN }}</span>
           </div>
         </div>
         <div class="genresEdit">
@@ -64,33 +64,33 @@
             <label :for="genre + 'Edit'">{{ genre }}</label>
           </div>
           <span v-if="!$v.editedMovie.genres.required || !$v.editedMovie.genres.minLength" class="errorMessage"><font-awesome-icon
-              icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.GENRES_REQUIRED }}</span>
+              icon="fa-solid fa-circle-exclamation"/> {{ this.constants.ERROR.GENRES_REQUIRED }}</span>
           <span v-if="!$v.editedMovie.genres.maxLength" class="errorMessage"><font-awesome-icon
-              icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.GENRES_MAX_LENGTH }}</span>
+              icon="fa-solid fa-circle-exclamation"/> {{ this.constants.ERROR.GENRES_MAX_LENGTH }}</span>
         </div>
         <div class="urlsEdit">
           <label for="imdbUrl">IMDb URL:</label>
           <input id="imdbUrl" type="text" v-model.trim="$v.editedMovie.imdbUrl.$model"/>
           <span v-if="!$v.editedMovie.imdbUrl.url" class="errorMessage"><font-awesome-icon
-              icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.IMDB_URL }}</span>
+              icon="fa-solid fa-circle-exclamation"/> {{ this.constants.ERROR.IMDB_URL }}</span>
           <span v-else-if="!$v.editedMovie.imdbUrl.maxLength" class="errorMessage"><font-awesome-icon
-              icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.IMDB_URL_MAX_LENGTH }}</span>
+              icon="fa-solid fa-circle-exclamation"/> {{ this.constants.ERROR.IMDB_URL_MAX_LENGTH }}</span>
           <label for="trailerUrl">Trailer URL:</label>
           <input id="trailerUrl" type="text" v-model.trim="$v.editedMovie.trailerUrl.$model"/>
           <span v-if="!$v.editedMovie.trailerUrl.required" class="errorMessage"><font-awesome-icon
-              icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.TRAILER_URL_REQUIRED }}</span>
+              icon="fa-solid fa-circle-exclamation"/> {{ this.constants.ERROR.TRAILER_URL_REQUIRED }}</span>
           <span v-else-if="!$v.editedMovie.trailerUrl.url" class="errorMessage"><font-awesome-icon
-              icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.TRAILER_URL }}</span>
+              icon="fa-solid fa-circle-exclamation"/> {{ this.constants.ERROR.TRAILER_URL }}</span>
           <span v-else-if="!$v.editedMovie.trailerUrl.maxLength" class="errorMessage"><font-awesome-icon
-              icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.TRAILER_URL_MAX_LENGTH }}</span>
+              icon="fa-solid fa-circle-exclamation"/> {{ this.constants.ERROR.TRAILER_URL_MAX_LENGTH }}</span>
           <label for="posterUrl">Poster URL:</label>
           <input id="posterUrl" type="text" v-model.trim="$v.editedMovie.posterUrl.$model"/>
           <span v-if="!$v.editedMovie.posterUrl.required" class="errorMessage"><font-awesome-icon
-              icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.POSTER_URL_REQUIRED }}</span>
+              icon="fa-solid fa-circle-exclamation"/> {{ this.constants.ERROR.POSTER_URL_REQUIRED }}</span>
           <span v-else-if="!$v.editedMovie.posterUrl.url" class="errorMessage"><font-awesome-icon
-              icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.POSTER_URL }}</span>
+              icon="fa-solid fa-circle-exclamation"/> {{ this.constants.ERROR.POSTER_URL }}</span>
           <span v-else-if="!$v.editedMovie.posterUrl.maxLength" class="errorMessage"><font-awesome-icon
-              icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.POSTER_URL_MAX_LENGTH }}</span>
+              icon="fa-solid fa-circle-exclamation"/> {{ this.constants.ERROR.POSTER_URL_MAX_LENGTH }}</span>
         </div>
         <div class="audioEdit">
           <input id="english" type="radio" v-model="editedMovie.bulgarianLanguage" :value="false"/>
@@ -101,7 +101,7 @@
         <span class="description">Description:</span>
         <textarea class="editMovieTextarea" v-model.trim="$v.editedMovie.description.$model"></textarea>
         <span v-if="!$v.editedMovie.description.maxLength" class="errorMessage"><font-awesome-icon
-            icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.DESCRIPTION_MAX_LENGTH }}</span>
+            icon="fa-solid fa-circle-exclamation"/> {{ this.constants.ERROR.DESCRIPTION_MAX_LENGTH }}</span>
         <div class="platformsEdit">
           <div v-for="(platform , i) in platforms" :key="i">
             <input type="checkbox" :id="platform + 'Edit'" :name="platform + 'Edit'" :value="platform"
@@ -110,9 +110,9 @@
           </div>
         </div>
         <span v-if="!$v.editedMovie.platforms.required || !$v.editedMovie.platforms.minLength" class="errorMessage"><font-awesome-icon
-            icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.PLATFORMS_REQUIRED }}</span>
+            icon="fa-solid fa-circle-exclamation"/> {{ this.constants.ERROR.PLATFORMS_REQUIRED }}</span>
         <span v-if="!$v.editedMovie.platforms.maxLength" class="errorMessage"><font-awesome-icon
-            icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.PLATFORMS_MAX_LENGTH }}</span>
+            icon="fa-solid fa-circle-exclamation"/> {{ this.constants.ERROR.PLATFORMS_MAX_LENGTH }}</span>
         <button class="saveButton">
           SAVE MOVIE
         </button>
@@ -284,7 +284,6 @@ export default {
       }
     },
     closeEditMovie() {
-      console.log(this.editedMovie.movieId)
       this.$router.push({name: 'details', params: {movieId: this.editedMovie.movieId}});
     },
   },

@@ -10,7 +10,6 @@
       <ul>
         <router-link v-if="!currentUser" tag="li" :to="{name: 'login'}">LOGIN</router-link>
         <router-link v-if="!currentUser" tag="li" :to="{name: 'register'}">REGISTER</router-link>
-        <!-- ToDo -->
         <li v-if="currentUser" @click="logOut">LOGOUT</li>
       </ul>
     </nav>
@@ -23,7 +22,7 @@ export default {
   methods: {
     logOut() {
       this.$store.dispatch('auth/logout');
-      this.$router.push('/login');
+      this.$router.push({name: 'login'});
     }
   },
   computed: {

@@ -1,6 +1,6 @@
 package com.example.moviecollectionbackend.web;
 
-import com.example.moviecollectionbackend.exception.UserNotFoundException;
+import com.example.moviecollectionbackend.exception.MovieNotFoundException;
 import com.example.moviecollectionbackend.model.dto.AddMovieDTO;
 import com.example.moviecollectionbackend.model.dto.EditMovieDTO;
 import com.example.moviecollectionbackend.model.dto.MovieCardDto;
@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/movies")
-@CrossOrigin(origins = "http://localhost:8080/" , allowedHeaders = {"Authorization"} , maxAge = 600)
+@CrossOrigin(origins = "http://localhost:8080/")
 public class MovieController {
 
     private final MovieService movieService;
@@ -52,7 +52,7 @@ public class MovieController {
 
     @GetMapping("/{movieId}")
 //    @PreAuthorize("hasRole('USER')")
-    private ResponseEntity<MovieDetailsDto> getMovieDetailsDto(@PathVariable Long movieId) throws UserNotFoundException {
+    private ResponseEntity<MovieDetailsDto> getMovieDetailsDto(@PathVariable Long movieId) throws MovieNotFoundException {
         return new ResponseEntity<>(movieService.getMovieDetailsDto(movieId), HttpStatus.OK);
     }
 

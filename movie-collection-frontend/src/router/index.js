@@ -28,9 +28,14 @@ const routes = [
 ];
 
 // routes.beforeEach((to, from, next) => {
-//     const publicPages = ['/login', '/register', '/home'];
+//     const publicPages = ['/users/login', '/users/register', '/'];
+//     console.log('to' , to)
+//     console.log('from' , from)
+//     console.log('next' , next)
 //     const authRequired = !publicPages.includes(to.path);
+//     console.log('authRequired' , authRequired)
 //     const loggedIn = localStorage.getItem('user');
+//     console.log('loggedIn' , loggedIn)
 //     // trying to access a restricted page + not logged in
 //     // redirect to login page
 //     if (authRequired && !loggedIn) {

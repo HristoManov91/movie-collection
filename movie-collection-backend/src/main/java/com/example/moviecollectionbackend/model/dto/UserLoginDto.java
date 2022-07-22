@@ -1,15 +1,16 @@
 package com.example.moviecollectionbackend.model.dto;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Length;
 
 public class UserLoginDto {
 
-    @NotEmpty
-    @Length(min = 6 , max = 10)
+    @NotBlank(message = "Username is required and cannot be empty string!")
+    @Length(min = 6 , max = 10 , message = "Username length must be between 6 and 10 characters!")
     private String username;
-    @NotEmpty
-    @Length(min = 6 , max = 10)
+    @NotBlank(message = "Password is required and cannot be empty string!")
+    @Length(min = 6 , max = 10 , message = "Password length must be between 6 and 10 characters!")
     private String password;
 
     public UserLoginDto() {

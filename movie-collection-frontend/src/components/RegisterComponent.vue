@@ -14,13 +14,13 @@
                :class="{invalidFiled: $v.user.username.$error}">
         <div class="registerError">
         <span v-if="$v.user.username.$dirty && !$v.user.username.required" class="errorMessage">
-        <font-awesome-icon icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.USERNAME_REQUIRED }}
+        <font-awesome-icon icon="fa-solid fa-circle-exclamation"/> {{ this.constants.ERROR.USERNAME_REQUIRED }}
         </span>
           <span v-else-if="!$v.user.username.alphaNum" class="errorMessage">
-          <font-awesome-icon icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.USERNAME_ALPHA_NUM }}
+          <font-awesome-icon icon="fa-solid fa-circle-exclamation"/> {{ this.constants.ERROR.USERNAME_ALPHA_NUM }}
         </span>
           <span v-else-if="!$v.user.username.minLength || !$v.user.username.maxLength" class="errorMessage">
-        <font-awesome-icon icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.USERNAME_BETWEEN }}
+        <font-awesome-icon icon="fa-solid fa-circle-exclamation"/> {{ this.constants.ERROR.USERNAME_BETWEEN }}
         </span>
         </div>
 
@@ -30,13 +30,13 @@
                :class="{invalidFiled: $v.user.password.$error}">
         <div class="registerError">
         <span v-if="$v.user.password.$dirty && !$v.user.password.required" class="errorMessage">
-        <font-awesome-icon icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.PASSWORD_REQUIRED }}
+        <font-awesome-icon icon="fa-solid fa-circle-exclamation"/> {{ this.constants.ERROR.PASSWORD_REQUIRED }}
         </span>
           <span v-else-if="!$v.user.password.alphaNum" class="errorMessage">
-          <font-awesome-icon icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.PASSWORD_ALPHA_NUM }}
+          <font-awesome-icon icon="fa-solid fa-circle-exclamation"/> {{ this.constants.ERROR.PASSWORD_ALPHA_NUM }}
         </span>
           <span v-else-if="!$v.user.password.minLength || !$v.user.password.maxLength" class="errorMessage">
-        <font-awesome-icon icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.PASSWORD_BETWEEN }}
+        <font-awesome-icon icon="fa-solid fa-circle-exclamation"/> {{ this.constants.ERROR.PASSWORD_BETWEEN }}
         </span>
         </div>
 
@@ -45,7 +45,7 @@
                id="confirmPassword" :class="{invalidFiled: $v.user.confirmPassword.$error}">
         <div class="registerError">
         <span v-if="$v.user.confirmPassword.$dirty && !$v.user.confirmPassword.sameAs" class="errorMessage">
-          <font-awesome-icon icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.CONFIRM_PASSWORD }}
+          <font-awesome-icon icon="fa-solid fa-circle-exclamation"/> {{ this.constants.ERROR.CONFIRM_PASSWORD }}
         </span>
         </div>
         <button class="registerButton">Register</button>
@@ -99,21 +99,16 @@ export default {
   methods: {
     register() {
       this.$v.$touch();
-      console.log('in register')
       if (this.$v.$invalid) {
-        console.log('invalid')
         return;
 
       } else {
-        console.log('ok')
         this.$store.dispatch('auth/register', this.user).then(
             data => {
               this.message = data.message;
-              console.log('register success')
               // this.successful = true;
             },
             error => {
-              console.log('register failed')
               this.message =
                   (error.response && error.response.data) ||
                   error.message ||

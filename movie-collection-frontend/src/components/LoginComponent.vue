@@ -5,35 +5,34 @@
       <p class="closeButton" @click="closeLoginForm">X</p>
       <p class="loginFormTitle">Login Form</p>
       <form @submit.prevent="login" class="loginForm">
-
         <label class="loginLabel" for="loginUsername">Username:</label>
-        <input v-model.trim="$v.user.username.$model" class="loginInput" type="text" name="loginUsername" id="loginUsername"
+        <input v-model.trim="$v.user.username.$model" class="loginInput" type="text" name="loginUsername"
+               id="loginUsername"
                :class="{invalidFiled: $v.user.username.$error}">
         <div class="loginError">
         <span v-if="$v.user.username.$dirty && !$v.user.username.required" class="errorMessage">
-        <font-awesome-icon icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.USERNAME_REQUIRED }}
+        <font-awesome-icon icon="fa-solid fa-circle-exclamation"/> {{ this.constants.ERROR.USERNAME_REQUIRED }}
         </span>
           <span v-else-if="!$v.user.username.alphaNum" class="errorMessage">
-          <font-awesome-icon icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.USERNAME_ALPHA_NUM }}
+          <font-awesome-icon icon="fa-solid fa-circle-exclamation"/> {{ this.constants.ERROR.USERNAME_ALPHA_NUM }}
         </span>
           <span v-else-if="!$v.user.username.minLength || !$v.user.username.maxLength" class="errorMessage">
-        <font-awesome-icon icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.USERNAME_BETWEEN }}
+        <font-awesome-icon icon="fa-solid fa-circle-exclamation"/> {{ this.constants.ERROR.USERNAME_BETWEEN }}
         </span>
         </div>
-
         <label class="loginLabel" for="loginPassword">Password:</label>
         <input v-model.trim="$v.user.password.$model" class="loginInput" type="password" name="loginPassword"
                id="loginPassword"
                :class="{invalidFiled: $v.user.password.$error}">
         <div class="loginError">
         <span v-if="$v.user.password.$dirty && !$v.user.password.required" class="errorMessage">
-        <font-awesome-icon icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.PASSWORD_REQUIRED }}
+        <font-awesome-icon icon="fa-solid fa-circle-exclamation"/> {{ this.constants.ERROR.PASSWORD_REQUIRED }}
         </span>
           <span v-else-if="!$v.user.password.alphaNum" class="errorMessage">
-          <font-awesome-icon icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.PASSWORD_ALPHA_NUM }}
+          <font-awesome-icon icon="fa-solid fa-circle-exclamation"/> {{ this.constants.ERROR.PASSWORD_ALPHA_NUM }}
         </span>
           <span v-else-if="!$v.user.password.minLength || !$v.user.password.maxLength" class="errorMessage">
-        <font-awesome-icon icon="fa-solid fa-circle-exclamation"/> {{ this.constants.error.PASSWORD_BETWEEN }}
+        <font-awesome-icon icon="fa-solid fa-circle-exclamation"/> {{ this.constants.ERROR.PASSWORD_BETWEEN }}
         </span>
         </div>
         <button class="loginButton">LOGIN</button>
@@ -42,24 +41,30 @@
         </p>
       </form>
     </div>
+    <modal name="loginErrorModal" :shiftX="1" :shiftY="0" :height="0" :width="0">
+      <ErrorModal :errorMessage="this.errorMessage"/>
+    </modal>
   </div>
 </template>
 
 <script>
 import {alphaNum, maxLength, minLength, required} from "vuelidate/lib/validators";
 import {Constants} from "@/constants/constants";
+import ErrorModal from "@/components/messages/ErrorModal";
 
 export default {
   name: "LoginComponent",
+  components: {
+    ErrorModal,
+  },
   data() {
     return {
-      // loading: false,
-      message: '',
       constants: Constants,
       user: {
         username: null,
         password: null
-      }
+      },
+      errorMessage: null,
     }
   },
   validations: {
@@ -79,24 +84,35 @@ export default {
     }
   },
   methods: {
+    showErrorModal() {
+      this.$modal.show(this.constants.LOGIN_ERROR_MODAL);
+    },
+    hideErrorModal() {
+      this.$modal.hide(this.constants.LOGIN_ERROR_MODAL);
+    },
     login() {
       this.$v.$touch();
 
       if (this.$v.$invalid) {
+        this.errorMessage = this.constants.ERROR.LOGIN_FORM_ERROR;
 
-        return;
+        this.showErrorModal();
+        setTimeout(() => {
+          this.hideErrorModal()
+        }, 3000)
 
       } else {
-        console.log('ok')
         this.$store.dispatch('auth/login', this.user).then(
             () => {
               this.$router.push({name: 'movies'});
             },
             error => {
-              this.message =
-                  (error.response && error.response.data) ||
-                  error.message ||
-                  error.toString();
+              this.errorMessage = error.response.data
+
+              this.showErrorModal();
+              setTimeout(() => {
+                this.hideErrorModal()
+              }, 3000)
             }
         );
       }

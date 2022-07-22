@@ -14,6 +14,12 @@ export default {
       required: true
     }
   },
+  created() {
+    console.log('modal created')
+  },
+  mounted() {
+    console.log('modal mounted')
+  }
 }
 </script>
 
@@ -39,4 +45,5 @@ export default {
 .modal p{
   margin: 10px;
 }
+
 </style>

@@ -70,6 +70,7 @@ export default {
       if (movieDetailsDto.status === 'OK') {
         this.movie = movieDetailsDto.data;
       } else {
+        //ToDo error message
         this.errorMessage = 'Error in clickDetails!';
         this.showErrorModal();
         setTimeout(() => {

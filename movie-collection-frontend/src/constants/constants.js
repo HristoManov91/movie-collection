@@ -1,5 +1,5 @@
 export const Constants = {
-    error: {
+    ERROR: {
         TITLE1_REQUIRED: 'Title is required and cannot be empty string!',
         TITLE1_LENGTH: 'Title length must be between 2 and 40 characters!',
         TITLE2_LENGTH: 'Second title length must be between 2 and 40 characters!',
@@ -13,7 +13,7 @@ export const Constants = {
         GENRES_MAX_LENGTH: 'You can select up to 4 genres!',
         PLATFORMS_REQUIRED: 'Field Platforms is required!',
         PLATFORMS_MAX_LENGTH: 'You can select up to 4 platforms!',
-        IMDB_URL: 'The value on IBDbURL field is not valid URL!',
+        IMDB_URL: 'The value on IMDbURL field is not valid URL!',
         IMDB_URL_MAX_LENGTH: 'The length of the IMDbURL field must be max 254 characters!',
         POSTER_URL_REQUIRED: 'PosterURL is required and cannot be empty string!',
         POSTER_URL: 'The value on PosterURL field is not valid URL!',
@@ -29,6 +29,9 @@ export const Constants = {
         PASSWORD_REQUIRED: 'Password is required!',
         PASSWORD_BETWEEN: 'Password must be between 6 and 10 symbols!',
         PASSWORD_ALPHA_NUM: 'Password may contain alpha-numeric characters!',
-        CONFIRM_PASSWORD: 'Passwords must be the same!'
-    }
+        CONFIRM_PASSWORD: 'Passwords must be the same!',
+        LOGIN_FORM_ERROR: "Fill form correctly!",
+        LOGIN_ERROR_MODAL: "loginErrorModal"
+    },
+    LOGIN_ERROR_MODAL: "loginErrorModal"
 }
