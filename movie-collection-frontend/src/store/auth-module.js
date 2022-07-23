@@ -1,4 +1,4 @@
-import AuthService from '../services/auth-service';
+import UserService from '../services/user-service';
 
 const user = JSON.parse(localStorage.getItem('user'));
 
@@ -11,7 +11,7 @@ export const auth = {
     state: initialState,
     actions: {
         login({commit}, user) {
-            return AuthService.login(user).then(
+            return UserService.login(user).then(
                 user => {
                     commit('loginSuccess', user);
                     return Promise.resolve(user);
@@ -23,21 +23,9 @@ export const auth = {
             );
         },
         logout({commit}) {
-            AuthService.logout();
+            UserService.logout();
             commit('logout');
         },
-        register({commit}, user) {
-            return AuthService.register(user).then(
-                response => {
-                    commit('registerSuccess');
-                    return Promise.resolve(response.data);
-                },
-                error => {
-                    commit('registerFailure');
-                    return Promise.reject(error);
-                }
-            );
-        }
     },
     mutations: {
         loginSuccess(state, user) {
@@ -55,13 +43,5 @@ export const auth = {
             state.status.loggedIn = false;
             state.user = null;
         },
-        registerSuccess(state) {
-            console.log('mutations registerSuccess')
-            state.status.loggedIn = false;
-        },
-        registerFailure(state) {
-            console.log('mutations registerFailure')
-            state.status.loggedIn = false;
-        }
     }
 };

@@ -1,13 +1,10 @@
 <template>
   <div>
-    <div class="overlay">
-
-    </div>
+    <div class="overlay"></div>
     <div class="registerComponent">
       <p class="closeButton" @click="closeRegisterForm">X</p>
       <p class="registerFormTitle">Register Form</p>
       <form @submit.prevent="register" class="registerForm">
-
         <label class="registerLabel" for="registerUsername">Username:</label>
         <input v-model.trim="$v.user.username.$model" class="registerInput" type="text" name="registerUsername"
                id="registerUsername"
@@ -23,7 +20,6 @@
         <font-awesome-icon icon="fa-solid fa-circle-exclamation"/> {{ this.constants.ERROR.USERNAME_BETWEEN }}
         </span>
         </div>
-
         <label class="registerLabel" for="registerPassword">Password:</label>
         <input v-model.trim="$v.user.password.$model" class="registerInput" type="password" name="registerPassword"
                id="registerPassword"
@@ -39,9 +35,9 @@
         <font-awesome-icon icon="fa-solid fa-circle-exclamation"/> {{ this.constants.ERROR.PASSWORD_BETWEEN }}
         </span>
         </div>
-
         <label class="registerLabel" for="confirmPassword">Confirm Password:</label>
-        <input v-model.trim="$v.user.confirmPassword.$model" class="registerInput" type="password" name="confirmPassword"
+        <input v-model.trim="$v.user.confirmPassword.$model" class="registerInput" type="password"
+               name="confirmPassword"
                id="confirmPassword" :class="{invalidFiled: $v.user.confirmPassword.$error}">
         <div class="registerError">
         <span v-if="$v.user.confirmPassword.$dirty && !$v.user.confirmPassword.sameAs" class="errorMessage">
@@ -54,19 +50,26 @@
         </p>
       </form>
     </div>
+    <modal name="registerErrorModal" :shiftX="1" :shiftY="0" :height="0" :width="0">
+      <ErrorModal :errorMessage="this.errorMessage"/>
+    </modal>
   </div>
 </template>
 
 <script>
 import {alphaNum, maxLength, minLength, required, sameAs} from "vuelidate/lib/validators";
 import {Constants} from "@/constants/constants";
-// import User from '../models/user';
+import ErrorModal from "@/components/messages/ErrorModal";
+import UserService from "@/services/user-service";
 
 export default {
   name: "RegisterComponent",
+  components: {
+    ErrorModal
+  },
   data() {
     return {
-      // user: new User('' , '' , ''),
+      userService: UserService,
       constants: Constants,
       submitted: false,
       successful: false,
@@ -74,7 +77,8 @@ export default {
         username: null,
         password: null,
         confirmPassword: null,
-      }
+      },
+      errorMessage: null
     }
   },
   validations: {
@@ -97,42 +101,45 @@ export default {
     }
   },
   methods: {
+    showErrorModal() {
+      this.$modal.show(this.constants.REGISTER_ERROR_MODAL);
+    },
+    hideErrorModal() {
+      this.$modal.hide(this.constants.REGISTER_ERROR_MODAL);
+    },
     register() {
       this.$v.$touch();
+
       if (this.$v.$invalid) {
-        return;
+        this.errorMessage = this.constants.ERROR.FILL_FORM_CORRECT_ERROR;
+
+        this.showErrorModal();
+        setTimeout(() => {
+          this.hideErrorModal()
+        }, 3000)
 
       } else {
-        this.$store.dispatch('auth/register', this.user).then(
-            data => {
-              this.message = data.message;
-              // this.successful = true;
-            },
-            error => {
-              this.message =
-                  (error.response && error.response.data) ||
-                  error.message ||
-                  error.toString();
-              // this.successful = false;
-            }
-        );
+
+        this.userService.register(this.user).then((resp) => {
+          if (resp.status === 'OK') {
+            this.$router.push({name: 'login'})
+          } else {
+            this.errorMessage = resp.message;
+
+            this.showErrorModal();
+            setTimeout(() => {
+              this.hideErrorModal()
+            }, 3000)
+          }
+        })
       }
     },
     closeRegisterForm() {
       this.$router.push({name: 'home'})
     }
   },
-  computed: {
-    loggedIn() {
-      return this.$store.state.auth.status.loggedIn;
-    }
-  },
-  mounted() {
-    if (this.loggedIn) {
-      this.$router.push({name: 'movies'});
-    }
-  },
 }
+
 </script>
 
 <style scoped>

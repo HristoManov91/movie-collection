@@ -43,7 +43,8 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> loginUser(@RequestBody @Valid UserLoginDto userLoginDto) {//ToDo validate
+    public ResponseEntity<?> loginUser(@RequestBody @Valid UserLoginDto userLoginDto) {
+
         try {
             Authentication authenticate = authManager.authenticate(
                 new UsernamePasswordAuthenticationToken(userLoginDto.getUsername(), userLoginDto.getPassword()));
@@ -59,10 +60,4 @@ public class UserController {
             return new ResponseEntity<>("Username or Password don't match!", HttpStatus.BAD_REQUEST);
         }
     }
-
-    @PostMapping("/logout")
-    public Boolean logout() {
-        return true;
-    }
-
 }

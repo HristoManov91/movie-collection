@@ -38,14 +38,14 @@ public class MovieController {
 
     @PostMapping("/new")
 //    @PreAuthorize("hasRole('USER')")
-    private ResponseEntity<MovieDetailsDto> addMovie (@RequestBody @Valid AddMovieDTO addMovieDTO) throws URISyntaxException {
+    private ResponseEntity<MovieDetailsDto> addMovie(@RequestBody @Valid AddMovieDTO addMovieDTO) throws URISyntaxException {
         return new ResponseEntity<>(movieService.addMovie(addMovieDTO), HttpStatus.CREATED);
     }
 
     @PostMapping("/all")
 //    @PreAuthorize("hasRole('USER')")
-    private ResponseEntity<Page<MovieCardDto>> findAllWithPagination (Pageable pageable , @RequestBody Map<String , Object> params){
-        Page<MovieCardDto> allMoviesWithPagination = movieService.findAllMoviesWithPagination(pageable , params);
+    private ResponseEntity<Page<MovieCardDto>> findAllWithPagination(Pageable pageable, @RequestBody Map<String, Object> params) {
+        Page<MovieCardDto> allMoviesWithPagination = movieService.findAllMoviesWithPagination(pageable, params);
 
         return ResponseEntity.ok(allMoviesWithPagination);
     }
@@ -58,8 +58,8 @@ public class MovieController {
 
     @PostMapping("/edit")
 //    @PreAuthorize("hasRole('USER')")
-    private ResponseEntity<MovieDetailsDto> editMovie (@RequestBody @Valid EditMovieDTO editMovieDTO) {
-        return new ResponseEntity<>(movieService.editMovie(editMovieDTO) , HttpStatus.OK);
+    private ResponseEntity<MovieDetailsDto> editMovie(@RequestBody @Valid EditMovieDTO editMovieDTO) {
+        return new ResponseEntity<>(movieService.editMovie(editMovieDTO), HttpStatus.OK);
     }
 
     @DeleteMapping("/delete")
@@ -67,12 +67,12 @@ public class MovieController {
     private ResponseEntity<Boolean> deleteMovie(@RequestParam(name = "movieId") Long movieId) {
 
         Boolean result = this.movieService.deleteMovieById(movieId);
-        return new ResponseEntity<>( result , result ? HttpStatus.OK : HttpStatus.BAD_REQUEST );
+        return new ResponseEntity<>(result, result ? HttpStatus.OK : HttpStatus.BAD_REQUEST);
     }
 
     @GetMapping("/statistics")
 //    @PreAuthorize("hasRole('USER')")
-    private ResponseEntity<StatisticsDto> getStatistics(){
-        return new ResponseEntity<>(this.movieService.getStatistics() , HttpStatus.OK);
+    private ResponseEntity<StatisticsDto> getStatistics() {
+        return new ResponseEntity<>(this.movieService.getStatistics(), HttpStatus.OK);
     }
 }

@@ -30,8 +30,8 @@ export const Constants = {
         PASSWORD_BETWEEN: 'Password must be between 6 and 10 symbols!',
         PASSWORD_ALPHA_NUM: 'Password may contain alpha-numeric characters!',
         CONFIRM_PASSWORD: 'Passwords must be the same!',
-        LOGIN_FORM_ERROR: "Fill form correctly!",
-        LOGIN_ERROR_MODAL: "loginErrorModal"
+        FILL_FORM_CORRECT_ERROR: 'Fill form correctly!',
     },
-    LOGIN_ERROR_MODAL: "loginErrorModal"
+    LOGIN_ERROR_MODAL: 'loginErrorModal',
+    REGISTER_ERROR_MODAL: 'registerErrorModal'
 }

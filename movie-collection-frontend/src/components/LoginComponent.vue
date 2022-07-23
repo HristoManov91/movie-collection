@@ -94,7 +94,7 @@ export default {
       this.$v.$touch();
 
       if (this.$v.$invalid) {
-        this.errorMessage = this.constants.ERROR.LOGIN_FORM_ERROR;
+        this.errorMessage = this.constants.ERROR.FILL_FORM_CORRECT_ERROR;
 
         this.showErrorModal();
         setTimeout(() => {

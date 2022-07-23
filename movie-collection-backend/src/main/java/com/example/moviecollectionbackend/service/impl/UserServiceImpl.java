@@ -43,21 +43,20 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean registerUser(UserRegisterDto userRegisterDto) {
-        Boolean existUsername = userRepository.existsUserEntityByUsername(userRegisterDto.getUsername());
+//        Boolean existUsername = userRepository.existsUserEntityByUsername(userRegisterDto.getUsername());
+//
+//        if (existUsername) {
+//            //ToDo error username exist
+//            return false;
+//        } else {
+        UserEntity user =
+            new UserEntity()
+                .setUsername(userRegisterDto.getUsername())
+                .setPassword(passwordEncoder.encode(userRegisterDto.getPassword()))
+                .setRoles(List.of(userRoleRepository.findByRole(UserRole.USER).get()));
 
-        if (existUsername) {
-            //ToDo error username exist
-            return false;
-        } else {
-            UserEntity user =
-                new UserEntity()
-                    .setUsername(userRegisterDto.getUsername())
-                    .setPassword(passwordEncoder.encode(userRegisterDto.getPassword()))
-                    .setRoles(List.of(userRoleRepository.findByRole(UserRole.USER).get()));
+        userRepository.save(user);
 
-            userRepository.save(user);
-
-            return true;
-        }
+        return true;
     }
 }
