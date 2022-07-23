@@ -1,5 +1,6 @@
 package com.example.moviecollectionbackend.service.impl;
 
+import com.example.moviecollectionbackend.exception.InvalidIMDbUrlException;
 import com.example.moviecollectionbackend.exception.MovieNotFoundException;
 import com.example.moviecollectionbackend.model.dto.AddMovieDTO;
 import com.example.moviecollectionbackend.model.dto.EditMovieDTO;
@@ -13,6 +14,7 @@ import com.example.moviecollectionbackend.repository.MovieRepository;
 import com.example.moviecollectionbackend.service.GenreService;
 import com.example.moviecollectionbackend.service.MovieService;
 import com.example.moviecollectionbackend.service.PlatformService;
+import com.example.moviecollectionbackend.service.scheduling.CronScheduler;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -23,6 +25,8 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +35,8 @@ import org.springframework.web.client.RestTemplate;
 
 @Service
 public class MovieServiceImpl implements MovieService {
+
+    private final static Logger LOGGER = LoggerFactory.getLogger(MovieServiceImpl.class);
 
     private final MovieRepository movieRepository;
     private final ModelMapper modelMapper;
@@ -45,7 +51,7 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public MovieDetailsDto addMovie(AddMovieDTO addMovieDTO) throws URISyntaxException {
+    public MovieDetailsDto addMovie(AddMovieDTO addMovieDTO) throws InvalidIMDbUrlException {
 
         MovieEntity movieEntity = mapDtoToEntity(addMovieDTO);
 
@@ -107,6 +113,7 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public Boolean deleteMovieById(Long movieId) {
+        //ToDo
         boolean equals = movieRepository.findById(movieId).equals(Optional.empty());
         if (!equals) {
             movieRepository.deleteById(movieId);
@@ -148,7 +155,7 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public void updateRatings() throws URISyntaxException {
+    public void updateRatings() throws InvalidIMDbUrlException {
         List<MovieEntity> all = movieRepository.findAll();
         for (MovieEntity movie : all) {
             BigDecimal rating = getIMDbRating(movie.getImdbUrl());
@@ -218,26 +225,32 @@ public class MovieServiceImpl implements MovieService {
             .setYear(bindingModel.getYear() != null ? bindingModel.getYear() : null);
     }
 
-    private BigDecimal getIMDbRating(String IMDbURL) throws URISyntaxException {
-        RestTemplate restTemplate = new RestTemplate();
-        URI uri = new URI(IMDbURL);
+    private BigDecimal getIMDbRating(String IMDbURL) throws InvalidIMDbUrlException {
 
-        ResponseEntity<String> forEntity = restTemplate.getForEntity(uri, String.class);
-        String body = forEntity.getBody();
+        try {
+            RestTemplate restTemplate = new RestTemplate();
+            URI uri = new URI(IMDbURL);
 
-        String regex = "worstRating\\\":[0-9]+,\\\"ratingValue\\\":[0-9]\\.?[0-9]?";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(body);
+            ResponseEntity<String> forEntity = restTemplate.getForEntity(uri, String.class);
+            String body = forEntity.getBody();
 
-        String result = "";
-        while (matcher.find()) {
-            result = matcher.group();
-        }
+            String regex = "worstRating\\\":[0-9]+,\\\"ratingValue\\\":[0-9]\\.?[0-9]?";
+            Pattern pattern = Pattern.compile(regex);
+            Matcher matcher = pattern.matcher(body);
 
-        if (result.length() > 0) {
-            int lastIndex = result.lastIndexOf(":");
-            String substring = result.substring(lastIndex + 1);
-            return new BigDecimal(substring);
+            String result = "";
+            while (matcher.find()) {
+                result = matcher.group();
+            }
+
+            if (result.length() > 0) {
+                int lastIndex = result.lastIndexOf(":");
+                String substring = result.substring(lastIndex + 1);
+                return new BigDecimal(substring);
+            }
+        } catch (Exception ex){
+            LOGGER.error("Invalid IMDb URL: " + IMDbURL);
+            throw new InvalidIMDbUrlException("Invalid IMDb URL!");
         }
 
         return null;

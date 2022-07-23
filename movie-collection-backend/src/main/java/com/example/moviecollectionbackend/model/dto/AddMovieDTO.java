@@ -12,23 +12,55 @@ import org.hibernate.validator.constraints.Length;
 
 public class AddMovieDTO {
 
+    @NotBlank(message = "Title is required and cannot be empty string!")
+    @Size(max = 50, min = 2, message = "Title length must be between 2 and 50 characters!")
     private String title1;
+
+    @Size(max = 50 , message = "Second title length must be between 2 and 50 characters!")
     private String title2;
-    private List<String> genres;
+
+    @NotEmpty(message = "You must select at least one Genres!")
+    @Size(max = 4 , message = "You can choose a maximum 4 Genres!")
+    private List<@NotBlank String> genres;
+
+    @NotNull(message = "Field Duration is required!")
+    @Positive(message = "The value of the Duration field must be a positive number!")
+    @Max(value = 300, message = "The value of the Duration field must be max 300 min!")
+    @Min(value = 30, message = "The value of the Duration field must be min 30 min!")
     private Integer duration;
+
+    @NotNull(message = "Field Year is required!")
+    @Positive(message = "The value of the Year field must be a positive number!")
+    @Max(value = 2100, message = "The value of the Year field must be max 2100!")
+    @Min(value = 1950, message = "The value of the Year field must be min 1950!")
     private Integer year;
+
+    @NotBlank(message = "IMDbURL cannot be empty string!")
+    @Length(max = 254, message = "The length of the IMDbURL field must be max 254 characters!")
     private String imdbUrl;
+
+    @NotBlank(message = "TrailerURL is required and cannot be empty string!")
+    @Length(max = 254, message = "The length of the TrailerURL field must be max 254 characters!")
     private String trailerUrl;
+
+    @NotBlank(message = "PosterURL is required and cannot be empty string!")
+    @Length(max = 254, message = "The length of the PosterURL field must be max 254 characters!")
     private String posterUrl;
-    private List<String> platforms;
+
+    @NotEmpty(message = "You must select at least one Platforms")
+    @Size(max = 4 , message = "You can choose a maximum 4 Platforms!")
+    private List<@NotBlank String> platforms;
+
+    @NotNull(message = "You need to choose a audio language!")
     private Boolean bulgarianLanguage;
+
+    @Length(max = 254, message = "The length of the Description field must be max 254 characters!")
     private String description;
 
     public AddMovieDTO() {
     }
 
-    @NotBlank(message = "Title is required and cannot be empty string!")
-    @Size(max = 50 , min = 2, message = "Title length must be between 2 and 50 characters!")
+
     public String getTitle1() {
         return title1;
     }
@@ -38,7 +70,7 @@ public class AddMovieDTO {
         return this;
     }
 
-    @Size(max = 50 , min = 2, message = "Second title length must be between 2 and 50 characters!")
+
     public String getTitle2() {
         return title2;
     }
@@ -48,8 +80,8 @@ public class AddMovieDTO {
         return this;
     }
 
-    @NotEmpty(message = "You must select at least one Genres!")
-    public List<@NotBlank String> getGenres() {
+
+    public List<String> getGenres() {
         return genres;
     }
 
@@ -58,10 +90,7 @@ public class AddMovieDTO {
         return this;
     }
 
-    @NotNull(message = "Field Duration is required!")
-    @Positive(message = "The value of the Duration field must be a positive number!")
-    @Max(value = 300 , message = "The value of the Duration field must be max 300 min!")
-    @Min(value = 30 , message = "The value of the Duration field must be min 30 min!")
+
     public Integer getDuration() {
         return duration;
     }
@@ -71,10 +100,7 @@ public class AddMovieDTO {
         return this;
     }
 
-    @NotNull(message = "Field Year is required!")
-    @Positive(message = "The value of the Year field must be a positive number!")
-    @Max(value = 2100 , message = "The value of the Year field must be max 2100 min!")
-    @Min(value = 1950 , message = "The value of the Year field must be min 1950 min!")
+
     public Integer getYear() {
         return year;
     }
@@ -84,8 +110,7 @@ public class AddMovieDTO {
         return this;
     }
 
-    @NotBlank(message = "IMDbURL cannot be empty string!")
-    @Length(max = 254 , message = "The length of the IMDbURL field must be max 254 characters!")
+
     public String getImdbUrl() {
         return imdbUrl;
     }
@@ -95,8 +120,7 @@ public class AddMovieDTO {
         return this;
     }
 
-    @NotBlank(message = "TrailerURL is required and cannot be empty string!")
-    @Length(max = 254 , message = "The length of the TrailerURL field must be max 254 characters!")
+
     public String getTrailerUrl() {
         return trailerUrl;
     }
@@ -106,8 +130,7 @@ public class AddMovieDTO {
         return this;
     }
 
-    @NotBlank(message = "PosterURL is required and cannot be empty string!")
-    @Length(max = 254 , message = "The length of the PosterURL field must be max 254 characters!")
+
     public String getPosterUrl() {
         return posterUrl;
     }
@@ -117,8 +140,8 @@ public class AddMovieDTO {
         return this;
     }
 
-    @NotEmpty(message = "You must select at least one Platforms")
-    public List<@NotBlank String> getPlatforms() {
+
+    public List<String> getPlatforms() {
         return platforms;
     }
 
@@ -127,7 +150,7 @@ public class AddMovieDTO {
         return this;
     }
 
-    @NotNull(message = "You need to choose a audio language!")
+
     public Boolean getBulgarianLanguage() {
         return bulgarianLanguage;
     }
@@ -137,7 +160,7 @@ public class AddMovieDTO {
         return this;
     }
 
-    @Length(max = 254 , message = "The length of the Description field must be max 254 characters!")
+
     public String getDescription() {
         return description;
     }

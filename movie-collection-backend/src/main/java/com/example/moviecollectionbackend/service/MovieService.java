@@ -1,5 +1,6 @@
 package com.example.moviecollectionbackend.service;
 
+import com.example.moviecollectionbackend.exception.InvalidIMDbUrlException;
 import com.example.moviecollectionbackend.exception.MovieNotFoundException;
 import com.example.moviecollectionbackend.model.dto.AddMovieDTO;
 import com.example.moviecollectionbackend.model.dto.EditMovieDTO;
@@ -17,13 +18,13 @@ public interface MovieService {
 
     MovieDetailsDto getMovieDetailsDto(Long movieId) throws MovieNotFoundException;
 
-    MovieDetailsDto addMovie(AddMovieDTO addMovieDTO) throws URISyntaxException;
+    MovieDetailsDto addMovie(AddMovieDTO addMovieDTO) throws InvalidIMDbUrlException;
 
     MovieDetailsDto editMovie(EditMovieDTO editMovieDTO);
 
     Boolean deleteMovieById(Long movieId);
 
-    void updateRatings() throws URISyntaxException;
+    void updateRatings() throws URISyntaxException, InvalidIMDbUrlException;
 
     StatisticsDto getStatistics();
 }

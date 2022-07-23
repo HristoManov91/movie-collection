@@ -27,9 +27,11 @@ export class MovieService {
         let result = {};
 
         await axios.post(MOVIES_CONTROLLER_BASE_URL + 'new', movieDto, {headers: authHeader()}).then((response) => {
+            console.log('ok')
             result.status = 'OK';
             result.data = response.data;
         }).catch((err) => {
+            console.log('error' , err)
             result.status = 'ERROR';
             result.error = err.response.data;
         })
@@ -44,6 +46,7 @@ export class MovieService {
             movie.status = 'OK';
             movie.data = resp.data;
         }).catch((err) => {
+            console.log('resp' , err)
             movie.status = 'ERROR';
             movie.error = err.response.data;
         })

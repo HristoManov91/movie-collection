@@ -27,7 +27,7 @@
         <ul class="yearDurationAudioInfo">
           <li class="year">Year: {{ movie.year }}</li>
           <li class="duration">Duration: {{ movie.duration }}min</li>
-          <li>Audio: {{ movie.bulgarianLanguage ? 'Българско' : 'Английско' }}</li>
+          <li>Audio: {{ movie.bulgarianLanguage ? 'Bulgarian' : 'English' }}</li>
         </ul>
         <ul class="platforms">
           <li v-for="(platform , index) in movie.platforms" :key="index">{{ platform }}</li>
@@ -44,43 +44,42 @@
           </li>
         </ul>
       </div>
-      <modal name="detailsErrorModal" :shiftX="1" :shiftY="0" :height="0" :width="0">
-        <ErrorModal :errorMessage="this.errorMessage"/>
-      </modal>
-      <modal name="detailsSuccessfulModal" :shiftX="1" :shiftY="0" :height="0" :width="0">
-        <SuccessfulModal :successMessage="this.successMessage"/>
-      </modal>
     </div>
+    <modal name="detailsErrorModal" :shiftX="1" :shiftY="0" :height="0" :width="0">
+      <ErrorModal :errorMessage="this.errorMessage"/>
+    </modal>
   </div>
 </template>
 
 <script>
 import {MovieService} from "@/services/movie-service";
 import ErrorModal from "@/components/messages/ErrorModal";
-import SuccessfulModal from "@/components/messages/SuccessfulModal";
+import {Constants} from "@/constants/constants";
 
 export default {
   name: "DetailsView",
   components: {
-    ErrorModal,
-    SuccessfulModal
+    ErrorModal
   },
   created() {
     this.movieService.findMovieDetail(this.movieId).then((movieDetailsDto) => {
       if (movieDetailsDto.status === 'OK') {
         this.movie = movieDetailsDto.data;
       } else {
-        //ToDo error message
-        this.errorMessage = 'Error in clickDetails!';
+        this.errorMessage = movieDetailsDto.error;
         this.showErrorModal();
         setTimeout(() => {
           this.hideErrorModal()
         }, 4000)
+
+        //ToDo event
+        this.$router.push({name: 'movies'})
       }
     })
   },
   data() {
     return {
+      constants: Constants,
       movieService: new MovieService(),
       movie: null,
       descriptionRows: 0,
@@ -89,17 +88,11 @@ export default {
     }
   },
   methods: {
-    showSuccessModal() {
-      this.$modal.show('detailsSuccessfulModal');
-    },
-    hideSuccessModal() {
-      this.$modal.hide('detailsSuccessfulModal');
-    },
     showErrorModal() {
-      this.$modal.show('detailsErrorModal');
+      this.$modal.show(this.constants.DETAILS_ERROR_MODAL);
     },
     hideErrorModal() {
-      this.$modal.hide('detailsErrorModal');
+      this.$modal.hide(this.constants.DETAILS_ERROR_MODAL);
     },
     watchTrailer() {
       window.open(this.movie.trailerUrl);
@@ -123,13 +116,6 @@ export default {
           }, 4000)
         }
       })
-    },
-    editedMovie() {
-      this.successMessage = 'Successful film editing!'
-      this.showSuccessModal();
-      setTimeout(() => {
-        this.hideSuccessModal()
-      }, 4000)
     },
     closeDetails() {
       this.$router.push({name: 'movies'})

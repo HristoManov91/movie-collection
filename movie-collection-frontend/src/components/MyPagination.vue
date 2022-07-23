@@ -1,5 +1,5 @@
 <template>
-  <div class="pagination">
+  <div class="pagination" v-if="!pagination.empty">
     <div class="onPageChange">
       <span>ON PAGE:</span>
       <select v-model="perPage">
@@ -18,6 +18,7 @@
       <li class="paginationElement prev-next" @click="changeCurrentPage('Next')">Next</li>
       <li class="paginationElement prev-next" @click="changeCurrentPage('Last')">Last</li>
     </ul>
+    <p class="totalPages">Total pages: {{pagination.totalPages}}</p>
   </div>
 </template>
 
@@ -183,4 +184,14 @@ li.currentPageStyle {
   border-radius: 60%;
 }
 
+p.totalPages {
+  display: inline-block;
+  background-color: black;
+  color: orange;
+  font-size: 1.2rem;
+  padding: 0.4rem;
+  border-radius: 5px;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
 </style>

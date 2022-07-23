@@ -40,12 +40,14 @@ export default {
         this.statistics = resp.data;
 
       } else {
+
+        this.$router.push({name: 'movies'})
         // ToDo fix error
-        this.errorMessage = 'We have problem with server,please try again later!'
-        this.showErrorModal();
-        setTimeout(() => {
-          this.hideErrorModal()
-        }, 4000)
+        // this.errorMessage = 'We have problem with server,please try again later!'
+        // this.showErrorModal();
+        // setTimeout(() => {
+        //   this.hideErrorModal()
+        // }, 4000)
 
       }
     })

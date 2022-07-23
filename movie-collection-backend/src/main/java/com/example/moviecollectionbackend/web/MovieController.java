@@ -1,5 +1,6 @@
 package com.example.moviecollectionbackend.web;
 
+import com.example.moviecollectionbackend.exception.InvalidIMDbUrlException;
 import com.example.moviecollectionbackend.exception.MovieNotFoundException;
 import com.example.moviecollectionbackend.model.dto.AddMovieDTO;
 import com.example.moviecollectionbackend.model.dto.EditMovieDTO;
@@ -7,7 +8,6 @@ import com.example.moviecollectionbackend.model.dto.MovieCardDto;
 import com.example.moviecollectionbackend.model.dto.MovieDetailsDto;
 import com.example.moviecollectionbackend.model.dto.StatisticsDto;
 import com.example.moviecollectionbackend.service.MovieService;
-import java.net.URISyntaxException;
 import java.util.Map;
 import javax.validation.Valid;
 import org.springframework.data.domain.Page;
@@ -38,7 +38,7 @@ public class MovieController {
 
     @PostMapping("/new")
 //    @PreAuthorize("hasRole('USER')")
-    private ResponseEntity<MovieDetailsDto> addMovie(@RequestBody @Valid AddMovieDTO addMovieDTO) throws URISyntaxException {
+    private ResponseEntity<MovieDetailsDto> addMovie(@RequestBody @Valid AddMovieDTO addMovieDTO) throws InvalidIMDbUrlException {
         return new ResponseEntity<>(movieService.addMovie(addMovieDTO), HttpStatus.CREATED);
     }
 

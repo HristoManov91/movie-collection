@@ -1,5 +1,6 @@
 package com.example.moviecollectionbackend.service.scheduling;
 
+import com.example.moviecollectionbackend.exception.InvalidIMDbUrlException;
 import com.example.moviecollectionbackend.service.MovieService;
 import java.net.URISyntaxException;
 import java.time.LocalDateTime;
@@ -20,7 +21,7 @@ public class CronScheduler {
     }
 
     @Scheduled(cron = "* 0 23 * * *")//ToDo fixed CRON
-    public void imdbRating() throws URISyntaxException {
+    public void imdbRating() throws URISyntaxException, InvalidIMDbUrlException {
         LOGGER.info("Start set IMDb ratings {}", LocalDateTime.now());
 
         movieService.updateRatings();

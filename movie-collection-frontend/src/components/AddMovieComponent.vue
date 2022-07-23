@@ -143,13 +143,10 @@
           SAVE MOVIE
         </button>
       </form>
-      <modal name="newErrorModal" :shiftX="1" :shiftY="0" :height="0" :width="0">
-        <ErrorModal :errorMessage="this.errorMessage"/>
-      </modal>
-      <modal name="newSuccessfulModal" :shiftX="1" :shiftY="0" :height="0" :width="0">
-        <SuccessfulModal :success-message="this.successMessage"/>
-      </modal>
     </div>
+    <modal name="newErrorModal" :shiftX="1" :shiftY="0" :height="0" :width="0">
+      <ErrorModal :errorMessage="this.errorMessage"/>
+    </modal>
   </div>
 </template>
 
@@ -160,14 +157,12 @@ import {PlatformService} from "@/services/platform-service";
 import {MovieService} from "@/services/movie-service";
 import {Constants} from "@/constants/constants";
 import ErrorModal from "@/components/messages/ErrorModal";
-import SuccessfulModal from "@/components/messages/SuccessfulModal";
 import {between, maxLength, minLength, numeric, required, url} from "vuelidate/lib/validators";
 
 export default {
   name: "AddMovie",
   components: {
-    ErrorModal,
-    SuccessfulModal
+    ErrorModal
   },
   data() {
     return {
@@ -247,31 +242,37 @@ export default {
     },
   },
   methods: {
-    showSuccessModal() {
-      this.$modal.show('newSuccessfulModal');
-    },
-    hideSuccessModal() {
-      this.$modal.hide('newSuccessfulModal');
-    },
     showErrorModal() {
-      this.$modal.show('newErrorModal');
+      this.$modal.show(this.constants.ADD_MOVIE_ERROR_MODAL);
     },
     hideErrorModal() {
-      this.$modal.hide('newErrorModal');
+      this.$modal.hide(this.constants.ADD_MOVIE_ERROR_MODAL);
     },
     saveMovie() {
       this.$v.newMovie.$touch();
-      if (!this.$v.newMovie.$invalid) {
+      if (this.$v.newMovie.$invalid) {
+
+        this.errorMessage = this.constants.ERROR.FILL_FORM_CORRECT_ERROR;
+        this.showErrorModal();
+        setTimeout(() => {
+          this.hideErrorModal()
+        }, 4000)
+
+      } else {
 
         this.movieService.addMovie(this.newMovie).then((response) => {
+
           if (response.status === 'OK') {
-            this.$router.push({name: 'movies'})
+            this.$router.push({name: 'details', params: {movieId: response.data.movieId}})
+
           } else {
-            this.errorMessage = response.error.message;
+
+            this.errorMessage = response.error;
             this.showErrorModal();
             setTimeout(() => {
               this.hideErrorModal()
             }, 4000)
+
           }
         })
       }

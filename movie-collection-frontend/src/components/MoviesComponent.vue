@@ -73,6 +73,9 @@
     <modal name="successfulModal" :shiftX="1" :shiftY="0" :height="0" :width="0">
       <SuccessfulModal :success-message="this.successMessage"/>
     </modal>
+    <modal name="warningModal" :shiftX="1" :shiftY="0" :height="0" :width="0">
+      <WarningModal :errorMessage="this.errorMessage"/>
+    </modal>
   </div>
 </template>
 
@@ -82,6 +85,8 @@ import MyPagination from "@/components/MyPagination";
 import MovieCard from "@/components/MovieCard";
 import ErrorModal from "@/components/messages/ErrorModal";
 import SuccessfulModal from "@/components/messages/SuccessfulModal";
+import WarningModal from "@/components/messages/WarningModal";
+import {Constants} from "@/constants/constants";
 
 export default {
   name: "MoviesComponent",
@@ -90,6 +95,7 @@ export default {
     MovieCard,
     ErrorModal,
     SuccessfulModal,
+    WarningModal
   },
   created() {
     console.log('created')
@@ -115,6 +121,7 @@ export default {
   },
   data() {
     return {
+      constants: Constants,
       movieService: new MovieService(),
       moviesToShow: [],
       movie: {
@@ -180,22 +187,22 @@ export default {
   methods: {
     showSuccessModal() {
       console.log('show modal')
-      this.$modal.show('successfulModal');
+      this.$modal.show(this.constants.MOVIES_SUCCESSFUL_MODAL);
     },
     hideSuccessModal() {
-      this.$modal.hide('successfulModal');
+      this.$modal.hide(this.constants.MOVIES_SUCCESSFUL_MODAL);
     },
     showErrorModal() {
-      this.$modal.show('errorModal');
+      this.$modal.show(this.constants.MOVIES_ERROR_MODAL);
     },
     hideErrorModal() {
-      this.$modal.hide('errorModal');
+      this.$modal.hide(this.constants.MOVIES_ERROR_MODAL);
     },
     showWarningModal() {
-      this.$modal.show('warningModal');
+      this.$modal.show(this.constants.MOVIES_WARNING_MODAL);
     },
     hideWarningModal() {
-      this.$modal.hide('warningModal');
+      this.$modal.hide(this.constants.MOVIES_WARNING_MODAL);
     },
     fillDurationSlideColor() {
       let startPercent = (this.durationFilter.minDuration / 270) * 100 - (30 * 0.27);
@@ -226,7 +233,7 @@ export default {
             }, 4000)
           }
         } else {
-
+          // ToDo
           this.errorMessage = 'Error in loadMovies!';
           this.showErrorModal();
           setTimeout(() => {
@@ -248,7 +255,7 @@ export default {
     deletedMovie(isDeleted) {
 
       if (isDeleted) {
-        this.successMessage = 'The movie was successfully deleted!';
+        this.successMessage = this.constants.DELETE_MOVIE_SUCCESSFUL;
         this.showSuccessModal();
         setTimeout(() => {
           this.hideSuccessModal()
@@ -259,7 +266,7 @@ export default {
 
       } else {
 
-        this.errorMessage = 'We could not delete the movie!'
+        this.errorMessage = this.constants.ERROR.DELETE_MOVIE;
         this.showErrorModal();
         setTimeout(() => {
           this.hideErrorModal()
@@ -268,7 +275,7 @@ export default {
       }
     },
     successAddMovie() {
-      this.successMessage = 'The movie was successfully added!';
+      this.successMessage = this.constants.ADDED_MOVIE_SUCCESSFUL;
       this.showSuccessModal();
       setTimeout(() => {
         this.hideSuccessModal()
@@ -371,9 +378,18 @@ export default {
         this.loadMovies();
       }
     },
-    '$route'(to) {
-      const address = to.name;
-      switch (address) {
+    '$route'(to, from) {
+      const toAddress = to.name;
+      const fromAddress = from.name;
+
+      if (toAddress === 'movies' && (fromAddress === 'addMovie' || fromAddress === 'details' || fromAddress === 'edit')) {
+        this.loadMovies();
+      }
+
+      console.log('to', to)
+      console.log('from', from)
+
+      switch (toAddress) {
         case 'addMovie':
           this.transitionName = 'fade'
           break;
@@ -682,12 +698,12 @@ input.searchInput {
   background: black url("../assets/image/search-img.svg") no-repeat scroll 175px 6px;
 }
 
-.fade-enter , .fade-leave-to {
+.fade-enter, .fade-leave-to {
   z-index: 10;
   opacity: 0;
 }
 
-.fade-enter-active , .fade-leave.active {
+.fade-enter-active, .fade-leave.active {
   z-index: 10;
   transition: all .5s ease-in-out;
 }
@@ -701,6 +717,7 @@ input.searchInput {
   left: 50%;
   transform: translate(-50%, -50%);
 }
+
 .bounce-leave-active {
   z-index: 10;
   animation: bounce-in 0.5s reverse;
@@ -710,6 +727,7 @@ input.searchInput {
   left: 50%;
   transform: translate(-50%, -50%);
 }
+
 @keyframes bounce-in {
   0% {
     transform: scale(0);

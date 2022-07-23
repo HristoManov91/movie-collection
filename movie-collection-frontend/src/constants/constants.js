@@ -31,7 +31,15 @@ export const Constants = {
         PASSWORD_ALPHA_NUM: 'Password may contain alpha-numeric characters!',
         CONFIRM_PASSWORD: 'Passwords must be the same!',
         FILL_FORM_CORRECT_ERROR: 'Fill form correctly!',
+        DELETE_MOVIE: 'We could not delete the movie!',
     },
     LOGIN_ERROR_MODAL: 'loginErrorModal',
-    REGISTER_ERROR_MODAL: 'registerErrorModal'
+    REGISTER_ERROR_MODAL: 'registerErrorModal',
+    MOVIES_SUCCESSFUL_MODAL: 'successfulModal',
+    MOVIES_ERROR_MODAL: 'errorModal',
+    MOVIES_WARNING_MODAL: 'warningModal',
+    ADD_MOVIE_ERROR_MODAL: 'newErrorModal',
+    DELETE_MOVIE_SUCCESSFUL: 'The movie was successfully deleted!',
+    ADDED_MOVIE_SUCCESSFUL: 'The movie was successfully added!',
+    DETAILS_ERROR_MODAL: 'detailsErrorModal',
 }

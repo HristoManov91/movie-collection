@@ -117,13 +117,10 @@
           SAVE MOVIE
         </button>
       </form>
-      <modal name="editErrorModal" :shiftX="1" :shiftY="0" :height="0" :width="0">
-        <ErrorModal :errorMessage="this.errorMessage"/>
-      </modal>
-      <modal name="editSuccessfulModal" :shiftX="1" :shiftY="0" :height="0" :width="0">
-        <SuccessfulModal :success-message="this.successMessage"/>
-      </modal>
     </div>
+    <modal name="editErrorModal" :shiftX="1" :shiftY="0" :height="0" :width="0">
+      <ErrorModal :errorMessage="this.errorMessage"/>
+    </modal>
   </div>
 </template>
 
@@ -134,14 +131,12 @@ import {PlatformService} from "@/services/platform-service";
 import {MovieService} from "@/services/movie-service";
 import {between, maxLength, minLength, numeric, required, url} from "vuelidate/lib/validators";
 import ErrorModal from "@/components/messages/ErrorModal";
-import SuccessfulModal from "@/components/messages/SuccessfulModal";
 import {Constants} from "@/constants/constants";
 
 export default {
   name: "EditMovie",
   components: {
-    ErrorModal,
-    SuccessfulModal,
+    ErrorModal
   },
   props: {
     movieId: {
@@ -240,12 +235,6 @@ export default {
     }
   },
   methods: {
-    showSuccessModal() {
-      this.$modal.show('editSuccessfulModal');
-    },
-    hideSuccessModal() {
-      this.$modal.hide('editSuccessfulModal');
-    },
     showErrorModal() {
       this.$modal.show('editErrorModal');
     },
