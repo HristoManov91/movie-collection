@@ -7,44 +7,59 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedAttributeNode;
 import javax.persistence.NamedEntityGraph;
 import javax.persistence.Table;
 
 @NamedEntityGraph(
-    name="movie-card",
+    name = "movie-card",
     attributeNodes = {
         @NamedAttributeNode("genres"),
     }
 )
 @Entity
 @Table(name = "movies")
-public class MovieEntity extends BaseEntity{
+public class MovieEntity extends BaseEntity {
 
-    @Column(nullable = false , length = 50)
+    @Column(nullable = false, length = 50)
     private String title1;
-    @Column(length = 50 , unique = true)
+
+    @Column(length = 50)
     private String title2;
-    @ManyToMany(fetch = FetchType.LAZY , cascade = CascadeType.DETACH)
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     private List<GenreEntity> genres;
+
     @Column(nullable = false)
     private Integer duration;
+
     @Column(nullable = false)
     private Integer year;
+
     @Column
     private BigDecimal rating;
+
     @Column(nullable = false)
     private String imdbUrl;
+
     @Column(nullable = false)
     private String trailerUrl;
+
     @Column(nullable = false)
     private String posterUrl;
-    @ManyToMany(fetch = FetchType.LAZY , cascade = CascadeType.DETACH)
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     private List<PlatformEntity> platforms;
+
     @Column
     private Boolean bulgarianLanguage;
+
     @Column
     private String description;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    private UserEntity user;
 
     public MovieEntity() {
     }
@@ -156,4 +171,22 @@ public class MovieEntity extends BaseEntity{
         this.description = description;
         return this;
     }
+
+    public UserEntity getUser() {
+        return user;
+    }
+
+    public MovieEntity setUser(UserEntity user) {
+        this.user = user;
+        return this;
+    }
+
+    //    public UserEntity getUser() {
+//        return user;
+//    }
+//
+//    public MovieEntity setUser(UserEntity user) {
+//        this.user = user;
+//        return this;
+//    }
 }

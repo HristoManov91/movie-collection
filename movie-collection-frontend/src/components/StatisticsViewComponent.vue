@@ -40,15 +40,19 @@ export default {
         this.statistics = resp.data;
 
       } else {
-
-        this.$router.push({name: 'movies'})
-        // ToDo fix error
-        // this.errorMessage = 'We have problem with server,please try again later!'
-        // this.showErrorModal();
-        // setTimeout(() => {
-        //   this.hideErrorModal()
-        // }, 4000)
-
+        console.log('1' , resp)
+        if (resp.error === 'Request failed with status code 401'){
+          this.$store.dispatch('auth/logout');
+          this.$router.push({name: 'home'})
+        } else {
+          // ToDo fix error
+          // this.errorMessage = 'We have problem with server,please try again later!'
+          // this.showErrorModal();
+          // setTimeout(() => {
+          //   this.hideErrorModal()
+          // }, 4000)
+          this.$router.push({name: 'movies'})
+        }
       }
     })
   },

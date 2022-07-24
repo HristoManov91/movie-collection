@@ -1,13 +1,19 @@
 <template>
   <div class="modal">
     <p class="title"><font-awesome-icon icon="fa-solid fa-triangle-exclamation" /></p>
-    <p>No movies found with these filters!</p>
+    <p>{{ this.warningMessage }}</p>
   </div>
 </template>
 
 <script>
 export default {
-  name: "WarningModal"
+  name: "WarningModal",
+  props: {
+    warningMessage: {
+      type: String,
+      required: true
+    }
+  },
 }
 </script>
 

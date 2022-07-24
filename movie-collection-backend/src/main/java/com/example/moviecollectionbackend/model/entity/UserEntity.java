@@ -1,6 +1,7 @@
 package com.example.moviecollectionbackend.model.entity;
 
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -11,19 +12,18 @@ import javax.persistence.Table;
 @Table(name = "users")
 public class UserEntity extends BaseEntity {
 
-    @Column(nullable = false , length = 20 , unique = true)
+    @Column(nullable = false, length = 20, unique = true)
     private String username;
 
     @Column(nullable = false)
     private String password;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
     private List<UserRoleEntity> roles;
 
     public UserEntity() {
     }
 
-//    @Override ToDo
     public String getUsername() {
         return username;
     }

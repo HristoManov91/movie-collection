@@ -186,12 +186,12 @@ export default {
       title1: {
         required,
         minLength: minLength(2),
-        maxLength: maxLength(40),
+        maxLength: maxLength(50),
       },
       title2: {
         // ToDo empty imput validate
         minLength: minLength(2),
-        maxLength: maxLength(40),
+        maxLength: maxLength(50),
       },
       duration: {
         required,
@@ -263,11 +263,22 @@ export default {
 
           } else {
 
-            this.errorMessage = resp.error.message;
-            this.showErrorModal();
-            setTimeout(() => {
-              this.hideErrorModal()
-            }, 4000)
+            if (resp.error === 'Request failed with status code 401') {
+              //ToDo error message
+              this.$store.dispatch('auth/logout');
+              this.$router.push({name: 'home'})
+
+            } else {
+
+              this.errorMessage = resp.error.message;
+              this.showErrorModal();
+              setTimeout(() => {
+                this.hideErrorModal()
+              }, 4000)
+
+              //ToDo error
+              this.router.push({name: 'movies'})
+            }
           }
         })
       }

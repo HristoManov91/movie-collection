@@ -88,11 +88,13 @@ export class MovieService {
 
     async getStatistics() {
         let statistics = {};
+        console.log()
 
         await axios.get(MOVIES_CONTROLLER_BASE_URL + 'statistics', {headers: authHeader()}).then((resp) => {
             statistics.data = resp.data
             statistics.status = 'OK'
         }).catch((err) => {
+            console.log('err' , err)
             statistics.status = 'ERROR'
             statistics.error = err.message;
         })

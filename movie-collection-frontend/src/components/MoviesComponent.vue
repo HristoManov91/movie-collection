@@ -59,7 +59,10 @@
                    :key="id"
                    :movie="movie"/>
       </ul>
-      <MyPagination :pagination="this.pagination"
+      <p class="emptyCollection" v-if="isEmptyCollection">
+        THANK YOU FOR YOUR REGISTRATION :) <br/><br/>
+        NOW IT'S TIME TO ADD YOUR FIRST MOVIE FROM THE BUTTON <span @click="addMovie()">ADD MOVIE</span></p>
+      <MyPagination v-if="this.moviesToShow.length > 0" :pagination="this.pagination"
                     @changePerPage="changePerPage"
                     @changeCurrentPage="changeCurrentPage"
       />
@@ -74,7 +77,7 @@
       <SuccessfulModal :success-message="this.successMessage"/>
     </modal>
     <modal name="warningModal" :shiftX="1" :shiftY="0" :height="0" :width="0">
-      <WarningModal :errorMessage="this.errorMessage"/>
+      <WarningModal :warningMessage="this.warningMessage"/>
     </modal>
   </div>
 </template>
@@ -98,7 +101,6 @@ export default {
     WarningModal
   },
   created() {
-    console.log('created')
     // this.successMessage = 'You login successfully!';
     // this.showSuccessModal();
     // setTimeout(() => {
@@ -111,8 +113,6 @@ export default {
     this.fillRatingSlideColor();
   },
   updated() {
-    console.log('update')
-
     // this.successMessage = 'You login successfully!';
     // this.showSuccessModal();
     // setTimeout(() => {
@@ -124,28 +124,28 @@ export default {
       constants: Constants,
       movieService: new MovieService(),
       moviesToShow: [],
-      movie: {
-        movieId: {
-          required: true,
-          type: Number
-        },
-        title1: String,
-        title2: String,
-        genres: {
-          type: {},
-        },
-        duration: Number,
-        year: Number,
-        rating: Number,
-        imdbUrl: String,
-        trailerUrl: String,
-        posterUrl: String,
-        platforms: {
-          type: {},
-        },
-        bulgarianLanguage: Boolean,
-        description: String,
-      },
+      // movie: {
+      //   movieId: {
+      //     required: true,
+      //     type: Number
+      //   },
+      //   title1: String,
+      //   title2: String,
+      //   genres: {
+      //     type: {},
+      //   },
+      //   duration: Number,
+      //   year: Number,
+      //   rating: Number,
+      //   imdbUrl: String,
+      //   trailerUrl: String,
+      //   posterUrl: String,
+      //   platforms: {
+      //     type: {},
+      //   },
+      //   bulgarianLanguage: Boolean,
+      //   description: String,
+      // },
       durationFilter: {
         minDuration: 30,
         maxDuration: 300,
@@ -177,6 +177,7 @@ export default {
       statistics: {},
       errorMessage: null,
       successMessage: null,
+      warningMessage: null,
       spinner: {
         // ToDo
         isLoading: false
@@ -222,23 +223,40 @@ export default {
 
       this.movieService.findAllMoviesWithParams(this.pagination.currentPage - 1, this.pagination.perPage, this.pagination.orderBy, this.filterParams).then((resp) => {
         if (resp.status === 'OK') {
+          if (resp.data === '') {
 
-          this.mapRespPagToPag(resp.data);
-          this.moviesToShow = resp.data.content;
-          if (this.pagination.empty) {
-            this.showWarningModal()
+            this.moviesToShow = [];
+            this.warningMessage = this.constants.EMPTY_COLLECTION;
 
-            setTimeout(() => {
-              this.hideWarningModal()
-            }, 4000)
+          } else {
+            this.warningMessage = null;
+            this.mapRespPagToPag(resp.data);
+            this.moviesToShow = resp.data.content;
+            if (this.pagination.empty) {
+              this.warningMessage = this.constants.EMPTY_COLLECTION_WITH_FILTERS;
+              this.showWarningModal()
+
+              setTimeout(() => {
+                this.hideWarningModal()
+              }, 4000)
+            }
           }
         } else {
-          // ToDo
-          this.errorMessage = 'Error in loadMovies!';
-          this.showErrorModal();
-          setTimeout(() => {
-            this.hideErrorModal()
-          }, 4000)
+          console.log('2', resp)
+
+          if (resp.error === 'Request failed with status code 401') {
+            //ToDo error message
+            this.$store.dispatch('auth/logout');
+            this.$router.push({name: 'home'})
+
+          } else {
+            // ToDo
+            this.errorMessage = 'Error in loadMovies!';
+            this.showErrorModal();
+            setTimeout(() => {
+              this.hideErrorModal()
+            }, 4000)
+          }
         }
       });
     },
@@ -317,6 +335,9 @@ export default {
       this.filterParams.searchText = '';
       this.filterParams.genres = [];
     },
+    addMovie(){
+      this.$router.push({name: 'addMovie'})
+    }
   },
   watch: {
     durationFilter: {
@@ -381,13 +402,13 @@ export default {
     '$route'(to, from) {
       const toAddress = to.name;
       const fromAddress = from.name;
+      console.log('to', toAddress)
+      console.log('from', fromAddress)
 
       if (toAddress === 'movies' && (fromAddress === 'addMovie' || fromAddress === 'details' || fromAddress === 'edit')) {
+        console.log('reload')
         this.loadMovies();
       }
-
-      console.log('to', to)
-      console.log('from', from)
 
       switch (toAddress) {
         case 'addMovie':
@@ -412,6 +433,9 @@ export default {
     isLoading() {
       //ToDo
       return this.spinner.isLoading;
+    },
+    isEmptyCollection() {
+      return this.warningMessage === this.constants.EMPTY_COLLECTION;
     }
   }
 }
@@ -696,6 +720,24 @@ input.searchInput {
   display: inline-block;
   padding: 0.5rem;
   background: black url("../assets/image/search-img.svg") no-repeat scroll 175px 6px;
+}
+
+p.emptyCollection {
+  color: black;
+  font-size: 3rem;
+  letter-spacing: 1px;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 3rem;
+}
+
+p.emptyCollection span {
+  cursor: pointer;
+  color: white;
+}
+
+p.emptyCollection span:hover {
+  color: #0D2082;
 }
 
 .fade-enter, .fade-leave-to {

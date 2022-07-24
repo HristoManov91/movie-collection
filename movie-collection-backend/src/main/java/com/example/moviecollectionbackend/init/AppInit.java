@@ -15,6 +15,6 @@ public class AppInit implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        userService.init();
+//        userService.init();
     }
 }

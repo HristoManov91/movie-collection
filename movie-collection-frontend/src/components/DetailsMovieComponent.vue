@@ -62,18 +62,20 @@ export default {
     ErrorModal
   },
   created() {
+
     this.movieService.findMovieDetail(this.movieId).then((movieDetailsDto) => {
       if (movieDetailsDto.status === 'OK') {
         this.movie = movieDetailsDto.data;
       } else {
-        this.errorMessage = movieDetailsDto.error;
-        this.showErrorModal();
-        setTimeout(() => {
-          this.hideErrorModal()
-        }, 4000)
+        if (movieDetailsDto.error === 'Request failed with status code 401') {
+          //ToDo error message
+          this.$store.dispatch('auth/logout');
+          this.$router.push({name: 'home'})
 
-        //ToDo event
-        this.$router.push({name: 'movies'})
+        } else {
+          //ToDo error message
+          this.$router.push({name: 'movies'})
+        }
       }
     })
   },

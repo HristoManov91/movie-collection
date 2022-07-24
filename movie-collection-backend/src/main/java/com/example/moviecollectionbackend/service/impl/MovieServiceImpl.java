@@ -1,7 +1,9 @@
 package com.example.moviecollectionbackend.service.impl;
 
+import com.example.moviecollectionbackend.exception.FullMovieCollectionException;
 import com.example.moviecollectionbackend.exception.InvalidIMDbUrlException;
 import com.example.moviecollectionbackend.exception.MovieNotFoundException;
+import com.example.moviecollectionbackend.exception.UserNotFoundException;
 import com.example.moviecollectionbackend.model.dto.AddMovieDTO;
 import com.example.moviecollectionbackend.model.dto.EditMovieDTO;
 import com.example.moviecollectionbackend.model.dto.MovieCardDto;
@@ -10,14 +12,14 @@ import com.example.moviecollectionbackend.model.dto.StatisticsDto;
 import com.example.moviecollectionbackend.model.entity.GenreEntity;
 import com.example.moviecollectionbackend.model.entity.MovieEntity;
 import com.example.moviecollectionbackend.model.entity.PlatformEntity;
+import com.example.moviecollectionbackend.model.entity.UserEntity;
 import com.example.moviecollectionbackend.repository.MovieRepository;
 import com.example.moviecollectionbackend.service.GenreService;
 import com.example.moviecollectionbackend.service.MovieService;
 import com.example.moviecollectionbackend.service.PlatformService;
-import com.example.moviecollectionbackend.service.scheduling.CronScheduler;
+import com.example.moviecollectionbackend.service.UserService;
 import java.math.BigDecimal;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -30,6 +32,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -42,18 +46,28 @@ public class MovieServiceImpl implements MovieService {
     private final ModelMapper modelMapper;
     private final GenreService genreService;
     private final PlatformService platformService;
+    private final UserService userService;
 
-    public MovieServiceImpl(MovieRepository movieRepository, ModelMapper modelMapper, GenreService genreService, PlatformService platformService) {
+    public MovieServiceImpl(MovieRepository movieRepository, ModelMapper modelMapper, GenreService genreService, PlatformService platformService,
+        UserService userService) {
         this.movieRepository = movieRepository;
         this.modelMapper = modelMapper;
         this.genreService = genreService;
         this.platformService = platformService;
+        this.userService = userService;
     }
 
     @Override
-    public MovieDetailsDto addMovie(AddMovieDTO addMovieDTO) throws InvalidIMDbUrlException {
+    public MovieDetailsDto addMovie(Long userId, AddMovieDTO addMovieDTO) throws InvalidIMDbUrlException, UserNotFoundException, FullMovieCollectionException {
+
+        if (movieRepository.findTotal(userId) == 2000){
+            throw new FullMovieCollectionException("Your collection from movies is full,max movies is 2000!");
+        }
+
+        UserEntity userEntity = userService.findById(userId);
 
         MovieEntity movieEntity = mapDtoToEntity(addMovieDTO);
+        movieEntity.setUser(userEntity);
 
         List<GenreEntity> genres = genreService.findAllByNames(addMovieDTO.getGenres());
         movieEntity.setGenres(genres);
@@ -72,8 +86,9 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public MovieDetailsDto editMovie(EditMovieDTO editMovieDTO) {
-        MovieEntity movieEntity = movieRepository.findById(editMovieDTO.getMovieId()).orElseThrow();
+    public MovieDetailsDto editMovie(Long userId, EditMovieDTO editMovieDTO) throws MovieNotFoundException {
+        MovieEntity movieEntity = movieRepository.findById(userId, editMovieDTO.getMovieId())
+            .orElseThrow(() -> new MovieNotFoundException("You don't have movie with this id " + editMovieDTO.getMovieId() + " !"));
 
         if (!editMovieDTO.getTitle1().equals(movieEntity.getTitle1())) {
             movieEntity.setTitle1(editMovieDTO.getTitle1());
@@ -112,22 +127,23 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public Boolean deleteMovieById(Long movieId) {
-        //ToDo
-        boolean equals = movieRepository.findById(movieId).equals(Optional.empty());
-        if (!equals) {
-            movieRepository.deleteById(movieId);
-            return true;
-        } else {
-            return false;
-        }
+    public void deleteMovieById(Long userId, Long movieId) throws MovieNotFoundException {
+
+        MovieEntity movieEntity = movieRepository.findById(movieId, userId)
+            .orElseThrow(() -> new MovieNotFoundException("You don't have movie with this id " + movieId + " !"));
+
+        movieRepository.delete(movieEntity);
     }
 
     @Override
-    public Page<MovieCardDto> findAllMoviesWithPagination(Pageable pageable, Map<String, Object> params) {
+    public Page<MovieCardDto> findAllMoviesWithPagination(Pageable pageable, Long userId, Map<String, Object> params) {
+
+        if (movieRepository.findTotal(userId) == 0) {
+            return null;
+        }
 
         Page<MovieEntity> allMoviesCard = movieRepository
-            .findAllMoviesCard(pageable,
+            .findAllMoviesCard(pageable, userId,
                 params.get("minDuration") != null && !("").equals(params.get("minDuration")) ? Optional.of((Integer) params.get("minDuration"))
                     : Optional.empty(),
                 params.get("maxDuration") != null && !("").equals(params.get("maxDuration")) ? Optional.of((Integer) params.get("maxDuration"))
@@ -146,10 +162,10 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public MovieDetailsDto getMovieDetailsDto(Long movieId) throws MovieNotFoundException {
-        //ToDo
-        MovieEntity movieEntity = movieRepository.findById(movieId)
-            .orElseThrow(() -> new MovieNotFoundException("Movie with this id " + movieId + " not found!"));
+    public MovieDetailsDto getMovieDetailsDto(Long userId, Long movieId) throws MovieNotFoundException {
+
+        MovieEntity movieEntity = movieRepository.findById(movieId, userId)
+            .orElseThrow(() -> new MovieNotFoundException("You don't have movie with this id " + movieId + " !"));
 
         return mapEntityToDto(movieEntity);
     }
@@ -167,24 +183,24 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public StatisticsDto getStatistics() {
-       StatisticsDto statisticsDto = new StatisticsDto();
+    public StatisticsDto getStatistics(Long userId) {
+        StatisticsDto statisticsDto = new StatisticsDto();
 
-        statisticsDto.setTotalMovies(movieRepository.findTotal());
-        statisticsDto.setTotalDurations(movieRepository.findTotalDurations());
-        statisticsDto.setActionMovies(movieRepository.countMoviesByGenre("ACTION"));
-        statisticsDto.setComedyMovies(movieRepository.countMoviesByGenre("COMEDY"));
-        statisticsDto.setDramaMovies(movieRepository.countMoviesByGenre("DRAMA"));
-        statisticsDto.setMysteryMovies(movieRepository.countMoviesByGenre("MYSTERY"));
-        statisticsDto.setSciFiMovies(movieRepository.countMoviesByGenre("SCI-FI"));
-        statisticsDto.setAnimationMovies(movieRepository.countMoviesByGenre("ANIMATION"));
-        statisticsDto.setAdventureMovies(movieRepository.countMoviesByGenre("ADVENTURE"));
-        statisticsDto.setFantasyMovies(movieRepository.countMoviesByGenre("FANTASY"));
-        statisticsDto.setRomanceMovies(movieRepository.countMoviesByGenre("ROMANCE"));
-        statisticsDto.setThrillerMovies(movieRepository.countMoviesByGenre("THRILLER"));
-        statisticsDto.setCrimeMovies(movieRepository.countMoviesByGenre("CRIME"));
-        statisticsDto.setDocumentaryMovies(movieRepository.countMoviesByGenre("DOCUMENTARY"));
-        statisticsDto.setSerialMovies(movieRepository.countMoviesByGenre("SERIAL"));
+        statisticsDto.setTotalMovies(movieRepository.findTotal(userId));
+        statisticsDto.setTotalDurations(movieRepository.findTotalDurations(userId));
+        statisticsDto.setActionMovies(movieRepository.countMoviesByGenre("ACTION", userId));
+        statisticsDto.setComedyMovies(movieRepository.countMoviesByGenre("COMEDY", userId));
+        statisticsDto.setDramaMovies(movieRepository.countMoviesByGenre("DRAMA", userId));
+        statisticsDto.setMysteryMovies(movieRepository.countMoviesByGenre("MYSTERY", userId));
+        statisticsDto.setSciFiMovies(movieRepository.countMoviesByGenre("SCI-FI", userId));
+        statisticsDto.setAnimationMovies(movieRepository.countMoviesByGenre("ANIMATION", userId));
+        statisticsDto.setAdventureMovies(movieRepository.countMoviesByGenre("ADVENTURE", userId));
+        statisticsDto.setFantasyMovies(movieRepository.countMoviesByGenre("FANTASY", userId));
+        statisticsDto.setRomanceMovies(movieRepository.countMoviesByGenre("ROMANCE", userId));
+        statisticsDto.setThrillerMovies(movieRepository.countMoviesByGenre("THRILLER", userId));
+        statisticsDto.setCrimeMovies(movieRepository.countMoviesByGenre("CRIME", userId));
+        statisticsDto.setDocumentaryMovies(movieRepository.countMoviesByGenre("DOCUMENTARY", userId));
+        statisticsDto.setSerialMovies(movieRepository.countMoviesByGenre("SERIAL", userId));
 
         return statisticsDto;
     }
@@ -248,11 +264,17 @@ public class MovieServiceImpl implements MovieService {
                 String substring = result.substring(lastIndex + 1);
                 return new BigDecimal(substring);
             }
-        } catch (Exception ex){
+        } catch (Exception ex) {
             LOGGER.error("Invalid IMDb URL: " + IMDbURL);
             throw new InvalidIMDbUrlException("Invalid IMDb URL!");
         }
 
         return null;
+    }
+
+    private Long getUserId() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        return 1L;
     }
 }

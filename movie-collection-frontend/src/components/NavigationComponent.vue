@@ -8,6 +8,7 @@
         <router-link v-if="currentUser" tag="li" :to="{name: 'statistics'}">STATISTICS</router-link>
       </ul>
       <ul>
+        <p class="welcomeMessage" v-if="currentUser">Welcome: {{currentUser.username}}</p>
         <router-link v-if="!currentUser" tag="li" :to="{name: 'login'}">LOGIN</router-link>
         <router-link v-if="!currentUser" tag="li" :to="{name: 'register'}">REGISTER</router-link>
         <li v-if="currentUser" @click="logOut">LOGOUT</li>
@@ -27,6 +28,7 @@ export default {
   },
   computed: {
     currentUser() {
+      console.log('user' , this.$store.state.auth.user)
       return this.$store.state.auth.user;
     },
   }
@@ -63,5 +65,14 @@ header nav li {
 header nav li:hover {
   cursor: pointer;
   color: orange;
+}
+
+p.welcomeMessage {
+  font-size: 1.2rem;
+  color: orange;
+  font-weight: bold;
+  letter-spacing: 1px;
+  margin: 0 0.5rem;
+  padding: 0.4rem;
 }
 </style>

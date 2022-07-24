@@ -1,5 +1,5 @@
 <template>
-  <div class="pagination" v-if="!pagination.empty">
+  <div class="pagination">
     <div class="onPageChange">
       <span>ON PAGE:</span>
       <select v-model="perPage">
@@ -123,13 +123,14 @@ export default {
 
 div.pagination {
   font-size: 1.2rem;
-  margin: 2rem 1.5rem;
+  margin: 2rem 2rem;
+  display: flex;
+  justify-content: space-around;
 }
 
 div.pagination div.onPageChange {
   display: inline-block;
-  margin-left: 2.1rem;
-  padding: 0.2rem 1rem;
+  padding: 0.3rem 1rem 0.2rem 1rem;
   font-weight: bold;
   border-radius: 5px;
   background-color: black;
@@ -141,7 +142,6 @@ div.pagination div.onPageChange select {
   color: white;
   background-color: transparent;
   padding: 0.1rem;
-  margin-left: 0.5rem;
   border: none;
 }
 
@@ -189,7 +189,7 @@ p.totalPages {
   background-color: black;
   color: orange;
   font-size: 1.2rem;
-  padding: 0.4rem;
+  padding: 0.5rem 0.8rem;
   border-radius: 5px;
   font-weight: bold;
   letter-spacing: 1px;

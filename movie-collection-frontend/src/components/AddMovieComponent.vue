@@ -267,12 +267,20 @@ export default {
 
           } else {
 
-            this.errorMessage = response.error;
-            this.showErrorModal();
-            setTimeout(() => {
-              this.hideErrorModal()
-            }, 4000)
+            if (response.error === 'Request failed with status code 401') {
+              //ToDo error message
+              this.$store.dispatch('auth/logout');
+              this.$router.push({name: 'home'})
 
+            } else {
+              //ToDo error message
+              this.errorMessage = response.error;
+              this.showErrorModal();
+              setTimeout(() => {
+                this.hideErrorModal()
+              }, 4000)
+
+            }
           }
         })
       }

@@ -1,7 +1,9 @@
 package com.example.moviecollectionbackend.service;
 
+import com.example.moviecollectionbackend.exception.FullMovieCollectionException;
 import com.example.moviecollectionbackend.exception.InvalidIMDbUrlException;
 import com.example.moviecollectionbackend.exception.MovieNotFoundException;
+import com.example.moviecollectionbackend.exception.UserNotFoundException;
 import com.example.moviecollectionbackend.model.dto.AddMovieDTO;
 import com.example.moviecollectionbackend.model.dto.EditMovieDTO;
 import com.example.moviecollectionbackend.model.dto.MovieCardDto;
@@ -14,18 +16,18 @@ import org.springframework.data.domain.Pageable;
 
 public interface MovieService {
 
-    Page<MovieCardDto> findAllMoviesWithPagination(Pageable pageable , Map<String , Object> params);
+    Page<MovieCardDto> findAllMoviesWithPagination(Pageable pageable , Long userId , Map<String , Object> params);
 
-    MovieDetailsDto getMovieDetailsDto(Long movieId) throws MovieNotFoundException;
+    MovieDetailsDto getMovieDetailsDto(Long userId , Long movieId) throws MovieNotFoundException;
 
-    MovieDetailsDto addMovie(AddMovieDTO addMovieDTO) throws InvalidIMDbUrlException;
+    MovieDetailsDto addMovie(Long userId , AddMovieDTO addMovieDTO) throws InvalidIMDbUrlException, UserNotFoundException, FullMovieCollectionException;
 
-    MovieDetailsDto editMovie(EditMovieDTO editMovieDTO);
+    MovieDetailsDto editMovie(Long userId , EditMovieDTO editMovieDTO) throws MovieNotFoundException;
 
-    Boolean deleteMovieById(Long movieId);
+    void deleteMovieById(Long userId , Long movieId) throws MovieNotFoundException;
 
     void updateRatings() throws URISyntaxException, InvalidIMDbUrlException;
 
-    StatisticsDto getStatistics();
+    StatisticsDto getStatistics(Long userId);
 }
 

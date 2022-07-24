@@ -1,6 +1,5 @@
 package com.example.moviecollectionbackend.config.jwt;
 
-import com.example.moviecollectionbackend.model.entity.UserEntity;
 import com.example.moviecollectionbackend.model.user.AppUserDetails;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;

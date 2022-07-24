@@ -1,7 +1,6 @@
 package com.example.moviecollectionbackend.model.dto;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 public class MovieCardDto {
 
@@ -12,7 +11,6 @@ public class MovieCardDto {
     private Integer duration;
     private BigDecimal rating;
     private String posterUrl;
-//    private List<String> genres;
 
     public MovieCardDto() {
     }
@@ -79,13 +77,4 @@ public class MovieCardDto {
         this.posterUrl = posterUrl;
         return this;
     }
-
-//    public List<String> getGenres() {
-//        return genres;
-//    }
-//
-//    public MovieCardDto setGenres(List<String> genres) {
-//        this.genres = genres;
-//        return this;
-//    }
 }

@@ -1,8 +1,8 @@
 export const Constants = {
     ERROR: {
         TITLE1_REQUIRED: 'Title is required and cannot be empty string!',
-        TITLE1_LENGTH: 'Title length must be between 2 and 40 characters!',
-        TITLE2_LENGTH: 'Second title length must be between 2 and 40 characters!',
+        TITLE1_LENGTH: 'Title length must be between 2 and 50 characters!',
+        TITLE2_LENGTH: 'Second title length must be between 2 and 50 characters!',
         DURATION_REQUIRED: 'Field Duration is required!',
         DURATION_NUMERIC: 'Field Duration must be contains only digits!',
         DURATION_BETWEEN: 'The value of the Duration field must be between 30 and 300 min!',
@@ -42,4 +42,6 @@ export const Constants = {
     DELETE_MOVIE_SUCCESSFUL: 'The movie was successfully deleted!',
     ADDED_MOVIE_SUCCESSFUL: 'The movie was successfully added!',
     DETAILS_ERROR_MODAL: 'detailsErrorModal',
+    EMPTY_COLLECTION: 'Your collection is empty!',
+    EMPTY_COLLECTION_WITH_FILTERS: 'No movies found with these filters!'
 }

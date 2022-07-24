@@ -2,7 +2,6 @@ package com.example.moviecollectionbackend.config.jwt;
 
 import com.example.moviecollectionbackend.model.user.AppUserDetails;
 import java.io.IOException;
-import java.util.Enumeration;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;

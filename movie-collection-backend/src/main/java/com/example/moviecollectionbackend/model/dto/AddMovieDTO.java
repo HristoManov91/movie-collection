@@ -16,11 +16,11 @@ public class AddMovieDTO {
     @Size(max = 50, min = 2, message = "Title length must be between 2 and 50 characters!")
     private String title1;
 
-    @Size(max = 50 , message = "Second title length must be between 2 and 50 characters!")
+    @Size(max = 50, message = "Second title length must be between 2 and 50 characters!")
     private String title2;
 
     @NotEmpty(message = "You must select at least one Genres!")
-    @Size(max = 4 , message = "You can choose a maximum 4 Genres!")
+    @Size(max = 4, message = "You can choose a maximum 4 Genres!")
     private List<@NotBlank String> genres;
 
     @NotNull(message = "Field Duration is required!")
@@ -48,7 +48,7 @@ public class AddMovieDTO {
     private String posterUrl;
 
     @NotEmpty(message = "You must select at least one Platforms")
-    @Size(max = 4 , message = "You can choose a maximum 4 Platforms!")
+    @Size(max = 4, message = "You can choose a maximum 4 Platforms!")
     private List<@NotBlank String> platforms;
 
     @NotNull(message = "You need to choose a audio language!")

@@ -1,7 +1,9 @@
 package com.example.moviecollectionbackend.advice;
 
+import com.example.moviecollectionbackend.exception.FullMovieCollectionException;
 import com.example.moviecollectionbackend.exception.InvalidIMDbUrlException;
 import com.example.moviecollectionbackend.exception.MovieNotFoundException;
+import com.example.moviecollectionbackend.exception.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -19,9 +21,21 @@ public class AppExceptionHandler {
         return fieldError.getDefaultMessage();
     }
 
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(MovieNotFoundException.class)
-    public String handleBusinessEx(MovieNotFoundException ex) {
+    public String handleMoviesIdEx(MovieNotFoundException ex) {
+        return ex.getMessage();
+    }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(UserNotFoundException.class)
+    public String handleUserIdEx(UserNotFoundException ex) {
+        return ex.getMessage();
+    }
+
+    @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
+    @ExceptionHandler(FullMovieCollectionException.class)
+    public String handleUserIdEx(FullMovieCollectionException ex) {
         return ex.getMessage();
     }
 
