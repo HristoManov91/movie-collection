@@ -41,7 +41,6 @@ public class JwtTokenUtil {
             return true;
         } catch (ExpiredJwtException ex) {
             LOGGER.error("JWT expired");
-            //ToDo throw exception
         } catch (IllegalArgumentException ex) {
             LOGGER.error("Token is null, empty or only whitespace");
         } catch (MalformedJwtException ex) {

@@ -7,17 +7,23 @@ const MOVIES_CONTROLLER_BASE_URL = 'http://localhost:8081/movies/'
 
 export class MovieService {
 
-    async findAllMoviesWithParams(currentPage, perPage, orderBy, params) {
-
+    async findAll(currentPage, perPage, orderBy, params) {
         let movies = {};
-        let url = MOVIES_CONTROLLER_BASE_URL + `all?page=${currentPage}&size=${perPage}&sort=${orderBy}`
 
-        await axios.post(url, params, {headers: authHeader()}).then((resp) => {
+        let url = MOVIES_CONTROLLER_BASE_URL + `all?page=${currentPage}&size=${perPage}&sort=${orderBy}&minDuration=${params.minDuration}&maxDuration=${params.maxDuration}&minRating=${params.minRating}&maxRating=${params.maxRating}&searchText=${params.searchText}&genres=${params.genres}`
+
+        await axios.get(url, {headers: authHeader()}).then((resp) => {
             movies.status = 'OK'
             movies.data = resp.data;
         }).catch((err) => {
             movies.status = 'ERROR';
-            movies.error = err.response.data;
+            if (err.response.status === 401){
+                movies.error = 'Expi';
+            } else {
+                movies.error = err.response.data;
+            }
+
+
         })
 
         return movies;
@@ -26,12 +32,10 @@ export class MovieService {
     async addMovie(movieDto) {
         let result = {};
 
-        await axios.post(MOVIES_CONTROLLER_BASE_URL + 'new', movieDto, {headers: authHeader()}).then((response) => {
-            console.log('ok')
+        await axios.post(MOVIES_CONTROLLER_BASE_URL + 'new', movieDto, {headers: authHeader()}).then((response) => {``
             result.status = 'OK';
             result.data = response.data;
         }).catch((err) => {
-            console.log('error' , err)
             result.status = 'ERROR';
             result.error = err.response.data;
         })
@@ -46,7 +50,7 @@ export class MovieService {
             movie.status = 'OK';
             movie.data = resp.data;
         }).catch((err) => {
-            console.log('resp' , err)
+            console.log('resp', err)
             movie.status = 'ERROR';
             movie.error = err.response.data;
         })
@@ -94,7 +98,7 @@ export class MovieService {
             statistics.data = resp.data
             statistics.status = 'OK'
         }).catch((err) => {
-            console.log('err' , err)
+            console.log('err', err)
             statistics.status = 'ERROR'
             statistics.error = err.message;
         })

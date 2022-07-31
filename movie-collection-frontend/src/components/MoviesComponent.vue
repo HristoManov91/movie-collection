@@ -100,52 +100,16 @@ export default {
     SuccessfulModal,
     WarningModal
   },
-  created() {
-    // this.successMessage = 'You login successfully!';
-    // this.showSuccessModal();
-    // setTimeout(() => {
-    //   this.hideSuccessModal()
-    // }, 4000)
-  },
   mounted() {
     this.loadMovies()
     this.fillDurationSlideColor();
     this.fillRatingSlideColor();
-  },
-  updated() {
-    // this.successMessage = 'You login successfully!';
-    // this.showSuccessModal();
-    // setTimeout(() => {
-    //   this.hideSuccessModal()
-    // }, 4000)
   },
   data() {
     return {
       constants: Constants,
       movieService: new MovieService(),
       moviesToShow: [],
-      // movie: {
-      //   movieId: {
-      //     required: true,
-      //     type: Number
-      //   },
-      //   title1: String,
-      //   title2: String,
-      //   genres: {
-      //     type: {},
-      //   },
-      //   duration: Number,
-      //   year: Number,
-      //   rating: Number,
-      //   imdbUrl: String,
-      //   trailerUrl: String,
-      //   posterUrl: String,
-      //   platforms: {
-      //     type: {},
-      //   },
-      //   bulgarianLanguage: Boolean,
-      //   description: String,
-      // },
       durationFilter: {
         minDuration: 30,
         maxDuration: 300,
@@ -187,7 +151,6 @@ export default {
   },
   methods: {
     showSuccessModal() {
-      console.log('show modal')
       this.$modal.show(this.constants.MOVIES_SUCCESSFUL_MODAL);
     },
     hideSuccessModal() {
@@ -221,7 +184,7 @@ export default {
     },
     loadMovies() {
 
-      this.movieService.findAllMoviesWithParams(this.pagination.currentPage - 1, this.pagination.perPage, this.pagination.orderBy, this.filterParams).then((resp) => {
+      this.movieService.findAll(this.pagination.currentPage - 1, this.pagination.perPage, this.pagination.orderBy, this.filterParams).then((resp) => {
         if (resp.status === 'OK') {
           if (resp.data === '') {
 
@@ -242,8 +205,7 @@ export default {
             }
           }
         } else {
-          console.log('2', resp)
-
+          console.log('error' , resp)
           if (resp.error === 'Request failed with status code 401') {
             //ToDo error message
             this.$store.dispatch('auth/logout');
@@ -251,7 +213,7 @@ export default {
 
           } else {
             // ToDo
-            this.errorMessage = 'Error in loadMovies!';
+            this.errorMessage = resp.error;
             this.showErrorModal();
             setTimeout(() => {
               this.hideErrorModal()
@@ -335,7 +297,7 @@ export default {
       this.filterParams.searchText = '';
       this.filterParams.genres = [];
     },
-    addMovie(){
+    addMovie() {
       this.$router.push({name: 'addMovie'})
     }
   },

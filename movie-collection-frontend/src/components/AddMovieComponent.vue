@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="overlay">
+    <div class="overlay" v-if="isLoading">
 
     </div>
     <div class="container">
@@ -185,6 +185,7 @@ export default {
       },
       errorMessage: null,
       successMessage: null,
+      isLoading: false,
     }
   },
   validations: {
@@ -311,7 +312,7 @@ div.overlay {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  z-index: 30;
+  z-index: 50;
 }
 
 div.container {

@@ -20,7 +20,7 @@ public class CronScheduler {
         this.movieService = movieService;
     }
 
-    @Scheduled(cron = "* 0 23 * * *")//ToDo fixed CRON
+    @Scheduled(cron = "* 0 23 * * *")
     public void imdbRating() throws URISyntaxException, InvalidIMDbUrlException {
         LOGGER.info("Start set IMDb ratings {}", LocalDateTime.now());
 

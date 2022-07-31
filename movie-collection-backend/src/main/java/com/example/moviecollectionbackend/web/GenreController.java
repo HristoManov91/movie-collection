@@ -22,7 +22,7 @@ public class GenreController {
 
     @GetMapping("/all")
 //    @PreAuthorize("hasRole('USER')")
-    private ResponseEntity<List<String>> getAllGenres () {
+    public ResponseEntity<List<String>> getAllGenres () {
         return new ResponseEntity<>(genreService.findAllGenres() , HttpStatus.OK);
     }
 }

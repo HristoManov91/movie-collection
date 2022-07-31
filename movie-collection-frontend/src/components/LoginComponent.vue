@@ -105,6 +105,10 @@ export default {
         this.$store.dispatch('auth/login', this.user).then(
             () => {
               this.$router.push({name: 'movies'});
+              setTimeout(() => {
+                this.$store.dispatch('auth/logout')
+                this.$router.push({name: 'home'})
+              }, 12 * 60 * 60 * 1000)
             },
             error => {
               this.errorMessage = error.response.data

@@ -10,5 +10,5 @@ public interface UserService {
 
     boolean registerUser(UserRegisterDto userRegisterDto);
 
-    UserEntity findById(Long userId) throws UserNotFoundException;
+    UserEntity findById(Long userId);
 }

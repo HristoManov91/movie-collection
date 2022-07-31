@@ -3,11 +3,11 @@ package com.example.moviecollectionbackend.service.impl;
 import com.example.moviecollectionbackend.exception.FullMovieCollectionException;
 import com.example.moviecollectionbackend.exception.InvalidIMDbUrlException;
 import com.example.moviecollectionbackend.exception.MovieNotFoundException;
-import com.example.moviecollectionbackend.exception.UserNotFoundException;
 import com.example.moviecollectionbackend.model.dto.AddMovieDTO;
 import com.example.moviecollectionbackend.model.dto.EditMovieDTO;
 import com.example.moviecollectionbackend.model.dto.MovieCardDto;
 import com.example.moviecollectionbackend.model.dto.MovieDetailsDto;
+import com.example.moviecollectionbackend.model.dto.SearchParamsDTO;
 import com.example.moviecollectionbackend.model.dto.StatisticsDto;
 import com.example.moviecollectionbackend.model.entity.GenreEntity;
 import com.example.moviecollectionbackend.model.entity.MovieEntity;
@@ -20,8 +20,8 @@ import com.example.moviecollectionbackend.service.PlatformService;
 import com.example.moviecollectionbackend.service.UserService;
 import java.math.BigDecimal;
 import java.net.URI;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.regex.Matcher;
@@ -58,9 +58,9 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public MovieDetailsDto addMovie(Long userId, AddMovieDTO addMovieDTO) throws InvalidIMDbUrlException, UserNotFoundException, FullMovieCollectionException {
+    public MovieDetailsDto addMovie(Long userId, AddMovieDTO addMovieDTO) {
 
-        if (movieRepository.findTotal(userId) == 2000){
+        if (movieRepository.findTotal(userId) == 2000) {
             throw new FullMovieCollectionException("Your collection from movies is full,max movies is 2000!");
         }
 
@@ -86,8 +86,9 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public MovieDetailsDto editMovie(Long userId, EditMovieDTO editMovieDTO) throws MovieNotFoundException {
-        MovieEntity movieEntity = movieRepository.findById(userId, editMovieDTO.getMovieId())
+    public MovieDetailsDto editMovie(Long userId, EditMovieDTO editMovieDTO) {
+
+        MovieEntity movieEntity = movieRepository.findById(editMovieDTO.getMovieId(), userId)
             .orElseThrow(() -> new MovieNotFoundException("You don't have movie with this id " + editMovieDTO.getMovieId() + " !"));
 
         if (!editMovieDTO.getTitle1().equals(movieEntity.getTitle1())) {
@@ -127,7 +128,7 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public void deleteMovieById(Long userId, Long movieId) throws MovieNotFoundException {
+    public void deleteMovieById(Long userId, Long movieId) {
 
         MovieEntity movieEntity = movieRepository.findById(movieId, userId)
             .orElseThrow(() -> new MovieNotFoundException("You don't have movie with this id " + movieId + " !"));
@@ -136,33 +137,26 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public Page<MovieCardDto> findAllMoviesWithPagination(Pageable pageable, Long userId, Map<String, Object> params) {
+    public Page<MovieCardDto> findAll(Pageable pageable, Long userId, SearchParamsDTO searchParamsDTO) {
 
         if (movieRepository.findTotal(userId) == 0) {
             return null;
         }
 
-        Page<MovieEntity> allMoviesCard = movieRepository
+        Page<MovieEntity> movies = movieRepository
             .findAllMoviesCard(pageable, userId,
-                params.get("minDuration") != null && !("").equals(params.get("minDuration")) ? Optional.of((Integer) params.get("minDuration"))
-                    : Optional.empty(),
-                params.get("maxDuration") != null && !("").equals(params.get("maxDuration")) ? Optional.of((Integer) params.get("maxDuration"))
-                    : Optional.empty(),
-                params.get("minRating") != null && !("").equals(params.get("minRating")) ? Optional.of((Number) params.get("minRating"))
-                    : Optional.empty(),
-                params.get("maxRating") != null && !("").equals(params.get("maxRating")) ? Optional.of((Number) params.get("maxRating"))
-                    : Optional.empty(),
-                params.get("searchText") != null ? Optional.of((String) params.get("searchText"))
-                    : Optional.empty(),
-                params.get("genres") != null ? Optional.of((List<String>) params.get("genres")) : Optional.empty());
+                searchParamsDTO.getMinDuration() != null ? Optional.of(searchParamsDTO.getMinDuration()) : Optional.empty(),
+                searchParamsDTO.getMaxDuration() != null ? Optional.of(searchParamsDTO.getMaxDuration()) : Optional.empty(),
+                searchParamsDTO.getMinRating() != null ? Optional.of(searchParamsDTO.getMinRating()) : Optional.empty(),
+                searchParamsDTO.getMaxRating() != null ? Optional.of(searchParamsDTO.getMaxRating()) : Optional.empty(),
+                searchParamsDTO.getSearchText() != null ? Optional.of(searchParamsDTO.getSearchText()) : Optional.empty(),
+                searchParamsDTO.getGenres() != null ? Optional.of(Arrays.stream(searchParamsDTO.getGenres()).toList()) : Optional.empty());
 
-        Page<MovieCardDto> map = allMoviesCard.map(m -> modelMapper.map(m, MovieCardDto.class));
-
-        return map;
+        return movies.map(m -> modelMapper.map(m, MovieCardDto.class));
     }
 
     @Override
-    public MovieDetailsDto getMovieDetailsDto(Long userId, Long movieId) throws MovieNotFoundException {
+    public MovieDetailsDto getMovieDetailsDto(Long userId, Long movieId) {
 
         MovieEntity movieEntity = movieRepository.findById(movieId, userId)
             .orElseThrow(() -> new MovieNotFoundException("You don't have movie with this id " + movieId + " !"));
@@ -241,7 +235,7 @@ public class MovieServiceImpl implements MovieService {
             .setYear(bindingModel.getYear() != null ? bindingModel.getYear() : null);
     }
 
-    private BigDecimal getIMDbRating(String IMDbURL) throws InvalidIMDbUrlException {
+    private BigDecimal getIMDbRating(String IMDbURL) {
 
         try {
             RestTemplate restTemplate = new RestTemplate();

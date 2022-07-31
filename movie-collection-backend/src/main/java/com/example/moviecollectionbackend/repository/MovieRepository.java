@@ -13,8 +13,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface MovieRepository extends JpaRepository<MovieEntity, Long> {
 
-    @Query("SELECT m FROM MovieEntity m where m.id = ?1 and m.user.id = ?2")
-    Optional<MovieEntity> findById(Long movieId , Long userId);
+    @Query("SELECT m FROM MovieEntity m where m.id = ?1 and m.user.id = ?2 ")
+    Optional<MovieEntity> findById(Long movieId, Long userId);
 
     @Query(value =
         " select * from `movie-collection`.movies as m "
@@ -61,5 +61,5 @@ public interface MovieRepository extends JpaRepository<MovieEntity, Long> {
         + " left join `movie-collection`.movies m on m.id = mg.movie_entity_id "
         + " where g.genre = ?1 and m.user_id = ?2 ",
         nativeQuery = true)
-    Integer countMoviesByGenre(String genre , Long userId);
+    Integer countMoviesByGenre(String genre, Long userId);
 }

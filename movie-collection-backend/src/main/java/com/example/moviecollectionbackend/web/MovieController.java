@@ -8,10 +8,10 @@ import com.example.moviecollectionbackend.model.dto.AddMovieDTO;
 import com.example.moviecollectionbackend.model.dto.EditMovieDTO;
 import com.example.moviecollectionbackend.model.dto.MovieCardDto;
 import com.example.moviecollectionbackend.model.dto.MovieDetailsDto;
+import com.example.moviecollectionbackend.model.dto.SearchParamsDTO;
 import com.example.moviecollectionbackend.model.dto.StatisticsDto;
 import com.example.moviecollectionbackend.model.user.AppUserDetails;
 import com.example.moviecollectionbackend.service.MovieService;
-import java.util.Map;
 import javax.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -42,7 +42,7 @@ public class MovieController {
 
     @PostMapping("/new")
 //    @PreAuthorize("hasRole('USER')")
-    private ResponseEntity<MovieDetailsDto> addMovie(
+    public ResponseEntity<MovieDetailsDto> addMovie(
         @AuthenticationPrincipal AppUserDetails userDetails, @RequestBody @Valid AddMovieDTO addMovieDTO)
         throws InvalidIMDbUrlException, UserNotFoundException, FullMovieCollectionException {
 
@@ -50,21 +50,19 @@ public class MovieController {
         return new ResponseEntity<>(movieService.addMovie(userId, addMovieDTO), HttpStatus.CREATED);
     }
 
-    @PostMapping("/all")
-//    @PreAuthorize("hasRole('USER')")
-    private ResponseEntity<Page<MovieCardDto>> findAllWithPagination(
-        Pageable pageable, @AuthenticationPrincipal AppUserDetails userDetails, @RequestBody Map<String, Object> params) {
-
+    @GetMapping("/all")
+    public ResponseEntity<Page<MovieCardDto>> findAll(@AuthenticationPrincipal AppUserDetails userDetails, @Valid SearchParamsDTO searchParamsDTO,
+        Pageable pageable) {
         Long userId = userDetails.getId();
 
-        Page<MovieCardDto> allMoviesWithPagination = movieService.findAllMoviesWithPagination(pageable, userId, params);
+        Page<MovieCardDto> result = movieService.findAll(pageable, userId, searchParamsDTO);
 
-        return ResponseEntity.ok(allMoviesWithPagination);
+        return ResponseEntity.ok(result);
     }
 
     @GetMapping("/{movieId}")
 //    @PreAuthorize("hasRole('USER')")
-    private ResponseEntity<MovieDetailsDto> getMovieDetailsDto(
+    public ResponseEntity<MovieDetailsDto> getMovieDetailsDto(
         @AuthenticationPrincipal AppUserDetails userDetails, @PathVariable Long movieId)
         throws MovieNotFoundException {
         Long userId = userDetails.getId();
@@ -74,7 +72,7 @@ public class MovieController {
 
     @PostMapping("/edit")
 //    @PreAuthorize("hasRole('USER')")
-    private ResponseEntity<MovieDetailsDto> editMovie(
+    public ResponseEntity<MovieDetailsDto> editMovie(
         @AuthenticationPrincipal AppUserDetails userDetails, @RequestBody @Valid EditMovieDTO editMovieDTO)
         throws MovieNotFoundException {
 
@@ -87,20 +85,20 @@ public class MovieController {
 
     @DeleteMapping("/delete")
 //    @PreAuthorize("hasRole('USER')")
-    private ResponseEntity<?> deleteMovie(
+    public ResponseEntity<Boolean> deleteMovie(
         @AuthenticationPrincipal AppUserDetails userDetails, @RequestParam(name = "movieId") Long movieId)
         throws MovieNotFoundException {
 
         Long userId = userDetails.getId();
 
-        this.movieService.deleteMovieById(userId , movieId);
+        this.movieService.deleteMovieById(userId, movieId);
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(true, HttpStatus.OK);
     }
 
     @GetMapping("/statistics")
 //    @PreAuthorize("hasRole('USER')")
-    private ResponseEntity<StatisticsDto> getStatistics(@AuthenticationPrincipal AppUserDetails userDetails) {
+    public ResponseEntity<StatisticsDto> getStatistics(@AuthenticationPrincipal AppUserDetails userDetails) {
         Long userId = userDetails.getId();
 
         return new ResponseEntity<>(this.movieService.getStatistics(userId), HttpStatus.OK);

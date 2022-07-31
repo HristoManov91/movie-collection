@@ -1,6 +1,5 @@
 package com.example.moviecollectionbackend.service.impl;
 
-import com.example.moviecollectionbackend.exception.MovieNotFoundException;
 import com.example.moviecollectionbackend.exception.UserNotFoundException;
 import com.example.moviecollectionbackend.model.dto.UserRegisterDto;
 import com.example.moviecollectionbackend.model.entity.UserEntity;
@@ -10,7 +9,6 @@ import com.example.moviecollectionbackend.repository.UserRepository;
 import com.example.moviecollectionbackend.repository.UserRoleRepository;
 import com.example.moviecollectionbackend.service.UserService;
 import java.util.List;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -43,8 +41,8 @@ public class UserServiceImpl implements UserService {
 
         UserEntity user2 = new UserEntity()
             .setUsername("hristo2")
-                .setPassword(passwordEncoder.encode("123456"))
-                    .setRoles(userRoleRepository.findAll());
+            .setPassword(passwordEncoder.encode("123456"))
+            .setRoles(userRoleRepository.findAll());
 
         userRepository.save(user);
         userRepository.save(user2);
@@ -65,7 +63,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserEntity findById(Long userId) throws UserNotFoundException {
+    public UserEntity findById(Long userId) {
         return userRepository.findById(userId)
             .orElseThrow(() -> new UserNotFoundException("User with this id " + userId + " not found!"));
     }
