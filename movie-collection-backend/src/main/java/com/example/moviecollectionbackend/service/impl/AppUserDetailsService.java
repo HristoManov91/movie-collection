@@ -4,7 +4,6 @@ import com.example.moviecollectionbackend.model.entity.UserEntity;
 import com.example.moviecollectionbackend.model.entity.UserRoleEntity;
 import com.example.moviecollectionbackend.model.user.AppUserDetails;
 import com.example.moviecollectionbackend.repository.UserRepository;
-import java.util.Optional;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
