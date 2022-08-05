@@ -8,7 +8,7 @@
         <router-link v-if="currentUser" tag="li" :to="{name: 'statistics'}">STATISTICS</router-link>
       </ul>
       <ul>
-        <p class="welcomeMessage" v-if="currentUser">Welcome: {{currentUser.username}}</p>
+        <p class="welcomeMessage" v-if="currentUser">Welcome: {{ currentUser.username }}</p>
         <router-link v-if="!currentUser" tag="li" :to="{name: 'login'}">LOGIN</router-link>
         <router-link v-if="!currentUser" tag="li" :to="{name: 'register'}">REGISTER</router-link>
         <li v-if="currentUser" @click="logOut">LOGOUT</li>
@@ -28,7 +28,7 @@ export default {
   },
   computed: {
     currentUser() {
-      console.log('user' , this.$store.state.auth.user)
+      console.log('user', this.$store.state.auth.user)
       return this.$store.state.auth.user;
     },
   }
