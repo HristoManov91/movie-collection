@@ -58,7 +58,7 @@ public class MovieEntity extends BaseEntity {
     @Column
     private String description;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
     private UserEntity user;
 
     public MovieEntity() {

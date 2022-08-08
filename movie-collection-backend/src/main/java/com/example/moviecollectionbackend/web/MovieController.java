@@ -12,11 +12,15 @@ import com.example.moviecollectionbackend.model.dto.SearchParamsDTO;
 import com.example.moviecollectionbackend.model.dto.StatisticsDto;
 import com.example.moviecollectionbackend.model.user.AppUserDetails;
 import com.example.moviecollectionbackend.service.MovieService;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import javax.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -41,10 +45,9 @@ public class MovieController {
 
 
     @PostMapping("/new")
-//    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<MovieDetailsDto> addMovie(
-        @AuthenticationPrincipal AppUserDetails userDetails, @RequestBody @Valid AddMovieDTO addMovieDTO)
-        throws InvalidIMDbUrlException, UserNotFoundException, FullMovieCollectionException {
+        @AuthenticationPrincipal AppUserDetails userDetails,
+        @RequestBody @Valid AddMovieDTO addMovieDTO){
 
         Long userId = userDetails.getId();
         return new ResponseEntity<>(movieService.addMovie(userId, addMovieDTO), HttpStatus.CREATED);
@@ -60,21 +63,31 @@ public class MovieController {
         return ResponseEntity.ok(result);
     }
 
+    @Tag(name = "Get movie by ID" , description = "Returns the movie info by ID")
+    @Parameter(
+        name = "movieId",
+        description = "The ID of the Movie",
+        required = true
+    )
+    @ApiResponse(
+        responseCode = "200",
+        description = "If the book was retrieved successfully"
+    )
+    @ApiResponse(
+        responseCode = "404",
+        description = "If the movie not found"
+    )
     @GetMapping("/{movieId}")
-//    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<MovieDetailsDto> getMovieDetailsDto(
-        @AuthenticationPrincipal AppUserDetails userDetails, @PathVariable Long movieId)
-        throws MovieNotFoundException {
+        @AuthenticationPrincipal AppUserDetails userDetails, @PathVariable Long movieId) {
         Long userId = userDetails.getId();
 
         return new ResponseEntity<>(movieService.getMovieDetailsDto(userId, movieId), HttpStatus.OK);
     }
 
     @PostMapping("/edit")
-//    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<MovieDetailsDto> editMovie(
-        @AuthenticationPrincipal AppUserDetails userDetails, @RequestBody @Valid EditMovieDTO editMovieDTO)
-        throws MovieNotFoundException {
+        @AuthenticationPrincipal AppUserDetails userDetails, @RequestBody @Valid EditMovieDTO editMovieDTO){
 
         Long userId = userDetails.getId();
 
@@ -84,10 +97,8 @@ public class MovieController {
     }
 
     @DeleteMapping("/delete")
-//    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Boolean> deleteMovie(
-        @AuthenticationPrincipal AppUserDetails userDetails, @RequestParam(name = "movieId") Long movieId)
-        throws MovieNotFoundException {
+        @AuthenticationPrincipal AppUserDetails userDetails, @RequestParam(name = "movieId") Long movieId){
 
         Long userId = userDetails.getId();
 
@@ -97,7 +108,6 @@ public class MovieController {
     }
 
     @GetMapping("/statistics")
-//    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<StatisticsDto> getStatistics(@AuthenticationPrincipal AppUserDetails userDetails) {
         Long userId = userDetails.getId();
 

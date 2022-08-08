@@ -48,7 +48,7 @@ public class ChromeTest {
 
         passwordInput.submit();
 
-        Thread.sleep(800);
+        Thread.sleep(800);//ToDo да го заменя с по правилен начин
 
         WebElement welcomeMessage = chromeDriver.findElement(By.className("welcomeMessage"));
         String welcomeText = welcomeMessage.getText();

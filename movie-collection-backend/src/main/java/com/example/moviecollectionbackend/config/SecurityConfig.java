@@ -37,26 +37,26 @@ public class SecurityConfig {
         http
             .cors().and().csrf().disable()
             .authorizeRequests()
-                .antMatchers("/", "/users/**" , "/platforms/all" , "/genres/all").permitAll()
+            .antMatchers("/", "/users/**", "/platforms/all", "/genres/all", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
             .anyRequest()
-                .authenticated()
+            .authenticated()
             .and()
             .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
             .exceptionHandling()
-                .authenticationEntryPoint(
-                    (request, response, ex) -> {
-                        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, ex.getMessage());
-                    })
+            .authenticationEntryPoint(
+                (request, response, ex) -> {
+                    response.sendError(HttpServletResponse.SC_FORBIDDEN, ex.getMessage());
+                })
             .and()
-                .logout()
-                .logoutUrl("/users/logout")
-                .logoutSuccessUrl("/")
-                .invalidateHttpSession(true)
-                .deleteCookies("JSESSIONID")
+            .logout()
+            .logoutUrl("/users/logout")
+            .logoutSuccessUrl("/")
+            .invalidateHttpSession(true)
+            .deleteCookies("JSESSIONID")
             .and()
-            .addFilterBefore(jwtTokenFilter , UsernamePasswordAuthenticationFilter.class);
+            .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
         //        http
