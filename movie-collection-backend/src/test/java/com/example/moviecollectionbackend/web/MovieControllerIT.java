@@ -70,16 +70,16 @@ class MovieControllerIT {
             .andExpect(status().isForbidden());
     }
 
-    @Test
-    @WithUserDetails(value = "TestUser")
-    void testAddMovieWithUserAndValidateParams_Created() throws Exception {
-
-        mockMvc.perform(post("/movies/new")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(testAddMovieDTO))
-                .with(csrf()))
-            .andExpect(status().isCreated());
-    }
+//    @Test
+//    @WithUserDetails(value = "TestUser")
+//    void testAddMovieWithUserAndValidateParams_Created() throws Exception {
+//
+//        mockMvc.perform(post("/movies/new")
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .content(asJsonString(testAddMovieDTO))
+//                .with(csrf()))
+//            .andExpect(status().isCreated());
+//    }
 
     static String asJsonString(final Object obj) {
         try {

@@ -4,8 +4,8 @@ import com.example.moviecollectionbackend.model.entity.GenreEntity;
 import com.example.moviecollectionbackend.repository.GenreRepository;
 import com.example.moviecollectionbackend.service.GenreService;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -23,8 +23,13 @@ public class GenreServiceImpl implements GenreService {
         return allByMovieId.stream().map(GenreEntity::getGenre).collect(Collectors.toList());
     }
 
-    public List<GenreEntity> findAllByNames(List<String> genresNames){
-        return genresNames.stream().map(genreRepository::findByGenre).collect(Collectors.toList());
+    public List<GenreEntity> findAllByNames(List<String> genresNames) {
+        return genresNames
+            .stream()
+            .map(genreRepository::findByGenre)
+            .filter(Optional::isPresent)
+            .map(Optional::get)
+            .collect(Collectors.toList());
     }
 
     @Override

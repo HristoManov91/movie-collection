@@ -1,10 +1,10 @@
 package com.example.moviecollectionbackend.web;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.example.moviecollectionbackend.model.entity.GenreEntity;
-import com.example.moviecollectionbackend.service.impl.AppUserDetailsService;
 import com.example.moviecollectionbackend.util.TestDataUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,16 +21,16 @@ class GenreControllerIT {
     @Autowired
     private MockMvc mockMvc;
 
-
-
     @Autowired
     private TestDataUtils testDataUtils;
 
+    private GenreEntity action, animation, comedy;
+
     @BeforeEach
     void setUp() {
-        GenreEntity action = testDataUtils.createTestGenre("ACTION");
-        GenreEntity animation = testDataUtils.createTestGenre("ANIMATION");
-        GenreEntity comedy = testDataUtils.createTestGenre("COMEDY");
+        action = testDataUtils.createTestGenre("ACTION");
+        animation = testDataUtils.createTestGenre("ANIMATION");
+        comedy = testDataUtils.createTestGenre("COMEDY");
     }
 
     @AfterEach
@@ -41,6 +41,11 @@ class GenreControllerIT {
     @Test
     void testGetAllGenres() throws Exception {
         mockMvc.perform(get("/genres/all"))
-            .andExpect(status().isOk());
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$.length()").value(3))
+            .andExpect(jsonPath("$[0]").value(action.getGenre()))
+            .andExpect(jsonPath("$[1]").value(animation.getGenre()))
+            .andExpect(jsonPath("$[2]").value(comedy.getGenre()));
     }
 }

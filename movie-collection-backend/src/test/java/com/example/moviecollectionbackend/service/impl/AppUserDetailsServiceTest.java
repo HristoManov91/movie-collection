@@ -34,7 +34,7 @@ class AppUserDetailsServiceTest {
 
     @AfterEach
     void tearDown() {
-
+        mockUserRepo.deleteAll();
     }
 
     @Test
