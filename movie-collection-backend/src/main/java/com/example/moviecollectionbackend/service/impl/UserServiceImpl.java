@@ -1,7 +1,7 @@
 package com.example.moviecollectionbackend.service.impl;
 
 import com.example.moviecollectionbackend.exception.UserNotFoundException;
-import com.example.moviecollectionbackend.model.dto.UserRegisterDto;
+import com.example.moviecollectionbackend.model.dto.UserRegisterDTO;
 import com.example.moviecollectionbackend.model.entity.UserEntity;
 import com.example.moviecollectionbackend.model.entity.UserRoleEntity;
 import com.example.moviecollectionbackend.model.entity.enums.UserRole;
@@ -49,12 +49,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean registerUser(UserRegisterDto userRegisterDto) {
+    public boolean registerUser(UserRegisterDTO userRegisterDTO) {
 
         UserEntity user =
             new UserEntity()
-                .setUsername(userRegisterDto.getUsername())
-                .setPassword(passwordEncoder.encode(userRegisterDto.getPassword()))
+                .setUsername(userRegisterDTO.getUsername())
+                .setPassword(passwordEncoder.encode(userRegisterDTO.getPassword()))
                 .setRoles(List.of(userRoleRepository.findByRole(UserRole.USER).get()));
 
         userRepository.save(user);

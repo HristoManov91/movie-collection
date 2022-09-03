@@ -1,6 +1,6 @@
 package com.example.moviecollectionbackend.util;
 
-import com.example.moviecollectionbackend.model.dto.AddMovieDTO;
+import com.example.moviecollectionbackend.model.dto.MovieDTO;
 import com.example.moviecollectionbackend.model.entity.GenreEntity;
 import com.example.moviecollectionbackend.model.entity.MovieEntity;
 import com.example.moviecollectionbackend.model.entity.PlatformEntity;
@@ -32,6 +32,10 @@ public class TestDataUtils {
         this.genreRepository = genreRepository;
         this.platformRepository = platformRepository;
         this.movieRepository = movieRepository;
+    }
+
+    public UserRepository getUserRepository() {
+        return userRepository;
     }
 
     public void initRoles() {
@@ -83,9 +87,9 @@ public class TestDataUtils {
         return movieRepository.save(movie);
     }
 
-    public AddMovieDTO createAddMovieDto() {
+    public MovieDTO createMovieDto() {
 
-        return new AddMovieDTO()
+        return new MovieDTO()
             .setTitle1("Title1")
             .setTitle2("Tile2")
             .setDuration(120)

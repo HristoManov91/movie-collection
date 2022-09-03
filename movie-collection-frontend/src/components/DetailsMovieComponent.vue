@@ -4,6 +4,7 @@
 
     </div>
     <div class="detailsView" v-if="movie">
+      <!-- ToDo да проверя има проблем за 47 Ronin , A DOG`S JOURNEY , DESPICABLE ME 3 , DRACULA UNTOLD , DUE DATE -->
       <img class="detailsPosterImage"
            :src="movie.posterUrl"
            alt="poster-image">
@@ -170,7 +171,7 @@ div.overlay {
 
 .detailsView img.detailsPosterImage {
   width: 100%;
-  height: 100%;
+  height: 35rem;
 }
 
 .detailsViewInfo {

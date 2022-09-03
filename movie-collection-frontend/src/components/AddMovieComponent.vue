@@ -135,10 +135,9 @@
             <label :for="platform + 'Edit'">{{ platform }}</label>
           </div>
         </div>
-        <span
-            v-if="$v.newMovie.platforms.$dirty && (!$v.newMovie.platforms.required || !$v.newMovie.platforms.minLength)"
+        <span v-if="$v.newMovie.platforms.$dirty && !$v.newMovie.platforms.maxLength"
             class="errorMessage"><font-awesome-icon
-            icon="fa-solid fa-circle-exclamation"/> {{ this.constants.ERROR.PLATFORMS_REQUIRED }}</span>
+            icon="fa-solid fa-circle-exclamation"/> {{ this.constants.ERROR.PLATFORMS_MAX_LENGTH }}</span>
         <button class="saveButton">
           SAVE MOVIE
         </button>
@@ -212,11 +211,11 @@ export default {
       },
       genres: {
         required,
-        minLength: minLength(1)
+        minLength: minLength(1),
+        maxLength: maxLength(4)
       },
       platforms: {
-        required,
-        minLength: minLength(1)
+        maxLength: maxLength(4)
       },
       imdbUrl: {
         // ToDo empty imput validate

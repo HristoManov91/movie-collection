@@ -2,7 +2,7 @@ package com.example.moviecollectionbackend.model.dto;
 
 import java.math.BigDecimal;
 
-public class MovieCardDto {
+public class MovieCardDТО {
 
     private Long id;
     private String title1;
@@ -12,14 +12,14 @@ public class MovieCardDto {
     private BigDecimal rating;
     private String posterUrl;
 
-    public MovieCardDto() {
+    public MovieCardDТО() {
     }
 
     public Long getId() {
         return id;
     }
 
-    public MovieCardDto setId(Long id) {
+    public MovieCardDТО setId(Long id) {
         this.id = id;
         return this;
     }
@@ -28,7 +28,7 @@ public class MovieCardDto {
         return title1;
     }
 
-    public MovieCardDto setTitle1(String title1) {
+    public MovieCardDТО setTitle1(String title1) {
         this.title1 = title1;
         return this;
     }
@@ -37,7 +37,7 @@ public class MovieCardDto {
         return title2;
     }
 
-    public MovieCardDto setTitle2(String title2) {
+    public MovieCardDТО setTitle2(String title2) {
         this.title2 = title2;
         return this;
     }
@@ -46,7 +46,7 @@ public class MovieCardDto {
         return trailerUrl;
     }
 
-    public MovieCardDto setTrailerUrl(String trailerUrl) {
+    public MovieCardDТО setTrailerUrl(String trailerUrl) {
         this.trailerUrl = trailerUrl;
         return this;
     }
@@ -55,7 +55,7 @@ public class MovieCardDto {
         return duration;
     }
 
-    public MovieCardDto setDuration(Integer duration) {
+    public MovieCardDТО setDuration(Integer duration) {
         this.duration = duration;
         return this;
     }
@@ -64,7 +64,7 @@ public class MovieCardDto {
         return rating;
     }
 
-    public MovieCardDto setRating(BigDecimal rating) {
+    public MovieCardDТО setRating(BigDecimal rating) {
         this.rating = rating;
         return this;
     }
@@ -73,7 +73,7 @@ public class MovieCardDto {
         return posterUrl;
     }
 
-    public MovieCardDto setPosterUrl(String posterUrl) {
+    public MovieCardDТО setPosterUrl(String posterUrl) {
         this.posterUrl = posterUrl;
         return this;
     }

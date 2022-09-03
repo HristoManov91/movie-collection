@@ -1,12 +1,14 @@
 package com.example.moviecollectionbackend.web;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.example.moviecollectionbackend.model.dto.AddMovieDTO;
+import com.example.moviecollectionbackend.model.dto.MovieDTO;
+import com.example.moviecollectionbackend.model.dto.SearchParamsDTO;
 import com.example.moviecollectionbackend.model.entity.UserEntity;
-import com.example.moviecollectionbackend.service.impl.AppUserDetailsService;
 import com.example.moviecollectionbackend.util.TestDataUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
@@ -15,10 +17,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithAnonymousUser;
-import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 
 @SpringBootTest
@@ -32,13 +32,13 @@ class MovieControllerIT {
     private TestDataUtils testDataUtils;
 
     private UserEntity testUserEntity;
-    private AddMovieDTO testAddMovieDTO;
+    private MovieDTO testMovieDTO;
 
     @BeforeEach
     void setUp() {
         testDataUtils.initRoles();
         testUserEntity = testDataUtils.createTestUserWithAllRoles("TestUser");
-        testAddMovieDTO = testDataUtils.createAddMovieDto();
+        testMovieDTO = testDataUtils.createMovieDto();
     }
 
     @AfterEach
@@ -46,40 +46,98 @@ class MovieControllerIT {
         testDataUtils.cleanUpDatabase();
     }
 
+    // Path: /movies/new
     @Test
     @WithAnonymousUser
-    void testAddMovieByAnonymousUser_Forbidden() throws Exception {
-
-//        AddMovieDTO testMovieDto = new AddMovieDTO()
-//            .setTitle1("Title1")
-//            .setTitle2("Tile2")
-//            .setDuration(120)
-//            .setYear(2020)
-//            .setDescription("Description")
-//            .setTrailerUrl("https://www.youtube.com/watch?v=a8Gx8wiNbs8")
-//            .setImdbUrl("https://www.imdb.com/title/tt1630029/")
-//            .setBulgarianLanguage(true)
-//            .setPosterUrl("https://m.media-amazon.com/images/M/MV5BMWFmYmRiYzMtMTQ4YS00NjA5LTliYTgtMmM3OTc4OGY3MTFkXkEyXkFqcGdeQXVyODk4OTc3MTY@._V1_.jpg")
-//            .setGenres(List.of("ACTION"))
-//            .setPlatforms(List.of("HBOMAX"));
+    void testAddMovieByAnonymousUser_ReturnForbidden() throws Exception {
 
         mockMvc.perform(post("/movies/new")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(testAddMovieDTO))
+                .content(asJsonString(testMovieDTO))
                 .with(csrf()))
             .andExpect(status().isForbidden());
     }
 
-//    @Test
-//    @WithUserDetails(value = "TestUser")
-//    void testAddMovieWithUserAndValidateParams_Created() throws Exception {
-//
-//        mockMvc.perform(post("/movies/new")
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .content(asJsonString(testAddMovieDTO))
-//                .with(csrf()))
-//            .andExpect(status().isCreated());
-//    }
+    @Test
+    void testAddMovieWithUserAndValidateParams_Created() throws Exception {
+
+        mockMvc.perform(post("/movies/new")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(testMovieDTO))
+                .with(csrf()))
+            .andExpect(status().isCreated());
+    }
+
+    // Path: /movies/all
+
+    @Test
+    @WithAnonymousUser
+    void testFindAllMoviesByAnonymousUser_ReturnForbidden() throws Exception {
+        SearchParamsDTO testSearchParamsDTO = new SearchParamsDTO();
+
+        mockMvc
+            .perform(get("/movies/all")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(testSearchParamsDTO))
+                .with(csrf()))
+            .andExpect(status().isForbidden());
+    }
+
+    // Path: /movies/{movieId}
+
+    @Test
+    @WithAnonymousUser
+    void testGetMovieDetailsDtoByAnonymousUser_ReturnForbidden() throws Exception {
+        Long movieId = 1L;
+
+        mockMvc
+            .perform(get("/movies/{movieId}", movieId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .with(csrf()))
+            .andExpect(status().isForbidden());
+    }
+
+    // Path: /movie/edit
+
+    @Test
+    @WithAnonymousUser
+    void testEditMovieByAnonymousUser_ReturnForbidden() throws Exception {
+        MovieDTO testMovieDTO = new MovieDTO();
+
+        mockMvc
+            .perform(post("/movies/edit")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(testMovieDTO))
+                .with(csrf()))
+            .andExpect(status().isForbidden());
+    }
+
+    // Path: /movies/delete
+
+    @Test
+    @WithAnonymousUser
+    void testDeleteMovieByAnonymousUser_ReturnForbidden() throws Exception {
+        Long movieId = 2L;
+
+        mockMvc
+            .perform(delete("/movies/delete")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(movieId))
+                .with(csrf()))
+            .andExpect(status().isForbidden());
+    }
+
+    // Path: /movies/statistics
+
+    @Test
+    @WithAnonymousUser
+    void testGetStatisticsByAnonymousUser_ReturnForbidden() throws Exception {
+
+        mockMvc
+            .perform(get("/movies/statistics")
+                .with(csrf()))
+            .andExpect(status().isForbidden());
+    }
 
     static String asJsonString(final Object obj) {
         try {
@@ -88,27 +146,4 @@ class MovieControllerIT {
             throw new RuntimeException(e);
         }
     }
-//    @Test
-//    void addMovie() {
-//    }
-//
-//    @Test
-//    void findAll() {
-//    }
-//
-//    @Test
-//    void getMovieDetailsDto() {
-//    }
-//
-//    @Test
-//    void editMovie() {
-//    }
-//
-//    @Test
-//    void deleteMovie() {
-//    }
-//
-//    @Test
-//    void getStatistics() {
-//    }
 }

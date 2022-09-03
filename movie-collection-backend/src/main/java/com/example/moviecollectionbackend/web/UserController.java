@@ -2,8 +2,8 @@ package com.example.moviecollectionbackend.web;
 
 import com.example.moviecollectionbackend.config.jwt.JwtTokenUtil;
 import com.example.moviecollectionbackend.model.dto.AuthResponse;
-import com.example.moviecollectionbackend.model.dto.UserLoginDto;
-import com.example.moviecollectionbackend.model.dto.UserRegisterDto;
+import com.example.moviecollectionbackend.model.dto.UserLoginDТО;
+import com.example.moviecollectionbackend.model.dto.UserRegisterDTO;
 import com.example.moviecollectionbackend.model.user.AppUserDetails;
 import com.example.moviecollectionbackend.service.UserService;
 import javax.validation.Valid;
@@ -36,18 +36,18 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Boolean> registerUser(@RequestBody @Valid UserRegisterDto userRegisterDto) {
-        boolean result = userService.registerUser(userRegisterDto);
+    public ResponseEntity<Boolean> registerUser(@RequestBody @Valid UserRegisterDTO userRegisterDTO) {
+        boolean result = userService.registerUser(userRegisterDTO);
 
         return new ResponseEntity<>(result, result ? HttpStatus.CREATED : HttpStatus.BAD_REQUEST);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> loginUser(@RequestBody @Valid UserLoginDto userLoginDto) {
+    public ResponseEntity<?> loginUser(@RequestBody @Valid UserLoginDТО userLoginDТО) {
 
         try {
             Authentication authenticate = authManager.authenticate(
-                new UsernamePasswordAuthenticationToken(userLoginDto.getUsername(), userLoginDto.getPassword()));
+                new UsernamePasswordAuthenticationToken(userLoginDТО.getUsername(), userLoginDТО.getPassword()));
 
             AppUserDetails user = (AppUserDetails) authenticate.getPrincipal();
             String accessToken = jwtUtil.generateAccessToken(user);
@@ -55,7 +55,7 @@ public class UserController {
 
             return ResponseEntity.ok().body(response);
 
-        } catch (BadCredentialsException Ex) {
+        } catch (BadCredentialsException ex) {
 
             return new ResponseEntity<>("Username or Password don't match!", HttpStatus.BAD_REQUEST);
         }

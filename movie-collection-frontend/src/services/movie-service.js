@@ -47,9 +47,11 @@ export class MovieService {
         let movie = {}
 
         await axios.get(MOVIES_CONTROLLER_BASE_URL + movieId, {headers: authHeader()}).then((resp) => {
+            console.log('OK')
             movie.status = 'OK';
             movie.data = resp.data;
         }).catch((err) => {
+            console.log('ERROR')
             console.log('resp', err)
             movie.status = 'ERROR';
             movie.error = err.response.data;

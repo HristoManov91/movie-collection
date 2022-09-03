@@ -109,8 +109,6 @@
             <label :for="platform + 'Edit'">{{ platform }}</label>
           </div>
         </div>
-        <span v-if="!$v.editedMovie.platforms.required || !$v.editedMovie.platforms.minLength" class="errorMessage"><font-awesome-icon
-            icon="fa-solid fa-circle-exclamation"/> {{ this.constants.ERROR.PLATFORMS_REQUIRED }}</span>
         <span v-if="!$v.editedMovie.platforms.maxLength" class="errorMessage"><font-awesome-icon
             icon="fa-solid fa-circle-exclamation"/> {{ this.constants.ERROR.PLATFORMS_MAX_LENGTH }}</span>
         <button class="saveButton">
@@ -209,8 +207,6 @@ export default {
         maxLength: maxLength(4)
       },
       platforms: {
-        required,
-        minLength: minLength(1),
         maxLength: maxLength(4)
       },
       imdbUrl: {

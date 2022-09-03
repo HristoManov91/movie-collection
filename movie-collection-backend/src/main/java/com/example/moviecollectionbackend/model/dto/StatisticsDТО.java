@@ -1,6 +1,6 @@
 package com.example.moviecollectionbackend.model.dto;
 
-public class StatisticsDto {
+public class StatisticsDТО {
 
     private Integer totalMovies;
     private Integer totalDurations;
@@ -18,14 +18,14 @@ public class StatisticsDto {
     private Integer documentaryMovies;
     private Integer serialMovies;
 
-    public StatisticsDto() {
+    public StatisticsDТО() {
     }
 
     public Integer getTotalMovies() {
         return totalMovies;
     }
 
-    public StatisticsDto setTotalMovies(Integer totalMovies) {
+    public StatisticsDТО setTotalMovies(Integer totalMovies) {
         this.totalMovies = totalMovies;
         return this;
     }
@@ -34,7 +34,7 @@ public class StatisticsDto {
         return totalDurations;
     }
 
-    public StatisticsDto setTotalDurations(Integer totalDurations) {
+    public StatisticsDТО setTotalDurations(Integer totalDurations) {
         this.totalDurations = totalDurations;
         return this;
     }
@@ -43,7 +43,7 @@ public class StatisticsDto {
         return actionMovies;
     }
 
-    public StatisticsDto setActionMovies(Integer actionMovies) {
+    public StatisticsDТО setActionMovies(Integer actionMovies) {
         this.actionMovies = actionMovies;
         return this;
     }
@@ -52,7 +52,7 @@ public class StatisticsDto {
         return comedyMovies;
     }
 
-    public StatisticsDto setComedyMovies(Integer comedyMovies) {
+    public StatisticsDТО setComedyMovies(Integer comedyMovies) {
         this.comedyMovies = comedyMovies;
         return this;
     }
@@ -61,7 +61,7 @@ public class StatisticsDto {
         return dramaMovies;
     }
 
-    public StatisticsDto setDramaMovies(Integer dramaMovies) {
+    public StatisticsDТО setDramaMovies(Integer dramaMovies) {
         this.dramaMovies = dramaMovies;
         return this;
     }
@@ -70,7 +70,7 @@ public class StatisticsDto {
         return mysteryMovies;
     }
 
-    public StatisticsDto setMysteryMovies(Integer mysteryMovies) {
+    public StatisticsDТО setMysteryMovies(Integer mysteryMovies) {
         this.mysteryMovies = mysteryMovies;
         return this;
     }
@@ -79,7 +79,7 @@ public class StatisticsDto {
         return sciFiMovies;
     }
 
-    public StatisticsDto setSciFiMovies(Integer sciFiMovies) {
+    public StatisticsDТО setSciFiMovies(Integer sciFiMovies) {
         this.sciFiMovies = sciFiMovies;
         return this;
     }
@@ -88,7 +88,7 @@ public class StatisticsDto {
         return animationMovies;
     }
 
-    public StatisticsDto setAnimationMovies(Integer animationMovies) {
+    public StatisticsDТО setAnimationMovies(Integer animationMovies) {
         this.animationMovies = animationMovies;
         return this;
     }
@@ -97,7 +97,7 @@ public class StatisticsDto {
         return adventureMovies;
     }
 
-    public StatisticsDto setAdventureMovies(Integer adventureMovies) {
+    public StatisticsDТО setAdventureMovies(Integer adventureMovies) {
         this.adventureMovies = adventureMovies;
         return this;
     }
@@ -106,7 +106,7 @@ public class StatisticsDto {
         return fantasyMovies;
     }
 
-    public StatisticsDto setFantasyMovies(Integer fantasyMovies) {
+    public StatisticsDТО setFantasyMovies(Integer fantasyMovies) {
         this.fantasyMovies = fantasyMovies;
         return this;
     }
@@ -115,7 +115,7 @@ public class StatisticsDto {
         return romanceMovies;
     }
 
-    public StatisticsDto setRomanceMovies(Integer romanceMovies) {
+    public StatisticsDТО setRomanceMovies(Integer romanceMovies) {
         this.romanceMovies = romanceMovies;
         return this;
     }
@@ -124,7 +124,7 @@ public class StatisticsDto {
         return thrillerMovies;
     }
 
-    public StatisticsDto setThrillerMovies(Integer thrillerMovies) {
+    public StatisticsDТО setThrillerMovies(Integer thrillerMovies) {
         this.thrillerMovies = thrillerMovies;
         return this;
     }
@@ -133,7 +133,7 @@ public class StatisticsDto {
         return crimeMovies;
     }
 
-    public StatisticsDto setCrimeMovies(Integer crimeMovies) {
+    public StatisticsDТО setCrimeMovies(Integer crimeMovies) {
         this.crimeMovies = crimeMovies;
         return this;
     }
@@ -142,7 +142,7 @@ public class StatisticsDto {
         return documentaryMovies;
     }
 
-    public StatisticsDto setDocumentaryMovies(Integer documentaryMovies) {
+    public StatisticsDТО setDocumentaryMovies(Integer documentaryMovies) {
         this.documentaryMovies = documentaryMovies;
         return this;
     }
@@ -151,7 +151,7 @@ public class StatisticsDto {
         return serialMovies;
     }
 
-    public StatisticsDto setSerialMovies(Integer serialMovies) {
+    public StatisticsDТО setSerialMovies(Integer serialMovies) {
         this.serialMovies = serialMovies;
         return this;
     }

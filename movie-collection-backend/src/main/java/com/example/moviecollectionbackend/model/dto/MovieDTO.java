@@ -1,5 +1,6 @@
 package com.example.moviecollectionbackend.model.dto;
 
+import java.math.BigDecimal;
 import java.util.List;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -10,7 +11,7 @@ import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.Length;
 
-public class EditMovieDTO {
+public class MovieDTO {
 
     private Long movieId;
 
@@ -49,7 +50,6 @@ public class EditMovieDTO {
     @Length(max = 254, message = "The length of the PosterURL field must be max 254 characters!")
     private String posterUrl;
 
-    @NotEmpty(message = "You must select at least one Platforms")
     @Size(max = 4, message = "You can choose a maximum 4 Platforms!")
     private List<@NotBlank String> platforms;
 
@@ -59,14 +59,18 @@ public class EditMovieDTO {
     @Length(max = 254, message = "The length of the Description field must be max 254 characters!")
     private String description;
 
-    public EditMovieDTO() {
+    private BigDecimal rating;
+
+    private Long userId;
+
+    public MovieDTO() {
     }
 
     public Long getMovieId() {
         return movieId;
     }
 
-    public EditMovieDTO setMovieId(Long movieId) {
+    public MovieDTO setMovieId(Long movieId) {
         this.movieId = movieId;
         return this;
     }
@@ -76,7 +80,7 @@ public class EditMovieDTO {
         return title1;
     }
 
-    public EditMovieDTO setTitle1(String title1) {
+    public MovieDTO setTitle1(String title1) {
         this.title1 = title1;
         return this;
     }
@@ -86,7 +90,7 @@ public class EditMovieDTO {
         return title2;
     }
 
-    public EditMovieDTO setTitle2(String title2) {
+    public MovieDTO setTitle2(String title2) {
         this.title2 = title2;
         return this;
     }
@@ -96,7 +100,7 @@ public class EditMovieDTO {
         return genres;
     }
 
-    public EditMovieDTO setGenres(List<String> genres) {
+    public MovieDTO setGenres(List<String> genres) {
         this.genres = genres;
         return this;
     }
@@ -106,7 +110,7 @@ public class EditMovieDTO {
         return duration;
     }
 
-    public EditMovieDTO setDuration(Integer duration) {
+    public MovieDTO setDuration(Integer duration) {
         this.duration = duration;
         return this;
     }
@@ -116,7 +120,7 @@ public class EditMovieDTO {
         return year;
     }
 
-    public EditMovieDTO setYear(Integer year) {
+    public MovieDTO setYear(Integer year) {
         this.year = year;
         return this;
     }
@@ -126,7 +130,7 @@ public class EditMovieDTO {
         return imdbUrl;
     }
 
-    public EditMovieDTO setImdbUrl(String imdbUrl) {
+    public MovieDTO setImdbUrl(String imdbUrl) {
         this.imdbUrl = imdbUrl;
         return this;
     }
@@ -136,7 +140,7 @@ public class EditMovieDTO {
         return trailerUrl;
     }
 
-    public EditMovieDTO setTrailerUrl(String trailerUrl) {
+    public MovieDTO setTrailerUrl(String trailerUrl) {
         this.trailerUrl = trailerUrl;
         return this;
     }
@@ -146,7 +150,7 @@ public class EditMovieDTO {
         return posterUrl;
     }
 
-    public EditMovieDTO setPosterUrl(String posterUrl) {
+    public MovieDTO setPosterUrl(String posterUrl) {
         this.posterUrl = posterUrl;
         return this;
     }
@@ -156,7 +160,7 @@ public class EditMovieDTO {
         return platforms;
     }
 
-    public EditMovieDTO setPlatforms(List<String> platforms) {
+    public MovieDTO setPlatforms(List<String> platforms) {
         this.platforms = platforms;
         return this;
     }
@@ -166,7 +170,7 @@ public class EditMovieDTO {
         return bulgarianLanguage;
     }
 
-    public EditMovieDTO setBulgarianLanguage(Boolean bulgarianLanguage) {
+    public MovieDTO setBulgarianLanguage(Boolean bulgarianLanguage) {
         this.bulgarianLanguage = bulgarianLanguage;
         return this;
     }
@@ -176,8 +180,26 @@ public class EditMovieDTO {
         return description;
     }
 
-    public EditMovieDTO setDescription(String description) {
+    public MovieDTO setDescription(String description) {
         this.description = description;
+        return this;
+    }
+
+    public BigDecimal getRating() {
+        return rating;
+    }
+
+    public MovieDTO setRating(BigDecimal rating) {
+        this.rating = rating;
+        return this;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public MovieDTO setUserId(Long userId) {
+        this.userId = userId;
         return this;
     }
 }

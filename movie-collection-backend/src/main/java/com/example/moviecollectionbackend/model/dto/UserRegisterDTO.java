@@ -11,15 +11,15 @@ import javax.validation.constraints.Size;
     message = "Passwords do not match."
 )
 
-public class UserRegisterDto {
+public class UserRegisterDTO {
 
     @NotEmpty
-    @Size(min = 6 , max = 10)
+    @Size(min = 6 , max = 10 , message = "Username length must be between 6 and 10 characters!")
     @UniqueUsername(message = "This username already exists!")
     private String username;
 
     @NotEmpty
-    @Size(min = 6 , max = 10)
+    @Size(min = 6 , max = 10 , message = "Password length must be between 6 and 10 characters!")
     private String password;
 
     private String confirmPassword;
@@ -28,7 +28,7 @@ public class UserRegisterDto {
         return username;
     }
 
-    public UserRegisterDto setUsername(String username) {
+    public UserRegisterDTO setUsername(String username) {
         this.username = username;
         return this;
     }
@@ -37,7 +37,7 @@ public class UserRegisterDto {
         return password;
     }
 
-    public UserRegisterDto setPassword(String password) {
+    public UserRegisterDTO setPassword(String password) {
         this.password = password;
         return this;
     }
@@ -46,7 +46,7 @@ public class UserRegisterDto {
         return confirmPassword;
     }
 
-    public UserRegisterDto setConfirmPassword(String confirmPassword) {
+    public UserRegisterDTO setConfirmPassword(String confirmPassword) {
         this.confirmPassword = confirmPassword;
         return this;
     }

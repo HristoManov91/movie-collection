@@ -3,7 +3,7 @@ package com.example.moviecollectionbackend.model.dto;
 import javax.validation.constraints.NotBlank;
 import org.hibernate.validator.constraints.Length;
 
-public class UserLoginDto {
+public class UserLoginDТО {
 
     @NotBlank(message = "Username is required and cannot be empty string!")
     @Length(min = 6, max = 10, message = "Username length must be between 6 and 10 characters!")
@@ -12,14 +12,14 @@ public class UserLoginDto {
     @Length(min = 6, max = 10, message = "Password length must be between 6 and 10 characters!")
     private String password;
 
-    public UserLoginDto() {
+    public UserLoginDТО() {
     }
 
     public String getUsername() {
         return username;
     }
 
-    public UserLoginDto setUsername(String username) {
+    public UserLoginDТО setUsername(String username) {
         this.username = username;
         return this;
     }
@@ -28,7 +28,7 @@ public class UserLoginDto {
         return password;
     }
 
-    public UserLoginDto setPassword(String password) {
+    public UserLoginDТО setPassword(String password) {
         this.password = password;
         return this;
     }

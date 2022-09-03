@@ -3,16 +3,13 @@ package com.example.moviecollectionbackend.service.impl;
 import com.example.moviecollectionbackend.exception.FullMovieCollectionException;
 import com.example.moviecollectionbackend.exception.InvalidIMDbUrlException;
 import com.example.moviecollectionbackend.exception.MovieNotFoundException;
-import com.example.moviecollectionbackend.model.dto.AddMovieDTO;
-import com.example.moviecollectionbackend.model.dto.EditMovieDTO;
-import com.example.moviecollectionbackend.model.dto.MovieCardDto;
-import com.example.moviecollectionbackend.model.dto.MovieDetailsDto;
+import com.example.moviecollectionbackend.model.dto.MovieCardDТО;
+import com.example.moviecollectionbackend.model.dto.MovieDTO;
 import com.example.moviecollectionbackend.model.dto.SearchParamsDTO;
-import com.example.moviecollectionbackend.model.dto.StatisticsDto;
-import com.example.moviecollectionbackend.model.entity.GenreEntity;
+import com.example.moviecollectionbackend.model.dto.StatisticsDТО;
 import com.example.moviecollectionbackend.model.entity.MovieEntity;
-import com.example.moviecollectionbackend.model.entity.PlatformEntity;
 import com.example.moviecollectionbackend.model.entity.UserEntity;
+import com.example.moviecollectionbackend.model.mapper.MovieMapper;
 import com.example.moviecollectionbackend.repository.MovieRepository;
 import com.example.moviecollectionbackend.service.GenreService;
 import com.example.moviecollectionbackend.service.MovieService;
@@ -22,7 +19,6 @@ import java.math.BigDecimal;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -32,9 +28,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 @Service
@@ -44,87 +39,42 @@ public class MovieServiceImpl implements MovieService {
 
     private final MovieRepository movieRepository;
     private final ModelMapper modelMapper;
-    private final GenreService genreService;
-    private final PlatformService platformService;
-    private final UserService userService;
+    private final MovieMapper mapper;
 
-    public MovieServiceImpl(MovieRepository movieRepository, ModelMapper modelMapper, GenreService genreService, PlatformService platformService,
-        UserService userService) {
+    public MovieServiceImpl(MovieRepository movieRepository, ModelMapper modelMapper, MovieMapper mapper) {
         this.movieRepository = movieRepository;
         this.modelMapper = modelMapper;
-        this.genreService = genreService;
-        this.platformService = platformService;
-        this.userService = userService;
+        this.mapper = mapper;
     }
 
     @Override
-    public MovieDetailsDto addMovie(Long userId, AddMovieDTO addMovieDTO) {
+    @Transactional
+    public MovieDTO addMovie(Long userId, MovieDTO movieDTO) {
 
         if (movieRepository.findTotal(userId) == 2000) {
             throw new FullMovieCollectionException("Your collection from movies is full,max movies is 2000!");
         }
 
-        UserEntity userEntity = userService.findById(userId);
+        movieDTO.setUserId(userId);
 
-        MovieEntity movieEntity = mapDtoToEntity(addMovieDTO);
-        movieEntity.setUser(userEntity);
+        MovieEntity movieEntity = mapper.mapToEntity(movieDTO);
 
-        List<GenreEntity> genres = genreService.findAllByNames(addMovieDTO.getGenres());
-        movieEntity.setGenres(genres);
-
-        List<PlatformEntity> platforms = platformService.findAllByNames(addMovieDTO.getPlatforms());
-        movieEntity.setPlatforms(platforms);
-
-        if (addMovieDTO.getImdbUrl() != null) {
-            movieEntity.setRating(getIMDbRating(addMovieDTO.getImdbUrl()));
+        if (movieDTO.getImdbUrl() != null) {
+            movieEntity.setRating(getIMDbRating(movieDTO.getImdbUrl()));
         }
 
-        MovieEntity save = movieRepository.save(movieEntity);
-
-        return mapEntityToDto(save);
+        return mapper.mapToResource(movieRepository.save(movieEntity));
 
     }
 
     @Override
-    public MovieDetailsDto editMovie(Long userId, EditMovieDTO editMovieDTO) {
+    @Transactional
+    public MovieDTO editMovie(Long userId, MovieDTO movieDTO) {
 
-        MovieEntity movieEntity = movieRepository.findById(editMovieDTO.getMovieId(), userId)
-            .orElseThrow(() -> new MovieNotFoundException("You don't have movie with this id " + editMovieDTO.getMovieId() + " !"));
+        movieRepository.findById(movieDTO.getMovieId(), userId)
+            .orElseThrow(() -> new MovieNotFoundException("You don't have movie with this id " + movieDTO.getMovieId() + " !"));
 
-        if (!editMovieDTO.getTitle1().equals(movieEntity.getTitle1())) {
-            movieEntity.setTitle1(editMovieDTO.getTitle1());
-        }
-
-        if (!Objects.equals(editMovieDTO.getDuration(), movieEntity.getDuration())) {
-            movieEntity.setDuration(editMovieDTO.getDuration());
-        }
-
-        if (!Objects.equals(editMovieDTO.getYear(), movieEntity.getYear())) {
-            movieEntity.setYear(editMovieDTO.getYear());
-        }
-
-        if (!editMovieDTO.getTrailerUrl().equals(movieEntity.getTrailerUrl())) {
-            movieEntity.setTrailerUrl(editMovieDTO.getTrailerUrl());
-        }
-
-        if (!editMovieDTO.getPosterUrl().equals(movieEntity.getPosterUrl())) {
-            movieEntity.setPosterUrl(editMovieDTO.getPosterUrl());
-        }
-
-        movieEntity.setTitle2(editMovieDTO.getTitle2());
-        movieEntity.setImdbUrl(editMovieDTO.getImdbUrl());
-        movieEntity.setDescription(editMovieDTO.getDescription());
-        movieEntity.setBulgarianLanguage(editMovieDTO.getBulgarianLanguage());
-
-        List<GenreEntity> genres = genreService.findAllByNames(editMovieDTO.getGenres());
-        movieEntity.setGenres(genres);
-
-        List<PlatformEntity> platforms = platformService.findAllByNames(editMovieDTO.getPlatforms());
-        movieEntity.setPlatforms(platforms);
-
-        MovieEntity save = movieRepository.save(movieEntity);
-
-        return mapEntityToDto(save);
+        return mapper.mapToResource(movieRepository.save(mapper.mapToEntity(movieDTO)));
     }
 
     @Override
@@ -137,7 +87,7 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public Page<MovieCardDto> findAll(Pageable pageable, Long userId, SearchParamsDTO searchParamsDTO) {
+    public Page<MovieCardDТО> findAll(Pageable pageable, Long userId, SearchParamsDTO searchParamsDTO) {
 
         if (movieRepository.findTotal(userId) == 0) {
             return null;
@@ -152,16 +102,17 @@ public class MovieServiceImpl implements MovieService {
                 searchParamsDTO.getSearchText() != null ? Optional.of(searchParamsDTO.getSearchText()) : Optional.empty(),
                 searchParamsDTO.getGenres() != null ? Optional.of(Arrays.stream(searchParamsDTO.getGenres()).toList()) : Optional.empty());
 
-        return movies.map(m -> modelMapper.map(m, MovieCardDto.class));
+        return movies.map(m -> modelMapper.map(m, MovieCardDТО.class));
     }
 
     @Override
-    public MovieDetailsDto getMovieDetailsDto(Long userId, Long movieId) {
+    @Transactional
+    public MovieDTO getMovieDetailsDto(Long userId, Long movieId) {
 
         MovieEntity movieEntity = movieRepository.findById(movieId, userId)
             .orElseThrow(() -> new MovieNotFoundException("You don't have movie with this id " + movieId + " !"));
 
-        return mapEntityToDto(movieEntity);
+        return mapper.mapToResource(movieEntity);
     }
 
     @Override
@@ -177,62 +128,27 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public StatisticsDto getStatistics(Long userId) {
-        StatisticsDto statisticsDto = new StatisticsDto();
+    public StatisticsDТО getStatistics(Long userId) {
+        StatisticsDТО statisticsDTO = new StatisticsDТО();
 
-        statisticsDto.setTotalMovies(movieRepository.findTotal(userId));
-        statisticsDto.setTotalDurations(movieRepository.findTotalDurations(userId));
-        statisticsDto.setActionMovies(movieRepository.countMoviesByGenre("ACTION", userId));
-        statisticsDto.setComedyMovies(movieRepository.countMoviesByGenre("COMEDY", userId));
-        statisticsDto.setDramaMovies(movieRepository.countMoviesByGenre("DRAMA", userId));
-        statisticsDto.setMysteryMovies(movieRepository.countMoviesByGenre("MYSTERY", userId));
-        statisticsDto.setSciFiMovies(movieRepository.countMoviesByGenre("SCI-FI", userId));
-        statisticsDto.setAnimationMovies(movieRepository.countMoviesByGenre("ANIMATION", userId));
-        statisticsDto.setAdventureMovies(movieRepository.countMoviesByGenre("ADVENTURE", userId));
-        statisticsDto.setFantasyMovies(movieRepository.countMoviesByGenre("FANTASY", userId));
-        statisticsDto.setRomanceMovies(movieRepository.countMoviesByGenre("ROMANCE", userId));
-        statisticsDto.setThrillerMovies(movieRepository.countMoviesByGenre("THRILLER", userId));
-        statisticsDto.setCrimeMovies(movieRepository.countMoviesByGenre("CRIME", userId));
-        statisticsDto.setDocumentaryMovies(movieRepository.countMoviesByGenre("DOCUMENTARY", userId));
-        statisticsDto.setSerialMovies(movieRepository.countMoviesByGenre("SERIAL", userId));
+        statisticsDTO.setTotalMovies(movieRepository.findTotal(userId));
+        statisticsDTO.setTotalDurations(movieRepository.findTotalDurations(userId));
+        statisticsDTO.setActionMovies(movieRepository.countMoviesByGenre("ACTION", userId));
+        statisticsDTO.setComedyMovies(movieRepository.countMoviesByGenre("COMEDY", userId));
+        statisticsDTO.setDramaMovies(movieRepository.countMoviesByGenre("DRAMA", userId));
+        statisticsDTO.setMysteryMovies(movieRepository.countMoviesByGenre("MYSTERY", userId));
+        statisticsDTO.setSciFiMovies(movieRepository.countMoviesByGenre("SCI-FI", userId));
+        statisticsDTO.setAnimationMovies(movieRepository.countMoviesByGenre("ANIMATION", userId));
+        statisticsDTO.setAdventureMovies(movieRepository.countMoviesByGenre("ADVENTURE", userId));
+        statisticsDTO.setFantasyMovies(movieRepository.countMoviesByGenre("FANTASY", userId));
+        statisticsDTO.setRomanceMovies(movieRepository.countMoviesByGenre("ROMANCE", userId));
+        statisticsDTO.setThrillerMovies(movieRepository.countMoviesByGenre("THRILLER", userId));
+        statisticsDTO.setCrimeMovies(movieRepository.countMoviesByGenre("CRIME", userId));
+        statisticsDTO.setCrimeMovies(movieRepository.countMoviesByGenre("BIOGRAPHY", userId));
+        statisticsDTO.setDocumentaryMovies(movieRepository.countMoviesByGenre("DOCUMENTARY", userId));
+        statisticsDTO.setSerialMovies(movieRepository.countMoviesByGenre("SERIAL", userId));
 
-        return statisticsDto;
-    }
-
-    private MovieDetailsDto mapEntityToDto(MovieEntity me) {
-        MovieDetailsDto movieDetailsDto = new MovieDetailsDto()
-            .setMovieId(me.getId())
-            .setTitle1(me.getTitle1() != null ? me.getTitle1() : null)
-            .setTitle2(me.getTitle2() != null ? me.getTitle2() : null)
-            .setDuration(me.getDuration() != null ? me.getDuration() : null)
-            .setDescription(me.getDescription() != null ? me.getDescription() : null)
-            .setBulgarianLanguage(me.getBulgarianLanguage() != null ? me.getBulgarianLanguage() : null)
-            .setRating(me.getRating() != null ? me.getRating() : null)
-            .setTrailerUrl(me.getTrailerUrl() != null ? me.getTrailerUrl() : null)
-            .setPosterUrl(me.getPosterUrl() != null ? me.getPosterUrl() : null)
-            .setImdbUrl(me.getImdbUrl() != null ? me.getImdbUrl() : null)
-            .setYear(me.getYear() != null ? me.getYear() : null);
-
-        List<String> genres = genreService.findAllByMovieId(me.getId());
-        movieDetailsDto.setGenres(genres);
-
-        List<String> platforms = platformService.findAllByMovieId(me.getId());
-        movieDetailsDto.setPlatforms(platforms);
-
-        return movieDetailsDto;
-    }
-
-    private MovieEntity mapDtoToEntity(AddMovieDTO bindingModel) {
-        return new MovieEntity()
-            .setTitle1(bindingModel.getTitle1() != null ? bindingModel.getTitle1() : null)
-            .setTitle2(bindingModel.getTitle2() != null ? bindingModel.getTitle2() : null)
-            .setDuration(bindingModel.getDuration() != null ? bindingModel.getDuration() : null)
-            .setDescription(bindingModel.getDescription() != null ? bindingModel.getDescription() : null)
-            .setBulgarianLanguage(bindingModel.getBulgarianLanguage() != null ? bindingModel.getBulgarianLanguage() : null)
-            .setTrailerUrl(bindingModel.getTrailerUrl() != null ? bindingModel.getTrailerUrl() : null)
-            .setPosterUrl(bindingModel.getPosterUrl() != null ? bindingModel.getPosterUrl() : null)
-            .setImdbUrl(bindingModel.getImdbUrl() != null ? bindingModel.getImdbUrl() : null)
-            .setYear(bindingModel.getYear() != null ? bindingModel.getYear() : null);
+        return statisticsDTO;
     }
 
     private BigDecimal getIMDbRating(String IMDbURL) {
@@ -264,11 +180,5 @@ public class MovieServiceImpl implements MovieService {
         }
 
         return null;
-    }
-
-    private Long getUserId() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        return 1L;
     }
 }
