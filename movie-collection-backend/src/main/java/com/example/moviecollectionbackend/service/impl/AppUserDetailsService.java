@@ -20,7 +20,6 @@ public class AppUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        long count = userRepository.count();
 
         return
             userRepository

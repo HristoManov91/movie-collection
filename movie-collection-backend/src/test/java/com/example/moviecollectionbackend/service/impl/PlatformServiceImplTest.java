@@ -46,14 +46,14 @@ class PlatformServiceImplTest {
 
         List<PlatformEntity> platforms = testPlatformService.findAllByNames(List.of("HBOMAX", "DISNEY+", "NETFLIX"));
 
-        Assertions.assertEquals(3 , platforms.size());
-        Assertions.assertEquals(hbo.getPlatform() , platforms.get(0).getPlatform());
-        Assertions.assertEquals(disney.getPlatform() , platforms.get(1).getPlatform());
-        Assertions.assertEquals(netflix.getPlatform() , platforms.get(2).getPlatform());
+        Assertions.assertEquals(3, platforms.size());
+        Assertions.assertEquals(hbo.getPlatform(), platforms.get(0).getPlatform());
+        Assertions.assertEquals(disney.getPlatform(), platforms.get(1).getPlatform());
+        Assertions.assertEquals(netflix.getPlatform(), platforms.get(2).getPlatform());
     }
 
     @Test
-    void testFindAllByNamesOnlyOneExist_ReturnListFromOne(){
+    void testFindAllByNamesOnlyOneExist_ReturnListFromOne() {
 
         when(mockPlatformRepo.findByPlatform("INVALID")).thenReturn(Optional.empty());
         when(mockPlatformRepo.findByPlatform("invalid2")).thenReturn(Optional.empty());
@@ -61,32 +61,32 @@ class PlatformServiceImplTest {
 
         List<PlatformEntity> platforms = testPlatformService.findAllByNames(List.of("INVALID", "invalid2", "NETFLIX"));
 
-        Assertions.assertEquals(1 , platforms.size());
-        Assertions.assertEquals(netflix.getPlatform() , platforms.get(0).getPlatform());
+        Assertions.assertEquals(1, platforms.size());
+        Assertions.assertEquals(netflix.getPlatform(), platforms.get(0).getPlatform());
     }
 
     @Test
-    void testFindAllByMovieId_ReturnListFromStrings(){
+    void testFindAllByMovieId_ReturnListFromStrings() {
 
-        when(mockPlatformRepo.findAllByMovieId(1L)).thenReturn(List.of(hbo , netflix));
+        when(mockPlatformRepo.findAllByMovieId(1L)).thenReturn(List.of(hbo, netflix));
 
         List<String> platformsNames = testPlatformService.findAllByMovieId(1L);
 
-        Assertions.assertEquals(2 , platformsNames.size());
-        Assertions.assertEquals(hbo.getPlatform() , platformsNames.get(0));
-        Assertions.assertEquals(netflix.getPlatform() , platformsNames.get(1));
+        Assertions.assertEquals(2, platformsNames.size());
+        Assertions.assertEquals(hbo.getPlatform(), platformsNames.get(0));
+        Assertions.assertEquals(netflix.getPlatform(), platformsNames.get(1));
     }
 
     @Test
-    void testFindAllPlatformsNames_ReturnListFromStrings(){
+    void testFindAllPlatformsNames_ReturnListFromStrings() {
 
-        when(mockPlatformRepo.findAll()).thenReturn(List.of(hbo , disney , netflix));
+        when(mockPlatformRepo.findAll()).thenReturn(List.of(hbo, disney, netflix));
 
         List<PlatformEntity> platforms = mockPlatformRepo.findAll();
 
-        Assertions.assertEquals(3 , platforms.size());
-        Assertions.assertEquals(hbo.getPlatform() , platforms.get(0).getPlatform());
-        Assertions.assertEquals(disney.getPlatform() , platforms.get(1).getPlatform());
-        Assertions.assertEquals(netflix.getPlatform() , platforms.get(2).getPlatform());
+        Assertions.assertEquals(3, platforms.size());
+        Assertions.assertEquals(hbo.getPlatform(), platforms.get(0).getPlatform());
+        Assertions.assertEquals(disney.getPlatform(), platforms.get(1).getPlatform());
+        Assertions.assertEquals(netflix.getPlatform(), platforms.get(2).getPlatform());
     }
 }

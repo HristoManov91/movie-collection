@@ -43,11 +43,11 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> loginUser(@RequestBody @Valid UserLoginDТО userLoginDТО) {
+    public ResponseEntity<?> loginUser(@RequestBody @Valid UserLoginDТО userLoginDTO) {
 
         try {
             Authentication authenticate = authManager.authenticate(
-                new UsernamePasswordAuthenticationToken(userLoginDТО.getUsername(), userLoginDТО.getPassword()));
+                new UsernamePasswordAuthenticationToken(userLoginDTO.getUsername(), userLoginDTO.getPassword()));
 
             AppUserDetails user = (AppUserDetails) authenticate.getPrincipal();
             String accessToken = jwtUtil.generateAccessToken(user);

@@ -8,13 +8,9 @@ import com.example.moviecollectionbackend.model.dto.MovieDTO;
 import com.example.moviecollectionbackend.model.dto.SearchParamsDTO;
 import com.example.moviecollectionbackend.model.dto.StatisticsDТО;
 import com.example.moviecollectionbackend.model.entity.MovieEntity;
-import com.example.moviecollectionbackend.model.entity.UserEntity;
 import com.example.moviecollectionbackend.model.mapper.MovieMapper;
 import com.example.moviecollectionbackend.repository.MovieRepository;
-import com.example.moviecollectionbackend.service.GenreService;
 import com.example.moviecollectionbackend.service.MovieService;
-import com.example.moviecollectionbackend.service.PlatformService;
-import com.example.moviecollectionbackend.service.UserService;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.util.Arrays;
@@ -50,6 +46,7 @@ public class MovieServiceImpl implements MovieService {
     @Override
     @Transactional
     public MovieDTO addMovie(Long userId, MovieDTO movieDTO) {
+        LOGGER.info("Add movie on user with id " + userId);
 
         if (movieRepository.findTotal(userId) == 2000) {
             throw new FullMovieCollectionException("Your collection from movies is full,max movies is 2000!");
@@ -59,17 +56,17 @@ public class MovieServiceImpl implements MovieService {
 
         MovieEntity movieEntity = mapper.mapToEntity(movieDTO);
 
-        if (movieDTO.getImdbUrl() != null) {
-            movieEntity.setRating(getIMDbRating(movieDTO.getImdbUrl()));
+        if (movieEntity.getImdbUrl() != null) {
+            movieEntity.setRating(getIMDbRating(movieEntity.getImdbUrl()));
         }
 
         return mapper.mapToResource(movieRepository.save(movieEntity));
-
     }
 
     @Override
     @Transactional
     public MovieDTO editMovie(Long userId, MovieDTO movieDTO) {
+        LOGGER.info("Edit movie with id " + movieDTO.getMovieId());
 
         movieRepository.findById(movieDTO.getMovieId(), userId)
             .orElseThrow(() -> new MovieNotFoundException("You don't have movie with this id " + movieDTO.getMovieId() + " !"));
@@ -79,6 +76,7 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public void deleteMovieById(Long userId, Long movieId) {
+        LOGGER.info("Delete movie with id " + movieId);
 
         MovieEntity movieEntity = movieRepository.findById(movieId, userId)
             .orElseThrow(() -> new MovieNotFoundException("You don't have movie with this id " + movieId + " !"));
@@ -88,6 +86,9 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public Page<MovieCardDТО> findAll(Pageable pageable, Long userId, SearchParamsDTO searchParamsDTO) {
+        LOGGER.info("Find all movies cards by params: minDuration: {} , maxDuration: {} , minRating: {} , maxRating: {} , searchText: {} , genres: {}",
+            searchParamsDTO.getMinDuration(), searchParamsDTO.getMaxDuration(), searchParamsDTO.getMinRating(),
+            searchParamsDTO.getMaxRating(), searchParamsDTO.getSearchText(), String.join(", ", searchParamsDTO.getGenres()));
 
         if (movieRepository.findTotal(userId) == 0) {
             return null;
@@ -108,6 +109,7 @@ public class MovieServiceImpl implements MovieService {
     @Override
     @Transactional
     public MovieDTO getMovieDetailsDto(Long userId, Long movieId) {
+        LOGGER.info("Find movie details by movieId " + movieId);
 
         MovieEntity movieEntity = movieRepository.findById(movieId, userId)
             .orElseThrow(() -> new MovieNotFoundException("You don't have movie with this id " + movieId + " !"));
@@ -117,6 +119,7 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public void updateRatings() throws InvalidIMDbUrlException {
+        LOGGER.info("Update ratings for all movies");
         List<MovieEntity> all = movieRepository.findAll();
         for (MovieEntity movie : all) {
             BigDecimal rating = getIMDbRating(movie.getImdbUrl());
@@ -129,6 +132,7 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public StatisticsDТО getStatistics(Long userId) {
+        LOGGER.info("Get statistics for user with id " + userId);
         StatisticsDТО statisticsDTO = new StatisticsDТО();
 
         statisticsDTO.setTotalMovies(movieRepository.findTotal(userId));
@@ -152,6 +156,8 @@ public class MovieServiceImpl implements MovieService {
     }
 
     private BigDecimal getIMDbRating(String IMDbURL) {
+        // TODO think of a better option
+        LOGGER.info("Find movie rating from imdb");
 
         try {
             RestTemplate restTemplate = new RestTemplate();
