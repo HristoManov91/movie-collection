@@ -1,0 +1,5 @@
+node_modules
+Dockerfile
+.git
+*.js - if i don't want this files
+folder/** - if i don't want files in this folder

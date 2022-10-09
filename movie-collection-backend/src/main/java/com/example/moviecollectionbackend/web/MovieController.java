@@ -56,20 +56,20 @@ public class MovieController {
         return ResponseEntity.ok(result);
     }
 
-    @Tag(name = "Get movie by ID", description = "Returns the movie info by ID")
-    @Parameter(
-        name = "movieId",
-        description = "The ID of the Movie",
-        required = true
-    )
-    @ApiResponse(
-        responseCode = "200",
-        description = "If the book was retrieved successfully"
-    )
-    @ApiResponse(
-        responseCode = "404",
-        description = "If the movie not found"
-    )
+//    @Tag(name = "Get movie by ID", description = "Returns the movie info by ID")
+//    @Parameter(
+//        name = "movieId",
+//        description = "The ID of the Movie",
+//        required = true
+//    )
+//    @ApiResponse(
+//        responseCode = "200",
+//        description = "If the book was retrieved successfully"
+//    )
+//    @ApiResponse(
+//        responseCode = "404",
+//        description = "If the movie not found"
+//    )
     @GetMapping("/{movieId}")
     public ResponseEntity<MovieDTO> getMovieDetailsDto(
         @AuthenticationPrincipal AppUserDetails userDetails, @PathVariable Long movieId) {

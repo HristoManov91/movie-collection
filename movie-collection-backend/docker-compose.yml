@@ -1,0 +1,37 @@
+version: '3.8'
+services:
+  mysqldb:
+    image: mysql
+    #    image: arm64v8/mysql:oracle
+    #    image: mysql:5.7
+    command: [ '--character-set-server=utf8mb4', '--collation-server=utf8mb4_bin', '--default-authentication-plugin=mysql_native_password' ]
+    restart: unless-stopped
+    env_file: ./.env
+    environment:
+      - MYSQL_DATABASE=movie-collection
+      - MYSQL_ROOT_PASSWORD=$MYSQL_PASSWORD
+    ports:
+    - "3307:3306"
+    volumes:
+      - db:/var/lib/mysql
+
+  mc-be:
+    depends_on:
+      - mysqldb
+    restart: on-failure
+    build: .
+    image: hristomanov/mc-be:v1
+    ports:
+      - "8081:8081"
+    environment:
+      - MYSQL_HOST=mysqldb
+      - JWT_SECRET=aBcDeFgQwRsTyUzXcVbNm
+      - MYSQL_USERNAME=root
+      - MYSQL_PASSWORD=12345
+    volumes:
+      - .m2:/root/.m2
+    stdin_open: true
+    tty: true
+
+volumes:
+  db:
