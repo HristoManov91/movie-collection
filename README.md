@@ -4,6 +4,8 @@ Here, everyone can create a profile where they can make a collection of their fa
 # Technologies:
 - Java
 
+- Maven
+
 - Spring
 
 - MySQL
